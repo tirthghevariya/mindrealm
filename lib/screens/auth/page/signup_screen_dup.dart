@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -125,47 +127,52 @@ class _SignupScreenDupState extends State<SignupScreenDup> {
     }
   }
 
-  // Future<void> _signInWithGoogle() async {
-  //   setState(() => _isLoading = true);
-  //
-  //   try {
-  //     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-  //     if (googleUser == null) return;
-  //
-  //     final GoogleSignInAuthentication googleAuth =
-  //     await googleUser.authentication;
-  //
-  //     final OAuthCredential credential = GoogleAuthProvider.credential(
-  //       accessToken: googleAuth.accessToken,
-  //       idToken: googleAuth.idToken,
-  //     );
-  //
-  //     final UserCredential userCredential =
-  //     await _auth.signInWithCredential(credential);
-  //
-  //     if (userCredential.user != null) {
-  //       Get.offAllNamed(Routes.BottomNavBar);
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     Get.snackbar(
-  //       'Google Sign-In Failed',
-  //       e.message ?? 'An error occurred',
-  //       backgroundColor: AppColors.error,
-  //       colorText: AppColors.white,
-  //     );
-  //   } catch (e) {
-  //     Get.snackbar(
-  //       'Error',
-  //       'Failed to sign in with Google',
-  //       backgroundColor: AppColors.error,
-  //       colorText: AppColors.white,
-  //     );
-  //   } finally {
-  //     if (mounted) {
-  //       setState(() => _isLoading = false);
-  //     }
-  //   }
-  // }
+  Future<void> _signInWithGoogle() async {
+    setState(() => _isLoading = true);
+
+    try {
+      // ✅ Mobile Google Sign-In (requires google_sign_in package)
+      final GoogleSignIn signIn = GoogleSignIn();
+      final GoogleSignInAccount? googleUser = await signIn.signIn();
+      if (googleUser == null) {
+        setState(() => _isLoading = false);
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      if (userCredential.user != null) {
+        Get.offAllNamed(Routes.BottomNavBar);
+      }
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar(
+        'Google Sign-In Failed',
+        e.message ?? 'An error occurred',
+        backgroundColor: AppColors.error,
+        colorText: AppColors.white,
+      );
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed to sign in with Google',
+        backgroundColor: AppColors.error,
+        colorText: AppColors.white,
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -362,13 +369,14 @@ class _SignupScreenDupState extends State<SignupScreenDup> {
                                     width: double.infinity,
                                     height: SizeConfig.getHeight(48),
                                     child: OutlinedButton.icon(
-                                      onPressed: () {},
+                                      onPressed:
+                                          _isLoading ? null : _signInWithGoogle,
                                       // _isLoading ? null : _signInWithGoogle,
                                       style: OutlinedButton.styleFrom(
                                         backgroundColor: AppColors.white,
                                         side: BorderSide(
                                             color: AppColors.grey
-                                                .withOpacity(0.3)),
+                                                .withValues(alpha: 0.3)),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(8),
@@ -392,8 +400,7 @@ class _SignupScreenDupState extends State<SignupScreenDup> {
                                   SizedBox(height: SizeConfig.getHeight(12)),
 
                                   // Continue with Apple (iOS only)
-                                  if (Theme.of(context).platform ==
-                                      TargetPlatform.iOS)
+                                  if (Platform.isIOS)
                                     SizedBox(
                                       width: double.infinity,
                                       height: SizeConfig.getHeight(48),
@@ -407,7 +414,7 @@ class _SignupScreenDupState extends State<SignupScreenDup> {
                                           backgroundColor: AppColors.white,
                                           side: BorderSide(
                                               color: AppColors.grey
-                                                  .withOpacity(0.3)),
+                                                  .withValues(alpha: 0.3)),
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(8),
@@ -487,7 +494,7 @@ class _SignupScreenDupState extends State<SignupScreenDup> {
                               onTap: _isLoading
                                   ? null
                                   : () {
-                                      Get.toNamed(Routes.LOGIN);
+                                      Get.toNamed(Routes.login);
                                     },
                               child: Text(
                                 AppText.loginWithAccount,

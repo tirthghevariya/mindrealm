@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +12,6 @@ import '../../../utils/app_colors.dart';
 import '../../../utils/app_size_config.dart';
 import '../../../utils/app_style.dart';
 import '../widgets/custom_textfield.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 class LoginScreen extends StatefulWidget {
@@ -107,64 +108,64 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  // Future<void> _signInWithGoogle() async {
-  //   setState(() => _isLoading = true);
-  //
-  //   try {
-  //     if (kIsWeb) {
-  //       // ✅ Web Google Sign-In using Popup
-  //       GoogleAuthProvider authProvider = GoogleAuthProvider();
-  //
-  //       final userCredential =
-  //           await FirebaseAuth.instance.signInWithPopup(authProvider);
-  //
-  //       if (userCredential.user != null) {
-  //         Get.offAllNamed(Routes.BottomNavBar);
-  //       }
-  //     } else {
-  //       // ✅ Mobile Google Sign-In (requires google_sign_in package)
-  //       final GoogleSignIn signIn = GoogleSignIn.instance;
-  //       final GoogleSignInAccount? googleUser = await signIn.();
-  //       if (googleUser == null) {
-  //         setState(() => _isLoading = false);
-  //         return;
-  //       }
-  //
-  //       final GoogleSignInAuthentication googleAuth =
-  //           await googleUser.authentication;
-  //
-  //       final credential = GoogleAuthProvider.credential(
-  //         accessToken: googleAuth.accessToken,
-  //         idToken: googleAuth.idToken,
-  //       );
-  //
-  //       final userCredential =
-  //           await FirebaseAuth.instance.signInWithCredential(credential);
-  //
-  //       if (userCredential.user != null) {
-  //         Get.offAllNamed(Routes.BottomNavBar);
-  //       }
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     Get.snackbar(
-  //       'Google Sign-In Failed',
-  //       e.message ?? 'An error occurred',
-  //       backgroundColor: AppColors.error,
-  //       colorText: AppColors.white,
-  //     );
-  //   } catch (e) {
-  //     Get.snackbar(
-  //       'Error',
-  //       'Failed to sign in with Google',
-  //       backgroundColor: AppColors.error,
-  //       colorText: AppColors.white,
-  //     );
-  //   } finally {
-  //     if (mounted) {
-  //       setState(() => _isLoading = false);
-  //     }
-  //   }
-  // }
+  Future<void> _signInWithGoogle() async {
+    setState(() => _isLoading = true);
+
+    try {
+      if (kIsWeb) {
+        // ✅ Web Google Sign-In using Popup
+        GoogleAuthProvider authProvider = GoogleAuthProvider();
+
+        final userCredential =
+            await FirebaseAuth.instance.signInWithPopup(authProvider);
+
+        if (userCredential.user != null) {
+          Get.offAllNamed(Routes.BottomNavBar);
+        }
+      } else {
+        // ✅ Mobile Google Sign-In (requires google_sign_in package)
+        final GoogleSignIn signIn = GoogleSignIn();
+        final GoogleSignInAccount? googleUser = await signIn.signIn();
+        if (googleUser == null) {
+          setState(() => _isLoading = false);
+          return;
+        }
+
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        final userCredential =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+
+        if (userCredential.user != null) {
+          Get.offAllNamed(Routes.BottomNavBar);
+        }
+      }
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar(
+        'Google Sign-In Failed',
+        e.message ?? 'An error occurred',
+        backgroundColor: AppColors.error,
+        colorText: AppColors.white,
+      );
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed to sign in with Google',
+        backgroundColor: AppColors.error,
+        colorText: AppColors.white,
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -314,13 +315,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                     width: double.infinity,
                                     height: SizeConfig.getHeight(48),
                                     child: OutlinedButton.icon(
-                                      onPressed: () {},
-                                      // _isLoading ? null : _signInWithGoogle,
+                                      onPressed:
+                                          _isLoading ? null : _signInWithGoogle,
                                       style: OutlinedButton.styleFrom(
                                         backgroundColor: AppColors.white,
                                         side: BorderSide(
                                             color: AppColors.grey
-                                                .withOpacity(0.3)),
+                                                .withValues(alpha: 0.3)),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(8),
@@ -344,39 +345,39 @@ class _LoginScreenState extends State<LoginScreen> {
                                   SizedBox(height: SizeConfig.getHeight(12)),
 
                                   // Continue with Apple
-                                  SizedBox(
-                                    width: double.infinity,
-                                    height: SizeConfig.getHeight(48),
-                                    child: OutlinedButton.icon(
-                                      onPressed: _isLoading
-                                          ? null
-                                          : () {
-                                              // TODO: Implement Apple Sign In
-                                            },
-                                      style: OutlinedButton.styleFrom(
-                                        backgroundColor: AppColors.white,
-                                        side: BorderSide(
-                                            color: AppColors.grey
-                                                .withOpacity(0.3)),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
+                                  if (Platform.isIOS)
+                                    SizedBox(
+                                      width: double.infinity,
+                                      height: SizeConfig.getHeight(48),
+                                      child: OutlinedButton.icon(
+                                        onPressed: _isLoading
+                                            ? null
+                                            : () {
+                                              },
+                                        style: OutlinedButton.styleFrom(
+                                          backgroundColor: AppColors.white,
+                                          side: BorderSide(
+                                              color: AppColors.grey
+                                                  .withValues(alpha: 0.3)),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
                                         ),
-                                      ),
-                                      icon: Image.asset(
-                                        AppImages.appleLogo,
-                                        width: SizeConfig.getWidth(20),
-                                      ),
-                                      label: Text(
-                                        AppText.continueWithApple,
-                                        style: AppStyle.textStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: AppColors.black,
+                                        icon: Image.asset(
+                                          AppImages.appleLogo,
+                                          width: SizeConfig.getWidth(20),
+                                        ),
+                                        label: Text(
+                                          AppText.continueWithApple,
+                                          style: AppStyle.textStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: AppColors.black,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
                                 ],
                               ),
                             ),
@@ -403,7 +404,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        // TODO: Navigate to Terms of Service
                                       },
                                   ),
                                   TextSpan(
@@ -423,7 +423,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        // TODO: Navigate to Privacy Policy
                                       },
                                   ),
                                 ],

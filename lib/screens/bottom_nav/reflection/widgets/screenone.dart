@@ -21,12 +21,10 @@ class _ScreenOneState extends State<ScreenOne> {
   final List<String> _happinessScale =
       List.generate(10, (index) => '${index + 1}');
 
-  bool _isValid = false;
 
   void _handleSelection(int index) {
     setState(() {
       _selectedValue = _happinessScale[index];
-      _isValid = true;
     });
     widget.onValid(); // Notify parent to enable Continue
   }

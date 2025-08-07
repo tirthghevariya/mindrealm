@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../utils/app_assets.dart';
@@ -17,9 +16,7 @@ class Community extends StatefulWidget {
 }
 
 class _CommunityState extends State<Community> {
-  final TextEditingController _controller = TextEditingController();
-  final List<Map<String, String>> _entries = [];
-  final int _maxChars = 1000;
+
 
   @override
   Widget build(BuildContext context) {

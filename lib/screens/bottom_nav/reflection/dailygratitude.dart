@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:mindrealm/screens/bottom_nav/reflection/reflectionflowscreen.dart';
-import 'package:mindrealm/screens/bottom_nav/reflection/widgets/ScreenTwo.dart';
 import 'package:mindrealm/screens/bottom_nav/reflection/widgets/gratitude.dart';
-import 'package:mindrealm/screens/bottom_nav/reflection/widgets/screenone.dart';
-import 'package:mindrealm/screens/bottom_nav/reflection/widgets/screenthree.dart';
 import 'package:mindrealm/utils/app_size_config.dart';
 
 import '../../../utils/app_colors.dart';

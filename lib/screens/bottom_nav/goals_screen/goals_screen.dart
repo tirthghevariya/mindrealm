@@ -41,30 +41,30 @@ class _GoalsMenuScreenState extends State<GoalsMenuScreen> {
   Future<List<String?>> fetchMoodboardFirstImages() async {
     // Simulate user not uploading some images (replace with your real logic)
     return [
-      null, // no image uploaded for yourself
+      // null, // no image uploaded for yourself
       "https://yourcdn.com/user_health.jpg",
-      null,
+      // null,
       "https://yourcdn.com/user_career.jpg",
-      null,
-      null,
+      // null,
+      // null,
     ];
   }
 
   void _fetchGoalImages() async {
     List<String?> userImages = await fetchMoodboardFirstImages();
 
-    // Merge fallback and uploaded
-    List<String> finalImages = [];
-    for (int i = 0; i < _defaultImages.length; i++) {
-      finalImages.add(userImages[i] ?? _defaultImages[i]);
-    }
+    // // Merge fallback and uploaded
+    // List<String> finalImages = [];
+    // for (int i = 0; i < _defaultImages.length; i++) {
+    //   finalImages.add(userImages[i] ?? _defaultImages[i]);
+    // }
 
-    if (!mounted) return;
-    setState(() {
-      _slideshowImages = finalImages;
-    });
+    // if (!mounted) return;
+    // setState(() {
+    //   _slideshowImages = finalImages;
+    // });
 
-    _startSlideshow();
+    // _startSlideshow();
   }
 
   void _startSlideshow() {
@@ -170,12 +170,12 @@ class _GoalsMenuScreenState extends State<GoalsMenuScreen> {
                                           child: Icon(
                                             Icons.photo,
                                             size: 48,
-                                            color:
-                                                Colors.white.withOpacity(0.5),
+                                            color: Colors.white
+                                                .withValues(alpha: 0.5),
                                           ),
                                         ),
                                   Container(
-                                    color: Colors.black.withOpacity(0.4),
+                                    color: Colors.black.withValues(alpha: 0.4),
                                   ),
                                   Align(
                                     alignment: Alignment.bottomLeft,
@@ -245,11 +245,12 @@ class _GoalsMenuScreenState extends State<GoalsMenuScreen> {
                                   width: SizeConfig.getWidth(157),
                                   height: SizeConfig.getHeight(105),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.6),
+                                    color: Colors.white.withValues(alpha: 0.6),
                                     borderRadius: BorderRadius.circular(16),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
+                                        color:
+                                            Colors.black.withValues(alpha: 0.2),
                                         blurRadius: 8,
                                         offset: const Offset(0, 4),
                                       ),

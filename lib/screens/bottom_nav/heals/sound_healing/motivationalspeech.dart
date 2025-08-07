@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mindrealm/screens/bottom_nav/heals/sound_healing/widgets/audiowave.dart';
-import 'package:mindrealm/utils/app_assets.dart';
 import 'package:mindrealm/utils/app_style.dart';
 
 import '../../../../utils/app_colors.dart';
@@ -59,10 +56,11 @@ class _MotivationalSpeechState extends State<MotivationalSpeech> {
                       SizedBox(
                         height: SizeConfig.getHeight(108),
                       ),
-                      Container(height: 200, child: AudioPlayerWaveUI()),
+                      SizedBox(height: 200, child: AudioPlayerWaveUI()),
                       SizedBox(
                         height: SizeConfig.getHeight(60),
                       ),
+                      // ignore: sized_box_for_whitespace
                       Container(
                         width: SizeConfig.getHeight(280),
                         child: Text(

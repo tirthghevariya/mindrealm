@@ -89,11 +89,11 @@ Widget affirmationBodyData() {
                   SizedBox(
                     height: SizeConfig.getHeight(108),
                   ),
-                  Container(height: 200, child: AudioPlayerWaveUI()),
+                  SizedBox(height: 200, child: AudioPlayerWaveUI()),
                   SizedBox(
                     height: SizeConfig.getHeight(60),
                   ),
-                  Container(
+                  SizedBox(
                     width: SizeConfig.getHeight(280),
                     child: Text(
                       AppText.rewiringYourThoughtWithAffirmation,

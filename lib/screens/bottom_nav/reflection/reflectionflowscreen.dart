@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:mindrealm/screens/bottom_nav/reflection/dailygratitude.dart';
-import 'package:mindrealm/screens/bottom_nav/reflection/widgets/ScreenTwo.dart';
 import 'package:mindrealm/screens/bottom_nav/reflection/widgets/screenone.dart';
-import 'package:mindrealm/screens/bottom_nav/reflection/widgets/screenthree.dart';
 import 'package:mindrealm/utils/app_size_config.dart';
 
 import '../../../utils/app_colors.dart';
@@ -75,7 +72,7 @@ class _ReflectionFlowScreenState extends State<ReflectionFlowScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: _isValid
                           ? AppColors.brown
-                          : AppColors.brown.withOpacity(0.4),
+                          : AppColors.brown.withValues(alpha: 0.4),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:mindrealm/screens/bottom_nav/reflection/reflection.dart';
 import 'package:mindrealm/screens/bottom_nav/reflection/widgets/ScreenTwo.dart';
 import 'package:mindrealm/screens/bottom_nav/reflection/widgets/screenFive.dart';
 import 'package:mindrealm/screens/bottom_nav/reflection/widgets/screenFour.dart';
 import 'package:mindrealm/screens/bottom_nav/reflection/widgets/screenSeven.dart';
 import 'package:mindrealm/screens/bottom_nav/reflection/widgets/screenSix.dart';
-import 'package:mindrealm/screens/bottom_nav/reflection/widgets/screenone.dart';
 import 'package:mindrealm/screens/bottom_nav/reflection/widgets/screenthree.dart';
 
 import 'package:mindrealm/utils/app_size_config.dart';
@@ -15,7 +12,6 @@ import 'package:mindrealm/utils/app_size_config.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_text.dart';
 import '../bottom_nav.dart';
-import 'dailygratitude.dart';
 
 class WeeklyReflection extends StatefulWidget {
   const WeeklyReflection({super.key});
@@ -92,7 +88,7 @@ class _WeeklyReflectionState extends State<WeeklyReflection> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isCurrentStepValid
                           ? AppColors.brown
-                          : AppColors.brown.withOpacity(0.3),
+                          : AppColors.brown.withValues(alpha: 0.3),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class SizeConfig {
   static MediaQueryData get _mediaQuery => MediaQuery.of(Get.context!);

@@ -87,7 +87,7 @@ class HomeScreen extends StatelessWidget {
                         height: SizeConfig.getHeight(286),
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
+                            color: Colors.white.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(20),
                             image: DecorationImage(
                                 image: AssetImage(
@@ -209,7 +209,7 @@ class HomeScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.95),
+                      color: Colors.white.withValues(alpha: 0.95),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Column(
@@ -287,7 +287,8 @@ class HomeScreen extends StatelessWidget {
                                   color: AppColors.primary,
                                   belowBarData: BarAreaData(
                                     show: true,
-                                    color: AppColors.primary.withOpacity(0.3),
+                                    color: AppColors.primary
+                                        .withValues(alpha: 0.3),
                                   ),
                                   dotData: FlDotData(
                                     show: true,

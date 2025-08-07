@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:mindrealm/screens/auth/page/login_screen.dart';
 import 'package:mindrealm/screens/splash/splashscreen.dart';
 
@@ -29,105 +27,86 @@ class AppPages {
         GetPage(
           name: Routes.SPLASH,
           page: () => Splashscreen(),
-          preventDuplicates: true,
         ),
         GetPage(
-            name: Routes.LOGIN,
-            page: () => LoginScreen(),
-            preventDuplicates: true,
-            transition: Transition.rightToLeftWithFade,
-            transitionDuration: Duration(milliseconds: 1800)),
+          name: Routes.login,
+          page: () => LoginScreen(),
+          /*   transition: Transition.circularReveal,
+            transitionDuration: Duration(milliseconds: 1800) */
+        ),
         GetPage(
           name: Routes.signUpScreen,
           page: () => SignupScreen(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.SignupScreenDup,
           page: () => SignupScreenDup(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.AlternativeSignupScreen,
           page: () => AlternativeSignupScreen(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.QuoteScreen,
           page: () => QuoteScreen(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.BottomNavBar,
           page: () => BottomNavBar(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.GoalsOverviewScreen,
           page: () => GoalsOverviewScreen(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.GoalDetailScreen,
           page: () => GoalDetailScreen(
             tabIndex: 0,
           ),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.ProfileNotificationsScreen,
           page: () => ProfileNotificationsScreen(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.ReflectionFlowScreen,
           page: () => ReflectionFlowScreen(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.WeeklyReflection,
           page: () => WeeklyReflection(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.DailyGratitude,
           page: () => DailyGratitude(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.AboutMindRealmScreen,
           page: () => AboutMindRealmScreen(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.WellBeingOverview,
           page: () => WellBeingOverview(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.SoundHealing,
           page: () => SoundHealing(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.GuidedMeditation,
           page: () => GuidedMeditation(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.MotivationalSpeech,
           page: () => MotivationalSpeech(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.Affirmations,
           page: () => Affirmations(),
-          preventDuplicates: true,
         ),
         GetPage(
           name: Routes.Journal,
           page: () => Journal(),
-          preventDuplicates: true,
         ),
       ];
 }

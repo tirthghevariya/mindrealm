@@ -8,122 +8,6 @@ import '../../../utils/app_colors.dart';
 import '../../../utils/app_size_config.dart';
 import '../../../utils/app_text.dart';
 
-// class GoalsOverviewScreen extends StatelessWidget {
-//   const GoalsOverviewScreen({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Stack(
-//         children: [
-//           // Background image
-//           Positioned.fill(
-//             child: Image.asset(
-//               AppImages.goalsOverviewBg,
-//               fit: BoxFit.cover,
-//             ),
-//           ),
-//
-//           // Page content
-//           Positioned.fill(
-//             child: SingleChildScrollView(
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   // Back button
-//                   SizedBox(height: SizeConfig.getHeight(24)),
-//
-//                   Padding(
-//                     padding: const EdgeInsets.symmetric(horizontal: 14),
-//                     child: IconButton(
-//                       icon: Icon(
-//                         Icons.arrow_back,
-//                         color: AppColors.brown,
-//                         size: 32,
-//                       ),
-//                       onPressed: () {
-//                         Navigator.pop(context);
-//                       },
-//                     ),
-//                   ),
-//
-//                   SizedBox(height: SizeConfig.getHeight(12)),
-//
-//                   Padding(
-//                     padding: EdgeInsets.symmetric(
-//                         horizontal: SizeConfig.getWidth(16)),
-//                     child: Column(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         // Title
-//                         Text(
-//                           AppText.goalOverview,
-//                           style: GoogleFonts.dmSerifDisplay(
-//                             fontSize: 36,
-//                             fontStyle: FontStyle.italic,
-//                             color: AppColors.brown,
-//                           ),
-//                         ),
-//
-//                         SizedBox(height: SizeConfig.getHeight(24)),
-//
-//                         // Goal buttons
-//                         for (var title in [
-//                           AppText.goalForYourself,
-//                           AppText.goalForHealth,
-//                           AppText.goalForLove,
-//                           AppText.goalForCareer,
-//                           AppText.goalForFamily,
-//                           AppText.goalForFriendships,
-//                         ])
-//                           Padding(
-//                             padding: const EdgeInsets.only(bottom: 16),
-//                             child: InkWell(
-//                               onTap: () {
-//                                 Get.toNamed(Routes.GoalDetailScreen);
-//                               },
-//                               child: Container(
-//                                 width: double.infinity,
-//                                 height: SizeConfig.getHeight(105),
-//                                 decoration: BoxDecoration(
-//                                   color: Colors.white.withOpacity(0.9),
-//                                   borderRadius: BorderRadius.circular(16),
-//                                   boxShadow: [
-//                                     BoxShadow(
-//                                       color: Colors.black.withOpacity(0.25),
-//                                       blurRadius: 2.4,
-//                                       offset: const Offset(0, 4),
-//                                     ),
-//                                   ],
-//                                 ),
-//                                 alignment: Alignment.topLeft,
-//                                 child: Padding(
-//                                   padding: const EdgeInsets.symmetric(
-//                                       horizontal: 10, vertical: 10),
-//                                   child: Text(
-//                                     title,
-//                                     style: GoogleFonts.openSans(
-//                                       fontSize: 26,
-//                                       fontWeight: FontWeight.w700,
-//                                       color: AppColors.brown,
-//                                     ),
-//                                   ),
-//                                 ),
-//                               ),
-//                             ),
-//                           ),
-//                       ],
-//                     ),
-//                   )
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
 class GoalsOverviewScreen extends StatefulWidget {
   const GoalsOverviewScreen({super.key});
 
@@ -157,7 +41,7 @@ class _GoalsOverviewScreenState extends State<GoalsOverviewScreen> {
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
         elevation: 10,
-        color: AppColors.white.withOpacity(0.8),
+        color: AppColors.white.withValues(alpha: 0.8),
         height: SizeConfig.getHeight(70),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -226,11 +110,12 @@ class _GoalsOverviewScreenState extends State<GoalsOverviewScreen> {
                                 padding: const EdgeInsets.all(12),
                                 // height: SizeConfig.getHeight(110),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.9),
+                                  color: Colors.white.withValues(alpha: 0.9),
                                   borderRadius: BorderRadius.circular(16),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.25),
+                                      color:
+                                          Colors.black.withValues(alpha: 0.25),
                                       blurRadius: 2.4,
                                       offset: const Offset(0, 4),
                                     ),

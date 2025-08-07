@@ -1,6 +1,6 @@
 abstract class Routes {
   static const SPLASH = "/";
-  static const LOGIN = "/login";
+  static const login = "/login";
   static const signUpScreen = "/signupscreen";
   static const AlternativeSignupScreen = "/AlternativeSignupScreen";
   static const QuoteScreen = "/QuoteScreen";

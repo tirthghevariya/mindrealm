@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mindrealm/routers/app_routes.dart';
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_size_config.dart';
@@ -301,7 +304,11 @@ class _ProfileNotificationsScreenState
                                           SizeConfig.getWidth(8)),
                                     ),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    await FirebaseAuth.instance.signOut();
+                                    await GoogleSignIn().signOut();
+                                    Get.offAllNamed(Routes.login);
+                                  },
                                   child: Text(
                                     AppText.logout,
                                     style: GoogleFonts.openSans(
@@ -387,7 +394,7 @@ class _ProfileNotificationsScreenState
           Switch(
             value: toggles[title] ?? false,
             activeColor: AppColors.brown,
-            inactiveThumbColor: AppColors.brown.withOpacity(0.5),
+            inactiveThumbColor: AppColors.brown.withValues(alpha: 0.5),
             onChanged: (value) {
               setState(() {
                 toggles[title] = value;

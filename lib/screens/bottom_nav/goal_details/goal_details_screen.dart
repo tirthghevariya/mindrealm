@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mindrealm/models/gole_model.dart';
 import 'package:mindrealm/utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_size_config.dart';
@@ -49,11 +50,25 @@ class _GoalDetailScreenState extends State<GoalDetailScreen>
     super.initState();
     _tabController = TabController(
         length: 6, vsync: this, initialIndex: widget.tabIndex ?? 0);
+    _tabController.addListener(_onTabChanged);
     _loadGoalData();
+  }
+
+  void _onTabChanged() {
+    if (_tabController.indexIsChanging) {
+      // Reset editing states when tab changes
+      setState(() {
+        for (int i = 0; i < _isEditing.length; i++) {
+          _isEditing[i] = false;
+        }
+      });
+      _loadGoalData();
+    }
   }
 
   @override
   void dispose() {
+    _tabController.removeListener(_onTabChanged);
     _tabController.dispose();
     for (var controller in _controllers) {
       controller.dispose();
@@ -62,32 +77,38 @@ class _GoalDetailScreenState extends State<GoalDetailScreen>
   }
 
   Future<void> _loadGoalData() async {
-    log("======>$_user");
     if (_user == null) return;
-
     setState(() => _isLoading = true);
 
     try {
-      final doc = await _firestore
-          .collection('users')
-          .doc(_user.uid)
-          .collection('goals')
-          .doc(_getCategoryName())
-          .get();
+      final doc = await _firestore.collection('goals').doc(_user.uid).get();
+      final data = doc.data();
+      if (data != null) {
+        final categoryName = _getCategoryName();
+        final categoryData = data[categoryName];
+        if (categoryData != null) {
+          final goal =
+              GoalCategory.fromMap(Map<String, dynamic>.from(categoryData));
 
-      // Only update controllers if document exists
-      if (doc.exists) {
-        for (int i = 0; i < _fieldKeys.length; i++) {
-          final value = doc.data()?[_fieldKeys[i]] ?? '';
-          _controllers[i].text = value;
+          // Set each field individually with proper null/empecks
+          _controllers[0].text = goal.goal ;
+          _controllers[1].text = goal.affirmation ;
+          _controllers[2].text = goal.continueDoing ;
+          _controllers[3].text = goal.improveOn ;
+        } else {
+          // Clear all controllers if no data exists for this category
+          for (var controller in _controllers) {
+            controller.clear();
+          }
+        }
+      } else {
+        // Clear all controllers if no document exists
+        for (var controller in _controllers) {
+          controller.clear();
         }
       }
-      // No error shown if document doesn't exist (normal first-time use case)
     } catch (e) {
-      // Only show error if there was an actual error (not just missing doc)
-      log("message$e");
-      if (!mounted) return;
-
+      log("Error loading goal data: $e");
       Get.snackbar(
         'Error',
         'Failed to load goal data',
@@ -101,45 +122,36 @@ class _GoalDetailScreenState extends State<GoalDetailScreen>
     }
   }
 
-  Future<void> _saveGoalData() async {
+  // Add method to save individual field
+  Future<void> _saveIndividualField(int fieldIndex) async {
     if (_user == null) return;
 
-    setState(() => _isLoading = true);
-
     try {
-      final data = {
-        'category': _getCategoryName(),
+      final categoryName = _getCategoryName();
+      final fieldKey = _fieldKeys[fieldIndex];
+      final fieldValue = _controllers[fieldIndex].text.trim();
+
+      await _firestore.collection('goals').doc(_user.uid).set({
+        categoryName: {
+          fieldKey: fieldValue,
+        },
         'last_updated': FieldValue.serverTimestamp(),
-      };
-
-      for (int i = 0; i < _fieldKeys.length; i++) {
-        data[_fieldKeys[i]] = _controllers[i].text;
-      }
-
-      await _firestore
-          .collection('users')
-          .doc(_user!.uid)
-          .collection('goals')
-          .doc(_getCategoryName())
-          .set(data, SetOptions(merge: true));
+      }, SetOptions(merge: true));
 
       Get.snackbar(
         'Success',
-        'Goal data saved',
+        'Field updated successfully',
         backgroundColor: Colors.green,
         colorText: Colors.white,
       );
     } catch (e) {
+      log("Error saving field data: $e");
       Get.snackbar(
         'Error',
-        'Failed to save goal data',
+        'Failed to save field data',
         backgroundColor: AppColors.error,
         colorText: Colors.white,
       );
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
     }
   }
 
@@ -218,13 +230,15 @@ class _GoalDetailScreenState extends State<GoalDetailScreen>
                 ),
               ),
         InkWell(
-          onTap: () {
+          onTap: () async {
             setState(() {
               _isEditing[index] = !_isEditing[index];
-              if (!_isEditing[index]) {
-                _saveGoalData(); // Save when done editing
-              }
             });
+
+            if (!_isEditing[index]) {
+              // Save individual field when done editing
+              await _saveIndividualField(index);
+            }
           },
           child: Stack(
             alignment: Alignment.bottomLeft,
@@ -320,8 +334,8 @@ class _GoalDetailScreenState extends State<GoalDetailScreen>
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
                                   color: isSelected
-                                      ? AppColors.primary.withOpacity(0.8)
-                                      : AppColors.white.withOpacity(0.6),
+                                      ? AppColors.primary.withValues(alpha: 0.8)
+                                      : AppColors.white.withValues(alpha: 0.6),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Image.asset(
@@ -406,7 +420,8 @@ class _GoalDetailScreenState extends State<GoalDetailScreen>
                                     return Container(
                                       height: SizeConfig.getHeight(160),
                                       decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.4),
+                                        color:
+                                            Colors.white.withValues(alpha: 0.4),
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                       child: Stack(

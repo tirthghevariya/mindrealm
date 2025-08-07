@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../routers/app_routes.dart';
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_size_config.dart';
@@ -53,7 +51,7 @@ class WellBeingOverview extends StatelessWidget {
                         // App Logo & Title
                         Stack(
                           children: [
-                            Container(
+                            SizedBox(
                               width: SizeConfig.getWidth(247),
                               child: Text(
                                 AppText.generalOverviewTitle,
@@ -74,7 +72,7 @@ class WellBeingOverview extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.95),
+                            color: Colors.white.withValues(alpha: 0.95),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Column(
@@ -157,7 +155,7 @@ class WellBeingOverview extends StatelessWidget {
                                         belowBarData: BarAreaData(
                                           show: true,
                                           color: AppColors.primary
-                                              .withOpacity(0.3),
+                                              .withValues(alpha: 0.3),
                                         ),
                                         dotData: FlDotData(
                                           show: true,
@@ -193,7 +191,7 @@ class WellBeingOverview extends StatelessWidget {
                         ),
                         SizedBox(height: SizeConfig.getHeight(60)),
 
-                        Container(
+                        SizedBox(
                           width: SizeConfig.getWidth(247),
                           child: Text(
                             AppText.monthlyCategoryOverview,
@@ -210,7 +208,7 @@ class WellBeingOverview extends StatelessWidget {
                         LifeScoreBarChart(),
 
                         SizedBox(height: SizeConfig.getHeight(60)),
-                        Container(
+                        SizedBox(
                           width: SizeConfig.getWidth(247),
                           child: Text(
                             AppText.categoryProgress,
@@ -268,7 +266,7 @@ class WellBeingOverview extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         width: SizeConfig.screenWidth * .6,
                                         height: SizeConfig.screenHeight * .65,
                                         child: Padding(
@@ -374,7 +372,7 @@ class CategoryLineChart extends StatelessWidget {
       height: SizeConfig.getWidth(360),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.95),
+        color: Colors.white.withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -392,7 +390,7 @@ class CategoryLineChart extends StatelessWidget {
                   drawVerticalLine: false,
                   horizontalInterval: 1,
                   getDrawingHorizontalLine: (value) => FlLine(
-                    color: Colors.grey.withOpacity(0.2),
+                    color: Colors.grey.withValues(alpha: 0.2),
                     strokeWidth: 1,
                   ),
                 ),
@@ -539,7 +537,7 @@ class LifeScoreBarChart extends StatelessWidget {
       height: 356,
       padding: const EdgeInsets.only(left: 16, right: 16, top: 24, bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.95),
+        color: Colors.white.withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(20),
       ),
       child: BarChart(
