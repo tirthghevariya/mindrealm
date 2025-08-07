@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "149855374469",
+    "project_id": "mind-realm-app",
+    "storage_bucket": "mind-realm-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149855374469:android:c3f16d5e2cde5e7529edec",
+        "android_client_info": {
+          "package_name": "com.example.mindrealm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "149855374469-gv034hbqgc1t63hnpng6n6l9rm6dn8fc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mindrealm",
+            "certificate_hash": "d9a46c6d3e1d1785c1b4d3c255e20d06f7cdc9de"
+          }
+        },
+        {
+          "client_id": "149855374469-pp1o17rkpj8aiipb0tbudkt2rdr2p32h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUYBuigV-ISiVX5vs-SoMRHs0M7P3Z_YU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "149855374469-pp1o17rkpj8aiipb0tbudkt2rdr2p32h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
