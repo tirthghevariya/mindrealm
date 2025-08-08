@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mindrealm/screens/auth/page/login_screen.dart';
 import 'package:mindrealm/utils/app_text.dart';
+
 import '../../routers/app_routes.dart';
 import '../../utils/app_assets.dart';
 import '../../utils/app_colors.dart';
@@ -35,14 +35,9 @@ class _SplashscreenState extends State<Splashscreen> {
     Future.delayed(const Duration(seconds: 2), () {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
-        // Navigate to home if logged in
         Get.offAllNamed(Routes.BottomNavBar);
       } else {
-        Get.offAllNamed(Routes.login);
-        // Else show login
-        // setState(() {
-        //   _hideSplash = true;
-        // });
+        Get.offAllNamed(Routes.loginScreen);
       }
     });
   }

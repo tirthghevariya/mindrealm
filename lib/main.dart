@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -10,11 +9,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // Enable offline persistence (new syntax)
-  FirebaseFirestore.instance.settings = const Settings(
-    persistenceEnabled: true,
-    cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
-  );
   runApp(const MyApp());
 }
 
@@ -27,7 +21,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Mind Realm',
       getPages: AppPages.listRoutes,
-      initialRoute: Routes.SPLASH,
+      initialRoute: Routes.splashScreen,
+      debugShowCheckedModeBanner: false,
       unknownRoute: GetPage(
         name: '/notFound',
         page: () => const Scaffold(

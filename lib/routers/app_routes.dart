@@ -1,8 +1,8 @@
 abstract class Routes {
-  static const SPLASH = "/";
-  static const login = "/login";
-  static const signUpScreen = "/signupscreen";
-  static const AlternativeSignupScreen = "/AlternativeSignupScreen";
+  static const splashScreen = "/";
+  static const loginScreen = "/loginScreen";
+  static const signUpScreen = "/signUpScreen";
+
   static const QuoteScreen = "/QuoteScreen";
   static const BottomNavBar = "/BottomNavBar";
   static const GoalsOverviewScreen = "/GoalsOverviewScreen";
@@ -10,7 +10,6 @@ abstract class Routes {
   static const ProfileNotificationsScreen = "/ProfileNotificationsScreen";
   static const ReflectionFlowScreen = "/ReflectionFlowScreen";
   static const AboutMindRealmScreen = "/AboutMindRealmScreen";
-  static const SignupScreenDup = "/SignupScreenDup";
   static const WellBeingOverview = "/WellBeingOverview";
   static const SoundHealing = "/SoundHealing";
   static const GuidedMeditation = "/GuidedMeditation";

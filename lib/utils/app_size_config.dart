@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
-
 class SizeConfig {
-  static MediaQueryData get _mediaQuery => MediaQuery.of(Get.context!);
+  // static MediaQueryData get _mediaQuery => MediaQuery.of(Get.context!);
 
-  static double get screenWidth => _mediaQuery.size.width;
-  static double get screenHeight => _mediaQuery.size.height;
+  static double screenWidth = Get.width;
+  static double screenHeight = Get.height;
 
   /// Returns scaled width based on 375 base width
-  static double getWidth(double value) => (screenWidth / 375.0) *value;
+  static double getWidth(double value) => (Get.width / 375.0) * value;
 
   /// Returns scaled height based on 812 base height
-  static double getHeight(double value) => (screenHeight / 812.0) * value;
+  static double getHeight(double value) => (Get.height / 812.0) * value;
 
   /// Automatically returns scaled Size based on optional width & height
   static Size getSize({double? width, double? height}) {
@@ -34,4 +32,3 @@ class SizeConfig {
     };
   }
 }
-

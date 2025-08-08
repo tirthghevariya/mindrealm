@@ -1,10 +1,9 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:mindrealm/routers/app_bindings.dart';
 import 'package:mindrealm/screens/auth/page/login_screen.dart';
 import 'package:mindrealm/screens/splash/splashscreen.dart';
 
-import '../screens/auth/page/alternative_signup_screen.dart';
 import '../screens/auth/page/signup_screen.dart';
-import '../screens/auth/page/signup_screen_dup.dart';
 import '../screens/bottom_nav/bottom_nav.dart';
 import '../screens/bottom_nav/goal_details/goal_details_screen.dart';
 import '../screens/bottom_nav/goals_overview/goals_overview.dart';
@@ -25,27 +24,17 @@ import 'app_routes.dart';
 class AppPages {
   static List<GetPage> get listRoutes => [
         GetPage(
-          name: Routes.SPLASH,
+          name: Routes.splashScreen,
           page: () => Splashscreen(),
         ),
         GetPage(
-          name: Routes.login,
-          page: () => LoginScreen(),
-          /*   transition: Transition.circularReveal,
-            transitionDuration: Duration(milliseconds: 1800) */
-        ),
+            name: Routes.loginScreen,
+            page: () => LoginScreen(),
+            binding: AuthBinding()),
         GetPage(
-          name: Routes.signUpScreen,
-          page: () => SignupScreen(),
-        ),
-        GetPage(
-          name: Routes.SignupScreenDup,
-          page: () => SignupScreenDup(),
-        ),
-        GetPage(
-          name: Routes.AlternativeSignupScreen,
-          page: () => AlternativeSignupScreen(),
-        ),
+            name: Routes.signUpScreen,
+            page: () => SignUpScreen(),
+            binding: AuthBinding()),
         GetPage(
           name: Routes.QuoteScreen,
           page: () => QuoteScreen(),

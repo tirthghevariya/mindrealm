@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_size_config.dart';
-import '../../../utils/app_style.dart';
 import '../../../utils/app_text.dart';
 
 class QuoteScreen extends StatefulWidget {
