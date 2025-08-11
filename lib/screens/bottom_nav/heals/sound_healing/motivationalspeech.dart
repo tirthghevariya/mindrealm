@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mindrealm/screens/bottom_nav/heals/sound_healing/widgets/audiowave.dart';
+import 'package:mindrealm/utils/app_sounds.dart';
 import 'package:mindrealm/utils/app_style.dart';
 
 import '../../../../utils/app_colors.dart';
@@ -56,7 +57,7 @@ class _MotivationalSpeechState extends State<MotivationalSpeech> {
                       SizedBox(
                         height: SizeConfig.getHeight(108),
                       ),
-                      SizedBox(height: 200, child: AudioPlayerWaveUI()),
+                      SizedBox(height: 200, child: AudioPlayerWaveUI(assetSong: AppSounds.motivationalSpeechSound,)),
                       SizedBox(
                         height: SizeConfig.getHeight(60),
                       ),
