@@ -102,7 +102,7 @@ class _GoalsOverviewScreenState extends State<GoalsOverviewScreen> {
                             padding: const EdgeInsets.only(bottom: 16),
                             child: InkWell(
                               onTap: () {
-                                Get.toNamed(Routes.GoalDetailScreen,
+                                Get.toNamed(Routes.goalDetailScreen,
                                     arguments: {'tabIndex': i});
                               },
                               child: Container(

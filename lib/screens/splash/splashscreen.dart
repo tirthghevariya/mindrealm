@@ -35,7 +35,7 @@ class _SplashscreenState extends State<Splashscreen> {
     Future.delayed(const Duration(seconds: 2), () {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
-        Get.offAllNamed(Routes.BottomNavBar);
+        Get.offAllNamed(Routes.bottomNavBar);
       } else {
         Get.offAllNamed(Routes.loginScreen);
       }

@@ -183,6 +183,13 @@ xx@xxxx.com
 ''';
   static const String journalDescription =
       'Journaling clears mental clutter, strengthens self-awareness, and brings clarity to your emotions and goals.';
+  static const String addPosts = "Add Post";
+  static const String post = "Post";
+  static const String chooseImage = "Choose Image";
+  static const String openCamera = "Open Camera";
+  static const String selectFromGallery = "Select from Gallery";
+  static const String viewImage = "View Image";
+  static const String noImageFound = "No Image Found";
 
 // static const wellbeingOverview = 'Wellbeing Overview';
 // Add more text constants as needed

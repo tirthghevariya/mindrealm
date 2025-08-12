@@ -10,6 +10,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mindrealm/models/user_model.dart';
 import 'package:mindrealm/routers/app_routes.dart';
 import 'package:mindrealm/utils/app_colors.dart';
+import 'package:mindrealm/utils/collection.dart';
 
 class AuthController extends GetxController {
   // Firebase instances
@@ -64,8 +65,7 @@ class AuthController extends GetxController {
   // Fetch user profile from Firestore
   Future<void> fetchUserProfile(String uid) async {
     try {
-      DocumentSnapshot doc =
-          await _firestore.collection('users').doc(uid).get();
+      DocumentSnapshot doc = await usersCollection.doc(uid).get();
       if (doc.exists) {
         userProfile.value = UserProfileModel.fromFirestore(doc);
       }
@@ -134,8 +134,7 @@ class AuthController extends GetxController {
         // Update FCM token
         String? fcmToken = await getFCMToken();
         if (fcmToken != null) {
-          await _firestore
-              .collection('users')
+          await usersCollection
               .doc(userCredential.user!.uid)
               .update({'fcmToken': fcmToken});
         }
@@ -143,7 +142,7 @@ class AuthController extends GetxController {
         // Fetch user profile
         await fetchUserProfile(userCredential.user!.uid);
 
-        Get.offAllNamed(Routes.BottomNavBar);
+        Get.offAllNamed(Routes.bottomNavBar);
       }
     } on FirebaseAuthException catch (e) {
       String message;
@@ -235,15 +234,14 @@ class AuthController extends GetxController {
         );
 
         // Save to Firestore
-        await _firestore
-            .collection('users')
+        await usersCollection
             .doc(userCredential.user!.uid)
             .set(newUser.toMap());
 
         userProfile.value = newUser;
 
         // Navigate directly to home screen (no email verification required)
-        Get.offAllNamed(Routes.BottomNavBar);
+        Get.offAllNamed(Routes.bottomNavBar);
       }
     } on FirebaseAuthException catch (e) {
       String message;
@@ -311,8 +309,7 @@ class AuthController extends GetxController {
 
       if (user != null) {
         // Check if user already exists in Firestore
-        DocumentSnapshot userDoc =
-            await _firestore.collection('users').doc(user.uid).get();
+        DocumentSnapshot userDoc = await usersCollection.doc(user.uid).get();
 
         if (!userDoc.exists) {
           // Create new user profile
@@ -328,10 +325,7 @@ class AuthController extends GetxController {
             fcmToken: fcmToken,
           );
 
-          await _firestore
-              .collection('users')
-              .doc(user.uid)
-              .set(newUser.toMap());
+          await usersCollection.doc(user.uid).set(newUser.toMap());
           userProfile.value = newUser;
         } else {
           userProfile.value = UserProfileModel.fromFirestore(userDoc);
@@ -339,14 +333,11 @@ class AuthController extends GetxController {
           // Update FCM token for existing user
           String? fcmToken = await getFCMToken();
           if (fcmToken != null) {
-            await _firestore
-                .collection('users')
-                .doc(user.uid)
-                .update({'fcmToken': fcmToken});
+            await usersCollection.doc(user.uid).update({'fcmToken': fcmToken});
           }
         }
 
-        Get.offAllNamed(Routes.BottomNavBar);
+        Get.offAllNamed(Routes.bottomNavBar);
       }
     } on FirebaseAuthException catch (e) {
       Get.snackbar(

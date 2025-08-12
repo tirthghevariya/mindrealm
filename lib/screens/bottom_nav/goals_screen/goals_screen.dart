@@ -67,19 +67,6 @@ class _GoalsMenuScreenState extends State<GoalsMenuScreen> {
     // _startSlideshow();
   }
 
-  void _startSlideshow() {
-    if (_slideshowImages.isEmpty) return;
-
-    Future.doWhile(() async {
-      await Future.delayed(const Duration(seconds: 2)); // 🔁 Faster switch
-      if (!mounted || _slideshowImages.isEmpty) return false;
-      setState(() {
-        _currentImageIndex = (_currentImageIndex + 1) % _slideshowImages.length;
-      });
-      return true;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -238,8 +225,8 @@ class _GoalsMenuScreenState extends State<GoalsMenuScreen> {
                                     AppText.friendships,
                                   ].indexOf(label);
 
-                                  Get.to(() =>
-                                      GoalDetailScreen(tabIndex: tabIndex));
+                                  Get.toNamed(Routes.goalDetailScreen,
+                                      arguments: {"tabIndex": tabIndex});
                                 },
                                 child: Container(
                                   width: SizeConfig.getWidth(157),
