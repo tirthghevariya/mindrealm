@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mindrealm/screens/bottom_nav/heals/sound_healing/widgets/audiowave.dart';
+import 'package:mindrealm/utils/app_sounds.dart';
 import 'package:mindrealm/utils/app_style.dart';
 
 import '../../../../utils/app_colors.dart';
@@ -59,7 +60,7 @@ class _SoundHealingState extends State<SoundHealing> {
                       SizedBox(
                         height: SizeConfig.getHeight(108),
                       ),
-                      Container(height: 200, child: AudioPlayerWaveUI()),
+                      Container(height: 200, child: AudioPlayerWaveUI(assetSong:AppSounds.soundHealing ,)),
                       SizedBox(
                         height: SizeConfig.getHeight(60),
                       ),

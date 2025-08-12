@@ -30,6 +30,14 @@
           }
         },
         {
+          "client_id": "149855374469-sglisfsj8mecr3851mi1es9vbe5idb56.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mindrealm",
+            "certificate_hash": "6b9db390889f22f3fc269497b0175b37723377df"
+          }
+        },
+        {
           "client_id": "149855374469-pp1o17rkpj8aiipb0tbudkt2rdr2p32h.apps.googleusercontent.com",
           "client_type": 3
         }

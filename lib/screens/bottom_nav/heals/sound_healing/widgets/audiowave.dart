@@ -127,7 +127,8 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 class AudioPlayerWaveUI extends StatefulWidget {
-  const AudioPlayerWaveUI({super.key});
+    final String? assetSong;
+  const AudioPlayerWaveUI({super.key, this.assetSong});
 
   @override
   State<AudioPlayerWaveUI> createState() => _AudioPlayerWaveUIState();
@@ -145,9 +146,16 @@ class _AudioPlayerWaveUIState extends State<AudioPlayerWaveUI> {
   }
 
   Future<void> _loadAudio() async {
-    await _player.setUrl(
+    if(  widget.assetSong!=null){
+      await _player.setAsset(
+      widget.assetSong!,
+    );
+    }else{
+       await _player.setUrl(
       'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
     );
+    }
+    
   }
 
   void _togglePlayPause() {
