@@ -190,6 +190,7 @@ xx@xxxx.com
   static const String selectFromGallery = "Select from Gallery";
   static const String viewImage = "View Image";
   static const String noImageFound = "No Image Found";
+  static const String cancel = "Cancel";
 
 // static const wellbeingOverview = 'Wellbeing Overview';
 // Add more text constants as needed

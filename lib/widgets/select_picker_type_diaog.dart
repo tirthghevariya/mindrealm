@@ -1,94 +1,3 @@
-// import 'package:challenging/Constants/common_colors.dart';
-// import 'package:challenging/Constants/common_image_path.dart';
-// import 'package:challenging/Constants/common_string.dart';
-// import 'package:challenging/Constants/text_style.dart';
-// import 'package:challenging/Controllers/profile_controller.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_svg/svg.dart';
-// import 'package:get/get.dart';
-
-// class SelectPickerTypeDiaog extends GetView<ProfileController> {
-//   const SelectPickerTypeDiaog({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Dialog(
-//         shape: RoundedRectangleBorder(
-//           borderRadius: BorderRadius.circular(8),
-//         ),
-//         backgroundColor: CommonColors.cardColor,
-//         elevation: 0,
-//         child: Container(
-//           padding: const EdgeInsets.all(16),
-//           decoration: BoxDecoration(
-//             color: CommonColors.cardColor,
-//             shape: BoxShape.rectangle,
-//             borderRadius: BorderRadius.circular(8),
-//           ),
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             spacing: 8,
-//             children: [
-//               Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   boldText(CommonString.addPosts, fontsize: 16),
-//                   InkWell(
-//                     onTap: () {
-//                       Get.back();
-//                     },
-//                     child: Icon(
-//                       Icons.close,
-//                       color: CommonColors.primaryColor,
-//                     ),
-//                   )
-//                 ],
-//               ),
-//               Container(
-//                 width: double.infinity,
-//                 color: CommonColors.cardBackgroundColor,
-//                 padding: EdgeInsets.all(12),
-//                 child: Column(
-//                   spacing: 8,
-//                   children: [
-//                     Container(
-//                       padding:
-//                           EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//                       decoration: BoxDecoration(
-//                           color: CommonColors.cardColor,
-//                           borderRadius: BorderRadius.circular(6)),
-//                       child: Row(
-//                         spacing: 12,
-//                         children: [
-//                           SvgPicture.asset(CommonImagePath.cameraIcons),
-//                           semiBoldText(CommonString.openCamera)
-//                         ],
-//                       ),
-//                     ),
-//                     Container(
-//                       padding:
-//                           EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//                       decoration: BoxDecoration(
-//                           color: CommonColors.cardColor,
-//                           borderRadius: BorderRadius.circular(6)),
-//                       child: Row(
-//                         spacing: 12,
-//                         children: [
-//                           SvgPicture.asset(CommonImagePath.galleryIcons),
-//                           semiBoldText(CommonString.selectFromGallery)
-//                         ],
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               )
-//             ],
-//           ),
-//         ));
-//   }
-// }
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -99,6 +8,7 @@ import 'package:mindrealm/controllers/goal_detail_controller.dart';
 import 'package:mindrealm/service/goal_image_service.dart';
 import 'package:mindrealm/utils/app_colors.dart';
 import 'package:mindrealm/utils/app_text.dart';
+import 'package:mindrealm/widgets/common_button.dart';
 
 class SelectPickerTypeDiaog extends GetView<GoalDetailController> {
   final bool isForPostImage;
@@ -110,18 +20,18 @@ class SelectPickerTypeDiaog extends GetView<GoalDetailController> {
 
   @override
   Widget build(BuildContext context) {
-    final UserGoalService userGoalService = Get.find<UserGoalService>();
+    final UserGoalService postService = Get.find<UserGoalService>();
 
     return Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        // backgroundColor: CommonColors.cardColor,
+        backgroundColor: AppColors.background,
         elevation: 0,
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            // color: CommonColors.cardColor,
+            color: AppColors.background,
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.circular(8),
           ),
@@ -133,10 +43,8 @@ class SelectPickerTypeDiaog extends GetView<GoalDetailController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    AppText.chooseImage,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
+                  Text(isForPostImage ? AppText.addPosts : AppText.chooseImage,
+                      style: const TextStyle(fontSize: 16)),
                   InkWell(
                     onTap: () {
                       Get.back();
@@ -150,7 +58,7 @@ class SelectPickerTypeDiaog extends GetView<GoalDetailController> {
               ),
               Container(
                 width: double.infinity,
-                color: AppColors.lightPrimary,
+                color: AppColors.lightPrimaryBg,
                 padding: const EdgeInsets.all(12),
                 child: Column(
                   spacing: 8,
@@ -159,11 +67,12 @@ class SelectPickerTypeDiaog extends GetView<GoalDetailController> {
                       onTap: () async {
                         Get.back();
                         if (isForPostImage) {
-                          final File? image = await userGoalService.pickImage(
+                          final File? image = await postService.pickImage(
                               source: ImageSource.camera);
                           if (image != null) {
                             // Show caption dialog
-                            Get.dialog(PostCaptionDialog(imageFile: image));
+                            await Get.dialog(
+                                PostCaptionDialog(imageFile: image));
                           }
                         } else {
                           // Original profile image flow
@@ -174,13 +83,14 @@ class SelectPickerTypeDiaog extends GetView<GoalDetailController> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
-                            color: CommonColors.cardColor,
+                            color: AppColors.background,
                             borderRadius: BorderRadius.circular(6)),
                         child: Row(
                           spacing: 12,
                           children: [
-                            SvgPicture.asset(CommonImagePath.cameraIcons),
-                            semiBoldText(CommonString.openCamera)
+                            // SvgPicture.asset(CommonImagePath.cameraIcons),
+                            Icon(Icons.camera),
+                            Text(AppText.openCamera)
                           ],
                         ),
                       ),
@@ -189,11 +99,12 @@ class SelectPickerTypeDiaog extends GetView<GoalDetailController> {
                       onTap: () async {
                         Get.back();
                         if (isForPostImage) {
-                          final File? image = await userGoalService.pickImage(
+                          final File? image = await postService.pickImage(
                               source: ImageSource.gallery);
                           if (image != null) {
                             // Show caption dialog
-                            Get.dialog(PostCaptionDialog(imageFile: image));
+                            await Get.dialog(
+                                PostCaptionDialog(imageFile: image));
                           }
                         } else {
                           // Original profile image flow
@@ -204,13 +115,14 @@ class SelectPickerTypeDiaog extends GetView<GoalDetailController> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
-                            color: CommonColors.cardColor,
+                            color: AppColors.background,
                             borderRadius: BorderRadius.circular(6)),
                         child: Row(
                           spacing: 12,
                           children: [
-                            SvgPicture.asset(CommonImagePath.galleryIcons),
-                            semiBoldText(CommonString.selectFromGallery)
+                            // SvgPicture.asset(CommonImagePath.galleryIcons),
+                            Icon(Icons.photo),
+                            Text(AppText.selectFromGallery),
                           ],
                         ),
                       ),
@@ -227,25 +139,24 @@ class SelectPickerTypeDiaog extends GetView<GoalDetailController> {
 class PostCaptionDialog extends StatelessWidget {
   final File imageFile;
 
-  const PostCaptionDialog({
+  PostCaptionDialog({
     super.key,
     required this.imageFile,
   });
+  final UserGoalService postService = Get.find<UserGoalService>();
 
   @override
   Widget build(BuildContext context) {
-    final UserGoalService userGoalService = Get.find<UserGoalService>();
-
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
-      backgroundColor: CommonColors.cardColor,
+      backgroundColor: AppColors.background,
       elevation: 0,
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: CommonColors.cardColor,
+          color: AppColors.background,
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(8),
         ),
@@ -257,14 +168,17 @@ class PostCaptionDialog extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                boldText(CommonString.addPosts, fontsize: 16),
+                Text(
+                  AppText.addPosts,
+                  style: TextStyle(fontSize: 16),
+                ),
                 InkWell(
                   onTap: () {
                     Get.back();
                   },
                   child: Icon(
                     Icons.close,
-                    color: CommonColors.primaryColor,
+                    color: AppColors.primary,
                   ),
                 )
               ],
@@ -289,13 +203,13 @@ class PostCaptionDialog extends StatelessWidget {
               children: [
                 Expanded(
                   child: CommonButton(
-                    text: CommonString.cancel,
+                    text: AppText.cancel,
                     onTap: () {
                       Get.back();
                     },
-                    borderColor: CommonColors.primaryColor,
+                    borderColor: AppColors.primary,
                     backgroundColor: Colors.transparent,
-                    textColor: CommonColors.primaryColor,
+                    textColor: AppColors.primary,
                     // boxShadow: null,
                     isboxShodow: false,
                     outline: true,
@@ -304,10 +218,12 @@ class PostCaptionDialog extends StatelessWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: CommonButton(
-                    text: CommonString.post,
+                    text: AppText.post,
                     isboxShodow: false,
                     onTap: () async {
-                      await userGoalService.uploadPostImage(
+                      await postService.loadUserPosts();
+
+                      await postService.uploadPostImage(
                         imageFile,
                       );
                       Get.back();

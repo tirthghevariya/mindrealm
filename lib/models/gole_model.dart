@@ -19,20 +19,32 @@ class GoalsModel {
     this.lastUpdated,
   });
 
+  /// ✅ Convert Firestore DocumentSnapshot into GoalsModel
+  factory GoalsModel.fromFirestore(DocumentSnapshot doc) {
+    final rawData = doc.data();
+    if (rawData == null || rawData is! Map<String, dynamic>) {
+      throw Exception("Invalid or missing document data for GoalsModel");
+    }
+
+    return GoalsModel.fromMap(rawData);
+  }
+
+  /// ✅ Build from Firestore-compatible Map
   factory GoalsModel.fromMap(Map<String, dynamic> map) {
     return GoalsModel(
-      career: GoalCategory.fromMap(map['career']),
-      family: GoalCategory.fromMap(map['family']),
-      friendships: GoalCategory.fromMap(map['friendships']),
-      health: GoalCategory.fromMap(map['health']),
-      love: GoalCategory.fromMap(map['love']),
-      yourself: GoalCategory.fromMap(map['yourself']),
-      lastUpdated: map['last_updated'] != null
+      career: GoalCategory.fromMap(map['career'] ?? {}),
+      family: GoalCategory.fromMap(map['family'] ?? {}),
+      friendships: GoalCategory.fromMap(map['friendships'] ?? {}),
+      health: GoalCategory.fromMap(map['health'] ?? {}),
+      love: GoalCategory.fromMap(map['love'] ?? {}),
+      yourself: GoalCategory.fromMap(map['yourself'] ?? {}),
+      lastUpdated: map['last_updated'] is Timestamp
           ? (map['last_updated'] as Timestamp).toDate()
           : null,
     );
   }
 
+  /// ✅ Convert to Firestore-compatible Map
   Map<String, dynamic> toMap() {
     return {
       'career': career.toMap(),
@@ -41,7 +53,9 @@ class GoalsModel {
       'health': health.toMap(),
       'love': love.toMap(),
       'yourself': yourself.toMap(),
-      'last_updated': lastUpdated,
+      'last_updated': lastUpdated != null
+          ? Timestamp.fromDate(lastUpdated!)
+          : FieldValue.serverTimestamp(),
     };
   }
 }

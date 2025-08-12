@@ -8,6 +8,7 @@ import 'package:mindrealm/controllers/goal_detail_controller.dart';
 import 'package:mindrealm/models/gole_model.dart';
 import 'package:mindrealm/utils/app_assets.dart';
 import 'package:mindrealm/utils/collection.dart';
+import 'package:mindrealm/widgets/select_picker_type_diaog.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_size_config.dart';
 import '../../../utils/app_text.dart';
@@ -167,7 +168,8 @@ class GoalDetailScreen extends GetView<GoalDetailController> {
                                     physics:
                                         const NeverScrollableScrollPhysics(),
                                     children: [
-                                      ...List.generate(controller.images.length,
+                                      ...List.generate(
+                                          controller.selectedTabImages.length,
                                           (index) {
                                         return Container(
                                           height: SizeConfig.getHeight(160),
@@ -181,7 +183,8 @@ class GoalDetailScreen extends GetView<GoalDetailController> {
                                             alignment: Alignment.center,
                                             children: [
                                               Image.network(
-                                                controller.images[index],
+                                                controller
+                                                    .selectedTabImages[index],
                                                 errorBuilder: (context, error,
                                                         stackTrace) =>
                                                     Icon(Icons.error),
@@ -190,7 +193,7 @@ class GoalDetailScreen extends GetView<GoalDetailController> {
                                                 bottom: 8,
                                                 right: 8,
                                                 child: Icon(
-                                                  Icons.edit,
+                                                  Icons.delete,
                                                   color: AppColors.white,
                                                   size: 24,
                                                 ),
@@ -199,11 +202,16 @@ class GoalDetailScreen extends GetView<GoalDetailController> {
                                           ),
                                         );
                                       }),
-                                      if (controller.images.isEmpty ||
-                                          controller.images.length != 4)
+                                      if (controller
+                                              .selectedTabImages.isEmpty ||
+                                          controller.selectedTabImages.length !=
+                                              4)
                                         GestureDetector(
-                                          onTap: () {
-                                            
+                                          onTap: () async {
+                                            await Get.dialog(
+                                                const SelectPickerTypeDiaog(
+                                              isForPostImage: true,
+                                            ));
                                           },
                                           child: Container(
                                             height: SizeConfig.getHeight(160),

@@ -6,20 +6,26 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mindrealm/controllers/current_user_controller.dart';
 import 'package:mindrealm/models/gole_model.dart';
+import 'package:mindrealm/models/user_model.dart';
+import 'package:mindrealm/service/goal_image_service.dart';
 import 'package:mindrealm/utils/app_assets.dart';
 import 'package:mindrealm/utils/collection.dart';
 import '../../../utils/app_colors.dart';
 
 class GoalDetailController extends GetxController
     with GetTickerProviderStateMixin {
+  CurrentUserController currentUserController =
+      Get.find<CurrentUserController>();
   late TabController tabController;
   RxList<bool> isEditing = List.generate(4, (_) => false).obs;
   List<TextEditingController> controllers =
       List.generate(4, (_) => TextEditingController());
 
-  RxList<String> images = <String>[].obs;
-  User? user = FirebaseAuth.instance.currentUser;
+  Rx<UserProfileModel?> get userProfile => currentUserController.userProfile;
+
+  RxList<String> selectedTabImages = <String>[].obs;
   RxBool isLoading = false.obs;
 
   var profileImage = Rx<File?>(null);
@@ -34,8 +40,7 @@ class GoalDetailController extends GetxController
     AppImages.family,
     AppImages.friend,
   ];
-    final FirebaseStorage _storage = FirebaseStorage.instance;
-
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   final List<String> fieldKeys = [
     'goal',
@@ -44,34 +49,38 @@ class GoalDetailController extends GetxController
     'improve_on',
   ];
 
-  GoalsModel? goalsData; // Store full model
+  Rx<GoalsModel?> goalsData = Rx<GoalsModel?>(null); // Store full model
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     tabController = TabController(length: 6, vsync: this);
-    tabController.addListener(onTabChanged);
-    loadGoalData();
+    tabController.addListener(() async {
+      await onTabChanged();
+    });
+    await currentUserController.getUserProfile();
+
+    await loadGoalData();
   }
 
-  void onTabChanged() {
+  Future<void> onTabChanged() async {
     if (tabController.indexIsChanging) {
       for (int i = 0; i < isEditing.length; i++) {
         isEditing[i] = false;
       }
-      loadGoalData();
+      await loadGoalData();
     }
   }
 
   Future<void> loadGoalData() async {
-    if (user == null) return;
+    if (userProfile.value == null) return;
     isLoading.value = true;
 
     try {
-      final doc = await goalsCollection.doc(user!.uid).get();
-      final rawData = doc.data() as Map<String, dynamic>;
-      if (rawData != null) {
-        goalsData = GoalsModel.fromMap(rawData);
+      final doc = await goalsCollection.doc(userProfile.value!.uid).get();
+
+      if (doc.exists) {
+        goalsData.value = GoalsModel.fromFirestore(doc);
         fillControllersForCurrentTab();
       } else {
         controllers.forEach((c) => c.clear());
@@ -95,23 +104,23 @@ class GoalDetailController extends GetxController
     controllers[1].text = category.affirmation;
     controllers[2].text = category.continueDoing;
     controllers[3].text = category.improveOn;
-    images.value = category.images ?? [];
+    selectedTabImages.value = category.images ?? [];
   }
 
   GoalCategory getCategoryForTab() {
     switch (tabController.index) {
       case 0:
-        return goalsData?.yourself ?? GoalCategory();
+        return goalsData.value?.yourself ?? GoalCategory();
       case 1:
-        return goalsData?.health ?? GoalCategory();
+        return goalsData.value?.health ?? GoalCategory();
       case 2:
-        return goalsData?.love ?? GoalCategory();
+        return goalsData.value?.love ?? GoalCategory();
       case 3:
-        return goalsData?.career ?? GoalCategory();
+        return goalsData.value?.career ?? GoalCategory();
       case 4:
-        return goalsData?.family ?? GoalCategory();
+        return goalsData.value?.family ?? GoalCategory();
       case 5:
-        return goalsData?.friendships ?? GoalCategory();
+        return goalsData.value?.friendships ?? GoalCategory();
       default:
         return GoalCategory();
     }
@@ -137,14 +146,14 @@ class GoalDetailController extends GetxController
   }
 
   Future<void> saveIndividualField(int fieldIndex) async {
-    if (user == null) return;
+    if (userProfile.value == null) return;
 
     try {
       final categoryName = getCategoryName();
       final fieldKey = fieldKeys[fieldIndex];
       final fieldValue = controllers[fieldIndex].text.trim();
 
-      await goalsCollection.doc(user!.uid).set({
+      await goalsCollection.doc(userProfile.value!.uid).set({
         categoryName: {
           fieldKey: fieldValue,
         },
@@ -185,6 +194,7 @@ class GoalDetailController extends GetxController
     }
   }
 
+  // Pick profile image
   Future<void> pickProfileImage() async {
     try {
       final XFile? image = await _picker.pickImage(
@@ -200,60 +210,6 @@ class GoalDetailController extends GetxController
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to pick image: $e');
-    }
-  }
-
-  // Upload image to Firebase Storage
-  Future<String?> uploadImageToStorage() async {
-    if (profileImage.value == null) {
-      return profileNetworkImage
-          .value; // Return existing image URL if no new image
-    }
-
-    try {
-      // 🔍 Extract extension
-      await deleteOldImage();
-      String imageType = profileImage.value!.path.split('.').last.toLowerCase();
-      // 🔁 Construct the file path (same every time for this user)
-      final filePath = 'profile_images/${currentProfile.value!.uid}.$imageType';
-      final storageRef = _storage.ref().child(filePath);
-
-      // ✅ Upload new image
-      UploadTask uploadTask = storageRef.putFile(profileImage.value!);
-      await uploadTask.whenComplete(() => null);
-
-      // 🌐 Get the new download URL
-      final downloadUrl = await storageRef.getDownloadURL();
-
-      // ✅ Reset local file
-      profileImage.value = null;
-
-      return downloadUrl;
-    } catch (e) {
-      log("Error uploading image: $e");
-      Get.snackbar('Error', 'Failed to upload image: $e');
-      return null;
-    }
-  }
-
-  deleteOldImage() async {
-    try {
-      if (profileNetworkImage.value != null) {
-        String imageType = profileNetworkImage.value!
-            .split('.')
-            .last
-            .toLowerCase()
-            .split("?")
-            .first;
-        // 🔁 Construct the file path (same every time for this user)
-        final filePath =
-            'profile_images/${currentProfile.value!.uid}.$imageType';
-        final storageRef = _storage.ref().child(filePath);
-
-        await storageRef.delete(); // Will fail silently if file doesn't exist
-      }
-    } catch (e) {
-      log("0-=0=0-=0=-0=-0=0 $e");
     }
   }
 }

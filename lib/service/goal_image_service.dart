@@ -1,12 +1,18 @@
 import 'dart:developer';
 import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mindrealm/controllers/current_user_controller.dart';
+import 'package:mindrealm/controllers/goal_detail_controller.dart';
+import 'package:mindrealm/utils/collection.dart';
+import 'package:mindrealm/widgets/common_loader.dart';
+import 'package:mindrealm/widgets/common_tost.dart';
 
 class UserGoalService extends GetxController {
-  final currentUserController = Get.find<CurrentUserController>();
+  final goalDetailController = Get.find<GoalDetailController>();
 
   // Image picker instance
   final ImagePicker _picker = ImagePicker();
@@ -42,10 +48,8 @@ class UserGoalService extends GetxController {
       userPostImages.clear();
       userPosts.clear();
 
-      if (currentUserController.userProfile.value!.userPost?.isNotEmpty ??
-          false) {
-        userPosts.value =
-            currentUserController.userProfile.value!.userPost ?? [];
+      if (goalDetailController.selectedTabImages.isNotEmpty) {
+        userPosts.value = goalDetailController.selectedTabImages;
 
         for (var post in userPosts) {
           userPostImages.add(post);
@@ -63,16 +67,22 @@ class UserGoalService extends GetxController {
   // Sync posts to Firestore
   Future<void> _syncPostsToFirestore() async {
     try {
-      final userId = currentUserController.userProfile.value!.uid;
-      await usersCollection
-          .doc(userId)
-          .update({"userPost": userPosts.toList()});
+      final userId = goalDetailController.userProfile.value!.uid;
+      // await goalsCollection
+      //     .doc(userId)
+      //     .update({goalDetailController.getCategoryName(): userPosts.toList()});
       // final postModel = UserPostModel(
       //   userId: userId,
       //   posts: userPosts.toList(),
       //   updatedAt: DateTime.now(),
       // );
-
+      await goalsCollection.doc(userId).set({
+        goalDetailController.getCategoryName(): {
+          "images": userPosts.toList(),
+        },
+        'last_updated': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+      await goalDetailController.loadGoalData();
       // await postCollection.doc(userId).set(postModel.toMap());
     } catch (e) {
       log("Error syncing posts to Firestore: $e");
@@ -110,7 +120,7 @@ class UserGoalService extends GetxController {
 
     CommonLoader.showLoader();
     try {
-      final userId = currentUserController.userProfile.value!.uid;
+      final userId = goalDetailController.userProfile.value!.uid;
 
       // Generate a unique filename using timestamp
       final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -155,7 +165,7 @@ class UserGoalService extends GetxController {
     CommonLoader.showLoader();
     try {
       // Extract the path from the URL
-      final userId = currentUserController.userProfile.value!.uid;
+      final userId = goalDetailController.userProfile.value!.uid;
 
       // The URL contains a token, so we need to extract just the file name
       final urlParts = imageUrl.split('%2F');
