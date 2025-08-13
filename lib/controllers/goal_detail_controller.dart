@@ -1,15 +1,10 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:mindrealm/controllers/current_user_controller.dart';
 import 'package:mindrealm/models/gole_model.dart';
 import 'package:mindrealm/models/user_model.dart';
-import 'package:mindrealm/service/goal_image_service.dart';
 import 'package:mindrealm/utils/app_assets.dart';
 import 'package:mindrealm/utils/collection.dart';
 import '../../../utils/app_colors.dart';
@@ -18,6 +13,8 @@ class GoalDetailController extends GetxController
     with GetTickerProviderStateMixin {
   CurrentUserController currentUserController =
       Get.find<CurrentUserController>();
+
+  RxInt selectableTab = 0.obs;
   late TabController tabController;
   RxList<bool> isEditing = List.generate(4, (_) => false).obs;
   List<TextEditingController> controllers =
@@ -26,11 +23,6 @@ class GoalDetailController extends GetxController
   Rx<UserProfileModel?> get userProfile => currentUserController.userProfile;
 
   RxList<String> selectedTabImages = <String>[].obs;
-  RxBool isLoading = false.obs;
-
-  var profileImage = Rx<File?>(null);
-  var profileNetworkImage = Rx<String?>(null);
-  final ImagePicker _picker = ImagePicker();
 
   final List<String> icons = [
     AppImages.yourself,
@@ -40,7 +32,6 @@ class GoalDetailController extends GetxController
     AppImages.family,
     AppImages.friend,
   ];
-  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   final List<String> fieldKeys = [
     'goal',
@@ -54,11 +45,14 @@ class GoalDetailController extends GetxController
   @override
   Future<void> onInit() async {
     super.onInit();
-    tabController = TabController(length: 6, vsync: this);
+    if (Get.arguments != null && Get.arguments['tabIndex'] != null) {
+      selectableTab.value = Get.arguments['tabIndex'];
+    }
+    tabController = TabController(
+        length: 6, vsync: this, initialIndex: selectableTab.value);
     tabController.addListener(() async {
       await onTabChanged();
     });
-    await currentUserController.getUserProfile();
 
     await loadGoalData();
   }
@@ -73,11 +67,8 @@ class GoalDetailController extends GetxController
   }
 
   Future<void> loadGoalData() async {
-    if (userProfile.value == null) return;
-    isLoading.value = true;
-
     try {
-      final doc = await goalsCollection.doc(userProfile.value!.uid).get();
+      final doc = await goalsCollection.doc(firebaseUserId()).get();
 
       if (doc.exists) {
         goalsData.value = GoalsModel.fromFirestore(doc);
@@ -93,9 +84,7 @@ class GoalDetailController extends GetxController
         backgroundColor: AppColors.error,
         colorText: Colors.white,
       );
-    } finally {
-      isLoading.value = false;
-    }
+    } finally {}
   }
 
   void fillControllersForCurrentTab() {
@@ -153,7 +142,7 @@ class GoalDetailController extends GetxController
       final fieldKey = fieldKeys[fieldIndex];
       final fieldValue = controllers[fieldIndex].text.trim();
 
-      await goalsCollection.doc(userProfile.value!.uid).set({
+      await goalsCollection.doc(firebaseUserId()).set({
         categoryName: {
           fieldKey: fieldValue,
         },
@@ -191,25 +180,6 @@ class GoalDetailController extends GetxController
         backgroundColor: AppColors.error,
         colorText: Colors.white,
       );
-    }
-  }
-
-  // Pick profile image
-  Future<void> pickProfileImage() async {
-    try {
-      final XFile? image = await _picker.pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 70, // Reduce image quality to save storage space
-      );
-
-      if (image != null) {
-        // Store the File
-        profileImage.value = File(image.path);
-
-        // Convert to Uint8List for easier handling
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to pick image: $e');
     }
   }
 }

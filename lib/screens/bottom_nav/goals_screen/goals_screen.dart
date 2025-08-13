@@ -1,71 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mindrealm/controllers/goal_controller.dart';
 import '../../../routers/app_routes.dart';
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_size_config.dart';
 import '../../../utils/app_text.dart';
-import '../goal_details/goal_details_screen.dart';
 
-class GoalsMenuScreen extends StatefulWidget {
+class GoalsMenuScreen extends GetView<GoalController> {
   const GoalsMenuScreen({super.key});
-
-  @override
-  State<GoalsMenuScreen> createState() => _GoalsMenuScreenState();
-}
-
-class _GoalsMenuScreenState extends State<GoalsMenuScreen> {
-  List<String> _slideshowImages = [];
-  int _currentImageIndex = 0;
-
-  // Default fallback images
-  final List<String> _defaultImages = [
-    AppImages.yourself,
-    AppImages.health,
-    AppImages.love,
-    AppImages.career,
-    AppImages.family,
-    AppImages.friend,
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, () {
-      _fetchGoalImages();
-    });
-  }
-
-  // Simulated fetch function
-  Future<List<String?>> fetchMoodboardFirstImages() async {
-    // Simulate user not uploading some images (replace with your real logic)
-    return [
-      // null, // no image uploaded for yourself
-      "https://yourcdn.com/user_health.jpg",
-      // null,
-      "https://yourcdn.com/user_career.jpg",
-      // null,
-      // null,
-    ];
-  }
-
-  void _fetchGoalImages() async {
-    List<String?> userImages = await fetchMoodboardFirstImages();
-
-    // // Merge fallback and uploaded
-    // List<String> finalImages = [];
-    // for (int i = 0; i < _defaultImages.length; i++) {
-    //   finalImages.add(userImages[i] ?? _defaultImages[i]);
-    // }
-
-    // if (!mounted) return;
-    // setState(() {
-    //   _slideshowImages = finalImages;
-    // });
-
-    // _startSlideshow();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,38 +75,78 @@ class _GoalsMenuScreenState extends State<GoalsMenuScreen> {
                               child: Stack(
                                 fit: StackFit.expand,
                                 children: [
-                                  _slideshowImages.isNotEmpty
-                                      ? AnimatedSwitcher(
-                                          duration:
-                                              const Duration(milliseconds: 800),
-                                          child: _slideshowImages[
-                                                      _currentImageIndex]
-                                                  .startsWith("http")
-                                              ? Image.network(
-                                                  _slideshowImages[
-                                                      _currentImageIndex],
-                                                  key: ValueKey(
-                                                      _slideshowImages[
-                                                          _currentImageIndex]),
-                                                  fit: BoxFit.cover,
-                                                )
-                                              : Image.asset(
-                                                  _slideshowImages[
-                                                      _currentImageIndex],
-                                                  key: ValueKey(
-                                                      _slideshowImages[
-                                                          _currentImageIndex]),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                        )
-                                      : Center(
-                                          child: Icon(
-                                            Icons.photo,
-                                            size: 48,
-                                            color: Colors.white
-                                                .withValues(alpha: 0.5),
+                                  Obx(
+                                    () => controller.slideshowImages.isNotEmpty
+                                        ? CarouselSlider.builder(
+                                            itemCount: controller
+                                                .slideshowImages.length,
+                                            options: CarouselOptions(
+                                              height: double
+                                                  .infinity, // Fills container
+                                              viewportFraction:
+                                                  1.0, // Full width
+                                              autoPlay: true,
+                                              autoPlayInterval:
+                                                  const Duration(seconds: 3),
+                                              autoPlayAnimationDuration:
+                                                  const Duration(
+                                                      milliseconds: 800),
+                                              enableInfiniteScroll: true,
+                                              onPageChanged:
+                                                  controller.onSlideChanged,
+                                            ),
+                                            itemBuilder:
+                                                (context, index, realIndex) {
+                                              final imageUrl = controller
+                                                  .slideshowImages[index];
+                                              return imageUrl.startsWith("http")
+                                                  ? CachedNetworkImage(
+                                                      imageUrl: imageUrl,
+                                                      fit: BoxFit.cover,
+                                                      placeholder:
+                                                          (context, url) =>
+                                                              Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: Colors.white
+                                                              .withValues(
+                                                                  alpha: 0.5),
+                                                        ),
+                                                      ),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          const Icon(
+                                                              Icons.error),
+                                                    )
+                                                  : Image.asset(
+                                                      imageUrl,
+                                                      fit: BoxFit.cover,
+                                                    );
+                                            },
+                                          )
+                                        : Center(
+                                            child: Icon(
+                                              Icons.photo,
+                                              size: 48,
+                                              color: Colors.white
+                                                  .withValues(alpha: 0.5),
+                                            ),
                                           ),
+                                  ),
+                                  Positioned.fill(
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Colors.transparent,
+                                            Colors.black.withValues(alpha: 0.4),
+                                          ],
                                         ),
+                                      ),
+                                    ),
+                                  ),
                                   Container(
                                     color: Colors.black.withValues(alpha: 0.4),
                                   ),

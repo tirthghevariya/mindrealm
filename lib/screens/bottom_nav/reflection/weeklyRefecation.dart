@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mindrealm/routers/app_routes.dart';
 import 'package:mindrealm/screens/bottom_nav/reflection/widgets/ScreenTwo.dart';
 import 'package:mindrealm/screens/bottom_nav/reflection/widgets/screenFive.dart';
 import 'package:mindrealm/screens/bottom_nav/reflection/widgets/screenFour.dart';
@@ -51,7 +52,7 @@ class _WeeklyReflectionState extends State<WeeklyReflection> {
       });
     } else {
       // Final screen reached, navigate to bottom nav index 1
-      Get.offAll(() => const BottomNavBar(initialIndex: 1));
+      Get.offAllNamed(Routes.bottomNavBar, arguments: {"tabIndex": 1});
     }
   }
 

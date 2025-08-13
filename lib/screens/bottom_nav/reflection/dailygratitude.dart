@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mindrealm/routers/app_routes.dart';
 import 'package:mindrealm/screens/bottom_nav/reflection/widgets/gratitude.dart';
 import 'package:mindrealm/utils/app_size_config.dart';
 
@@ -25,8 +26,7 @@ class _DailyGratitudeState extends State<DailyGratitude> {
     if (_currentStep < _screens.length - 1) {
       setState(() => _currentStep++);
     } else {
-      Get.offAll(() =>
-          const BottomNavBar(initialIndex: 1)); // or go to summary/next page
+      Get.offAllNamed(Routes.bottomNavBar, arguments: {"tabIndex": 1});
     }
   }
 

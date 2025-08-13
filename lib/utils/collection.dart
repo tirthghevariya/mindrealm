@@ -9,3 +9,6 @@ CollectionReference usersCollection =
 
 CollectionReference goalsCollection =
     FirebaseFirestore.instance.collection("goals");
+
+CollectionReference communityCollection =
+    FirebaseFirestore.instance.collection("community");

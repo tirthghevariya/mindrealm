@@ -40,18 +40,16 @@ class AppPages {
           page: () => QuoteScreen(),
         ),
         GetPage(
-          name: Routes.bottomNavBar,
-          page: () => BottomNavBar(),
-        ),
+            name: Routes.bottomNavBar,
+            page: () => BottomNavBar(),
+            binding: BottomBarBunding()),
         GetPage(
           name: Routes.GoalsOverviewScreen,
           page: () => GoalsOverviewScreen(),
         ),
         GetPage(
             name: Routes.goalDetailScreen,
-            page: () => GoalDetailScreen(
-                // tabIndex: 0,
-                ),
+            page: () => GoalDetailScreen(),
             binding: GoalDetailBunding()),
         GetPage(
           name: Routes.ProfileNotificationsScreen,

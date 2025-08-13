@@ -4,9 +4,9 @@ abstract class Routes {
   static const signUpScreen = "/signUpScreen";
 
   static const QuoteScreen = "/QuoteScreen";
-  static const bottomNavBar = "/BottomNavBar";
+  static const bottomNavBar = "/bottomNavBar";
   static const GoalsOverviewScreen = "/GoalsOverviewScreen";
-  static const goalDetailScreen = "/GoalDetailScreen";
+  static const goalDetailScreen = "/goalDetailScreen";
   static const ProfileNotificationsScreen = "/ProfileNotificationsScreen";
   static const ReflectionFlowScreen = "/ReflectionFlowScreen";
   static const AboutMindRealmScreen = "/AboutMindRealmScreen";

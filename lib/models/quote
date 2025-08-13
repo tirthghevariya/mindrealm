@@ -1,0 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class QuoteModel {
+  final String quote;
+  final String by;
+  final DateTime dateTime;
+
+  QuoteModel({
+    required this.quote,
+    required this.by,
+    required this.dateTime,
+  });
+
+  factory QuoteModel.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return QuoteModel(
+      quote: data['quote'] ?? '',
+      by: data['by'] ?? '',
+      dateTime: (data['dateTime'] as Timestamp).toDate(), 
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'quote': quote,
+      'by': by,
+      'dateTime': Timestamp.fromDate(dateTime), 
+    };
+  }
+}

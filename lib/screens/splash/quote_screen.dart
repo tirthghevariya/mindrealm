@@ -2,20 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mindrealm/controllers/home_controller.dart';
 
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_size_config.dart';
 import '../../../utils/app_text.dart';
 
-class QuoteScreen extends StatefulWidget {
+class QuoteScreen extends GetView<HomeController> {
   const QuoteScreen({super.key});
 
-  @override
-  State<QuoteScreen> createState() => _QuoteScreenState();
-}
-
-class _QuoteScreenState extends State<QuoteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +64,7 @@ class _QuoteScreenState extends State<QuoteScreen> {
                   SizedBox(
                     width: SizeConfig.getWidth(247),
                     child: Text(
-                      AppText.quoteText,
+                      controller.todayQuote.value?.quote ?? "",
                       style: GoogleFonts.dmSerifDisplay(
                         fontSize: 30,
                         fontStyle: FontStyle.italic,
@@ -82,7 +78,7 @@ class _QuoteScreenState extends State<QuoteScreen> {
 
                   // Author
                   Text(
-                    AppText.quoteAuthor,
+                    "- ${controller.todayQuote.value?.by}" ?? "",
                     style: GoogleFonts.openSans(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,

@@ -21,10 +21,10 @@ class UserGoalService extends GetxController {
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   // Observable list to track user's post images
-  final userPostImages = <String>[].obs;
+  final userGoalImages = <String>[].obs;
 
   // Observable list to track post data objects
-  final userPosts = <String>[].obs;
+  final goalPosts = <String>[].obs;
 
   // Track if images are being loaded
   final isLoading = false.obs;
@@ -38,21 +38,21 @@ class UserGoalService extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadUserPosts();
+    loadGoalPosts();
   }
 
   // Load user's existing posts
-  Future<void> loadUserPosts() async {
+  Future<void> loadGoalPosts() async {
     isLoading.value = true;
     try {
-      userPostImages.clear();
-      userPosts.clear();
+      userGoalImages.clear();
+      goalPosts.clear();
+      List<String> images = goalDetailController.selectedTabImages;
+      if (images.isNotEmpty) {
+        goalPosts.value = images;
 
-      if (goalDetailController.selectedTabImages.isNotEmpty) {
-        userPosts.value = goalDetailController.selectedTabImages;
-
-        for (var post in userPosts) {
-          userPostImages.add(post);
+        for (var post in goalPosts) {
+          userGoalImages.add(post);
         }
         return;
       }
@@ -64,26 +64,19 @@ class UserGoalService extends GetxController {
     }
   }
 
-  // Sync posts to Firestore
-  Future<void> _syncPostsToFirestore() async {
+  Future<void> syncPostsToFirestore() async {
     try {
       final userId = goalDetailController.userProfile.value!.uid;
-      // await goalsCollection
-      //     .doc(userId)
-      //     .update({goalDetailController.getCategoryName(): userPosts.toList()});
-      // final postModel = UserPostModel(
-      //   userId: userId,
-      //   posts: userPosts.toList(),
-      //   updatedAt: DateTime.now(),
-      // );
+      final categoryName = goalDetailController.getCategoryName();
+
       await goalsCollection.doc(userId).set({
-        goalDetailController.getCategoryName(): {
-          "images": userPosts.toList(),
+        categoryName: {
+          "images": goalPosts.toList(),
         },
         'last_updated': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
+
       await goalDetailController.loadGoalData();
-      // await postCollection.doc(userId).set(postModel.toMap());
     } catch (e) {
       log("Error syncing posts to Firestore: $e");
     }
@@ -111,7 +104,7 @@ class UserGoalService extends GetxController {
   Future<bool> uploadPostImage(
     File imageFile,
   ) async {
-    if (userPosts.length >= maxPostImages) {
+    if (goalPosts.length >= maxPostImages) {
       showToast(
           'Maximum $maxPostImages posts allowed. Delete an existing post first.',
           err: true);
@@ -143,11 +136,11 @@ class UserGoalService extends GetxController {
       final postData = downloadUrl;
 
       // Add to local lists
-      userPostImages.add(downloadUrl);
-      userPosts.add(postData);
+      userGoalImages.add(downloadUrl);
+      goalPosts.add(postData);
 
       // Sync to Firestore
-      await _syncPostsToFirestore();
+      await syncPostsToFirestore();
 
       showToast('Post uploaded successfully');
       return true;
@@ -165,7 +158,7 @@ class UserGoalService extends GetxController {
     CommonLoader.showLoader();
     try {
       // Extract the path from the URL
-      final userId = goalDetailController.userProfile.value!.uid;
+      final userId = firebaseUserId();
 
       // The URL contains a token, so we need to extract just the file name
       final urlParts = imageUrl.split('%2F');
@@ -175,17 +168,17 @@ class UserGoalService extends GetxController {
       final filePath = 'user_goal_images/$userId/$fileName';
       final storageRef = _storage.ref().child(filePath);
 
-      // Delete the file
+      // Delete file from Firebase Storage
       await storageRef.delete();
 
-      // Remove from local lists
-      userPostImages.remove(imageUrl);
+      // Remove locally
+      userGoalImages.remove(imageUrl);
+      goalPosts.removeWhere((url) => url == imageUrl);
+      goalDetailController.selectedTabImages
+          .removeWhere((url) => url == imageUrl);
 
-      // Also remove from posts list
-      userPosts.removeWhere((post) => post == imageUrl);
-
-      // Sync to Firestore
-      await _syncPostsToFirestore();
+      // Sync Firestore
+      await syncPostsToFirestore();
 
       showToast('Post deleted successfully');
       return true;

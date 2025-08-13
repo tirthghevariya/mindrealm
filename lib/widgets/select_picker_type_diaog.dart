@@ -74,10 +74,7 @@ class SelectPickerTypeDiaog extends GetView<GoalDetailController> {
                             await Get.dialog(
                                 PostCaptionDialog(imageFile: image));
                           }
-                        } else {
-                          // Original profile image flow
-                          await controller.pickProfileImage();
-                        }
+                        } else {}
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -106,10 +103,7 @@ class SelectPickerTypeDiaog extends GetView<GoalDetailController> {
                             await Get.dialog(
                                 PostCaptionDialog(imageFile: image));
                           }
-                        } else {
-                          // Original profile image flow
-                          await controller.pickProfileImage();
-                        }
+                        } else {}
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -221,7 +215,7 @@ class PostCaptionDialog extends StatelessWidget {
                     text: AppText.post,
                     isboxShodow: false,
                     onTap: () async {
-                      await postService.loadUserPosts();
+                      await postService.loadGoalPosts();
 
                       await postService.uploadPostImage(
                         imageFile,
