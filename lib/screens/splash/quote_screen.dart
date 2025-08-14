@@ -29,15 +29,31 @@ class QuoteScreen extends GetView<HomeController> {
           Positioned(
             top: 32,
             left: 16,
-            child: IconButton(
-              onPressed: () {
-                Get.back();
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                size: 32,
-                color: AppColors.brown,
-              ),
+            right: 16,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    size: 32,
+                    color: AppColors.brown,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    await controller.shareQuote();
+                  },
+                  icon: Icon(
+                    Icons.share,
+                    size: 32,
+                    color: AppColors.brown,
+                  ),
+                ),
+              ],
             ),
           ),
 

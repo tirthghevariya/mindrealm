@@ -12,3 +12,12 @@ CollectionReference goalsCollection =
 
 CollectionReference communityCollection =
     FirebaseFirestore.instance.collection("community");
+
+CollectionReference journalsCollection =
+    FirebaseFirestore.instance.collection("journals");
+
+CollectionReference dailyQuotesCollection =
+    FirebaseFirestore.instance.collection("dailyQuotes");
+
+CollectionReference dailyReflectionCollection =
+    FirebaseFirestore.instance.collection("dailyReflection");

@@ -1,6 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer';
+
 import 'package:get/get.dart';
-import 'package:mindrealm/models/quote';
+import 'package:mindrealm/models/quote_model.dart';
+import 'package:mindrealm/utils/collection.dart';
 import 'package:share_plus/share_plus.dart';
 
 class HomeController extends GetxController {
@@ -15,8 +17,7 @@ class HomeController extends GetxController {
   Future getQuotesWithTodayDay() async {
     final todayDay = DateTime.now().day;
 
-    final snapshot =
-        await FirebaseFirestore.instance.collection('dailyQuotes').get();
+    final snapshot = await dailyQuotesCollection.get();
 
     final allQuotes =
         snapshot.docs.map((doc) => QuoteModel.fromFirestore(doc)).toList();
@@ -27,10 +28,10 @@ class HomeController extends GetxController {
     if (filteredQuotes.isNotEmpty) {
       todayQuote.value = filteredQuotes.first;
       for (var q in filteredQuotes) {
-        print("📜 ${q.quote} — ${q.by}");
+        log("📜 ${q.quote} — ${q.by}");
       }
     } else {
-      print("No quotes found for today.");
+      log("No quotes found for today.");
     }
   }
 
@@ -39,16 +40,16 @@ class HomeController extends GetxController {
     final author = todayQuote.value?.by ?? "Unknown";
 
     final params = ShareParams(
-      text: '"$quoteText"\n- $author',
+      text: '$quoteText\n- $author',
       subject: "Inspiring Quote of the Day",
     );
 
     final result = await SharePlus.instance.share(params);
 
     if (result.status == ShareResultStatus.success) {
-      print('Thank you for sharing my quote!');
+      log('Thank you for sharing my quote!');
     } else if (result.status == ShareResultStatus.dismissed) {
-      print('Share cancelled.');
+      log('Share cancelled.');
     }
   }
 }

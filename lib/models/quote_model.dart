@@ -16,7 +16,7 @@ class QuoteModel {
     return QuoteModel(
       quote: data['quote'] ?? '',
       by: data['by'] ?? '',
-      dateTime: (data['dateTime'] as Timestamp).toDate(), 
+      dateTime: (data['dateTime'] as Timestamp).toDate(),
     );
   }
 
@@ -24,7 +24,7 @@ class QuoteModel {
     return {
       'quote': quote,
       'by': by,
-      'dateTime': Timestamp.fromDate(dateTime), 
+      'dateTime': Timestamp.fromDate(dateTime),
     };
   }
 }

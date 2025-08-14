@@ -117,7 +117,7 @@ class HomeScreen extends GetView<HomeController> {
                                 height: 8,
                               ),
                               Text(
-                                "- ${controller.todayQuote.value?.by}" ?? "",
+                                "- ${controller.todayQuote.value?.by ?? ""}",
                                 style: GoogleFonts.openSans(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,

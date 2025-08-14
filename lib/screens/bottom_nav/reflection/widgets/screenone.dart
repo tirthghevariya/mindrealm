@@ -21,7 +21,6 @@ class _ScreenOneState extends State<ScreenOne> {
   final List<String> _happinessScale =
       List.generate(10, (index) => '${index + 1}');
 
-
   void _handleSelection(int index) {
     setState(() {
       _selectedValue = _happinessScale[index];

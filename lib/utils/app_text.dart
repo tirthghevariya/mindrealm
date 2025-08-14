@@ -133,6 +133,11 @@ class AppText {
   static const fillHere = "Fill out here";
   static const selectScale = "Select a number";
   static const mindRealmTitle = 'MIND REALM';
+  static const pleaseAddJournal = 'Please add journal';
+  static const journalEntryAdded = 'Journal entry added';
+  static const pleaseEnterGratitude = 'Please enter gratitude';
+  static const alreadySubmitData =
+      'You’ve already completed today’s reflection. Come back tomorrow for a new one!';
 
   static const aboutPara1 = '''
 Far too often, we go on autopilot in our busy lives and forget to reflect on the key aspects that keep us truly happy.

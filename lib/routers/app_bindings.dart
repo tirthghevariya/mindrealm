@@ -2,9 +2,12 @@ import 'package:get/get.dart';
 import 'package:mindrealm/controllers/bottom_nev_controller.dart';
 import 'package:mindrealm/controllers/community_controller.dart';
 import 'package:mindrealm/controllers/current_user_controller.dart';
+import 'package:mindrealm/controllers/reflection_controllers/daily_reflection_controller.dart';
 import 'package:mindrealm/controllers/goal_controller.dart';
 import 'package:mindrealm/controllers/goal_detail_controller.dart';
 import 'package:mindrealm/controllers/home_controller.dart';
+import 'package:mindrealm/controllers/journal_controller.dart';
+import 'package:mindrealm/controllers/reflection_controllers/reflection_overview_controller.dart';
 import 'package:mindrealm/controllers/splash_controller.dart';
 import 'package:mindrealm/service/goal_image_service.dart';
 
@@ -39,5 +42,26 @@ class GoalDetailBunding extends Bindings {
   void dependencies() {
     Get.put(GoalDetailController());
     Get.put(UserGoalService());
+  }
+}
+
+class JournalBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(JournalController());
+  }
+}
+
+class DailyReflectionBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(DailyReflectionController());
+  }
+}
+
+class WellBeingOverviewBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(WellBeingOverviewController());
   }
 }

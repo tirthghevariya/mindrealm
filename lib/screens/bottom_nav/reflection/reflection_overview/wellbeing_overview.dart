@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../utils/app_assets.dart';
-import '../../../utils/app_colors.dart';
-import '../../../utils/app_size_config.dart';
-import '../../../utils/app_style.dart';
-import '../../../utils/app_text.dart';
+import 'package:intl/intl.dart';
+import 'package:mindrealm/controllers/reflection_controllers/reflection_overview_controller.dart';
+import '../../../../utils/app_assets.dart';
+import '../../../../utils/app_colors.dart';
+import '../../../../utils/app_size_config.dart';
+import '../../../../utils/app_style.dart';
+import '../../../../utils/app_text.dart';
 
-class WellBeingOverview extends StatelessWidget {
+class WellBeingOverview extends GetView<WellBeingOverviewController> {
   const WellBeingOverview({super.key});
 
   @override
@@ -89,102 +91,234 @@ class WellBeingOverview extends StatelessWidget {
                               SizedBox(height: 12),
                               SizedBox(
                                 height: SizeConfig.getHeight(200),
-                                child: LineChart(
-                                  LineChartData(
-                                    minY: 0,
-                                    maxY: 10,
-                                    titlesData: FlTitlesData(
-                                      leftTitles: AxisTitles(
-                                        sideTitles: SideTitles(
-                                          showTitles: true,
-                                          interval: 2,
-                                          reservedSize: 28,
-                                          getTitlesWidget: (value, meta) =>
-                                              Text(
-                                            value.toInt().toString(),
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                              color: AppColors.grey,
+                                width: double.infinity,
+                                child: Obx(() {
+                                  if (controller.dailyReflectionData.isEmpty) {
+                                    return const Center(
+                                        child: Text("No data available"));
+                                  }
+
+                                  // Sort by date ascending
+                                  final sortedData = controller
+                                      .dailyReflectionData
+                                      .where((e) => e != null)
+                                      .map((e) => e!)
+                                      .toList()
+                                    ..sort((a, b) =>
+                                        a.datetime.compareTo(b.datetime));
+
+                                  // Map to FlSpot
+                                  final spots =
+                                      sortedData.asMap().entries.map((entry) {
+                                    final index = entry.key.toDouble();
+                                    final scaleValue = double.tryParse(
+                                            entry.value.scaleNumber) ??
+                                        0;
+                                    return FlSpot(index, scaleValue);
+                                  }).toList();
+
+                                  // Labels for X-axis
+                                  final labels = sortedData
+                                      .map((e) => DateFormat('dd MMM')
+                                          .format(e.datetime))
+                                      .toList();
+
+                                  return SizedBox(
+                                    height: 200,
+                                    child: Row(
+                                      children: [
+                                        // Fixed Y-axis labels
+                                        SizedBox(
+                                          width: 30,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: List.generate(
+                                              6, // 0 to 10 with interval 2
+                                              (i) => Text(
+                                                (i * 2).toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 10,
+                                                    color: AppColors.grey),
+                                              ),
+                                            ).reversed.toList(),
+                                          ),
+                                        ),
+                                        // Scrollable X-axis + chart
+                                        Expanded(
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            reverse: true,
+                                            child: SizedBox(
+                                              width: spots.length *
+                                                  60, // dynamic width
+                                              child: LineChart(
+                                                LineChartData(
+                                                  minY: 0,
+                                                  maxY: 10,
+                                                  titlesData: FlTitlesData(
+                                                    leftTitles: AxisTitles(
+                                                        sideTitles: SideTitles(
+                                                            showTitles:
+                                                                false)), // Hide internal Y-axis
+                                                    bottomTitles: AxisTitles(
+                                                      sideTitles: SideTitles(
+                                                        showTitles: true,
+                                                        interval: 1,
+                                                        getTitlesWidget:
+                                                            (value, meta) {
+                                                          if (value >= 0 &&
+                                                              value <
+                                                                  labels
+                                                                      .length) {
+                                                            return Text(
+                                                              labels[value
+                                                                  .toInt()],
+                                                              style: const TextStyle(
+                                                                  fontSize: 10,
+                                                                  color:
+                                                                      AppColors
+                                                                          .grey),
+                                                            );
+                                                          }
+                                                          return const SizedBox
+                                                              .shrink();
+                                                        },
+                                                      ),
+                                                    ),
+                                                    rightTitles: AxisTitles(
+                                                        sideTitles: SideTitles(
+                                                            showTitles: false)),
+                                                    topTitles: AxisTitles(
+                                                        sideTitles: SideTitles(
+                                                            showTitles: false)),
+                                                  ),
+                                                  gridData:
+                                                      FlGridData(show: false),
+                                                  borderData:
+                                                      FlBorderData(show: false),
+                                                  lineBarsData: [
+                                                    LineChartBarData(
+                                                      spots: spots,
+                                                      isCurved: true,
+                                                      barWidth: 3,
+                                                      color: AppColors.primary,
+                                                      belowBarData: BarAreaData(
+                                                        show: true,
+                                                        color: AppColors.primary
+                                                            .withValues(
+                                                                alpha: 0.3),
+                                                      ),
+                                                      dotData:
+                                                          FlDotData(show: true),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      bottomTitles: AxisTitles(
-                                        sideTitles: SideTitles(
-                                          showTitles: true,
-                                          interval: 1,
-                                          getTitlesWidget: (value, meta) {
-                                            const labels = [
-                                              'Nov 23',
-                                              '24',
-                                              '25',
-                                              '26',
-                                              '27',
-                                              '28',
-                                              '29',
-                                              '30'
-                                            ];
-                                            if (value >= 0 &&
-                                                value < labels.length) {
-                                              return Text(
-                                                labels[value.toInt()],
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: AppColors.grey,
-                                                ),
-                                              );
-                                            }
-                                            return SizedBox.shrink();
-                                          },
-                                        ),
-                                      ),
-                                      rightTitles: AxisTitles(
-                                          sideTitles:
-                                              SideTitles(showTitles: false)),
-                                      topTitles: AxisTitles(
-                                          sideTitles:
-                                              SideTitles(showTitles: false)),
+                                      ],
                                     ),
-                                    gridData: FlGridData(show: false),
-                                    borderData: FlBorderData(show: false),
-                                    lineBarsData: [
-                                      LineChartBarData(
-                                        isCurved: true,
-                                        barWidth: 3,
-                                        color: AppColors.primary,
-                                        belowBarData: BarAreaData(
-                                          show: true,
-                                          color: AppColors.primary
-                                              .withValues(alpha: 0.3),
-                                        ),
-                                        dotData: FlDotData(
-                                          show: true,
-                                          checkToShowDot: (spot, _) =>
-                                              spot.x == 7,
-                                          // Show only for last point
-                                          getDotPainter:
-                                              (spot, percent, barData, index) =>
-                                                  FlDotCirclePainter(
-                                            radius: 4,
-                                            color: AppColors.primary,
-                                            strokeWidth: 2,
-                                            strokeColor: Colors.white,
-                                          ),
-                                        ),
-                                        spots: const [
-                                          FlSpot(0, 1),
-                                          FlSpot(1, 2),
-                                          FlSpot(2, 2.2),
-                                          FlSpot(3, 3.5),
-                                          FlSpot(4, 5.5),
-                                          FlSpot(5, 4.8),
-                                          FlSpot(6, 6.8),
-                                          FlSpot(7, 9.5),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                  );
+                                }),
+                                // child: LineChart(
+                                //   LineChartData(
+                                //     minY: 0,
+                                //     maxY: 10,
+                                //     titlesData: FlTitlesData(
+                                //       leftTitles: AxisTitles(
+                                //         sideTitles: SideTitles(
+                                //           showTitles: true,
+                                //           interval: 2,
+                                //           reservedSize: 28,
+                                //           getTitlesWidget: (value, meta) =>
+                                //               Text(
+                                //             value.toInt().toString(),
+                                //             style: TextStyle(
+                                //               fontSize: 10,
+                                //               color: AppColors.grey,
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ),
+                                //       bottomTitles: AxisTitles(
+                                //         sideTitles: SideTitles(
+                                //           showTitles: true,
+                                //           interval: 1,
+                                //           getTitlesWidget: (value, meta) {
+                                //             const labels = [
+                                //               'Nov 23',
+                                //               '24',
+                                //               '25',
+                                //               '26',
+                                //               '27',
+                                //               '28',
+                                //               '29',
+                                //               '30'
+                                //             ];
+                                //             if (value >= 0 &&
+                                //                 value < labels.length) {
+                                //               return Text(
+                                //                 labels[value.toInt()],
+                                //                 style: TextStyle(
+                                //                   fontSize: 10,
+                                //                   color: AppColors.grey,
+                                //                 ),
+                                //               );
+                                //             }
+                                //             return SizedBox.shrink();
+                                //           },
+                                //         ),
+                                //       ),
+                                //       rightTitles: AxisTitles(
+                                //           sideTitles:
+                                //               SideTitles(showTitles: false)),
+                                //       topTitles: AxisTitles(
+                                //           sideTitles:
+                                //               SideTitles(showTitles: false)),
+                                //     ),
+                                //     gridData: FlGridData(show: false),
+                                //     borderData: FlBorderData(show: false),
+                                //     lineBarsData: [
+                                //       LineChartBarData(
+                                //         isCurved: true,
+                                //         barWidth: 3,
+                                //         color: AppColors.primary,
+                                //         belowBarData: BarAreaData(
+                                //           show: true,
+                                //           color: AppColors.primary
+                                //               .withValues(alpha: 0.3),
+                                //         ),
+                                //         dotData: FlDotData(
+                                //           show: true,
+                                //           checkToShowDot: (spot, _) =>
+                                //               spot.x == 7,
+                                //           // Show only for last point
+                                //           getDotPainter:
+                                //               (spot, percent, barData, index) =>
+                                //                   FlDotCirclePainter(
+                                //             radius: 4,
+                                //             color: AppColors.primary,
+                                //             strokeWidth: 2,
+                                //             strokeColor: Colors.white,
+                                //           ),
+                                //         ),
+                                //         spots: const [
+                                //           FlSpot(0, 1),
+                                //           FlSpot(1, 2),
+                                //           FlSpot(2, 2.2),
+                                //           FlSpot(3, 3.5),
+                                //           FlSpot(4, 5.5),
+                                //           FlSpot(5, 4.8),
+                                //           FlSpot(6, 6.8),
+                                //           FlSpot(7, 9.5),
+                                //           FlSpot(7, 9.5),
+                                //         ],
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
                               ),
                             ],
                           ),

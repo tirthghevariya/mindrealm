@@ -1,6 +1,7 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:mindrealm/routers/app_bindings.dart';
 import 'package:mindrealm/screens/auth/page/login_screen.dart';
+import 'package:mindrealm/screens/bottom_nav/reflection/daily_reflection/daily_gratitude.dart';
 import 'package:mindrealm/screens/splash/splashscreen.dart';
 
 import '../screens/auth/page/signup_screen.dart';
@@ -14,10 +15,9 @@ import '../screens/bottom_nav/heals/sound_healing/motivationalspeech.dart';
 import '../screens/bottom_nav/heals/sound_healing/sound_healing.dart';
 import '../screens/bottom_nav/home/home_description.dart';
 import '../screens/bottom_nav/profile/profile_notification.dart';
-import '../screens/bottom_nav/reflection/dailygratitude.dart';
-import '../screens/bottom_nav/reflection/reflectionflowscreen.dart';
+import '../screens/bottom_nav/reflection/daily_reflection/daily_reflection_flow_screen.dart';
 import '../screens/bottom_nav/reflection/weeklyRefecation.dart';
-import '../screens/bottom_nav/wellbeing_overview/wellbeing_overview.dart';
+import '../screens/bottom_nav/reflection/reflection_overview/wellbeing_overview.dart';
 import '../screens/splash/quote_screen.dart';
 import 'app_routes.dart';
 
@@ -56,25 +56,25 @@ class AppPages {
           page: () => ProfileNotificationsScreen(),
         ),
         GetPage(
-          name: Routes.ReflectionFlowScreen,
-          page: () => ReflectionFlowScreen(),
+            name: Routes.dailyReflectionScreen,
+            page: () => DailyReflectionFlowScreen(),
+            binding: DailyReflectionBinding()),
+        GetPage(
+          name: Routes.dailyGratitude,
+          page: () => DailyGratitude(),
         ),
         GetPage(
           name: Routes.WeeklyReflection,
           page: () => WeeklyReflection(),
         ),
         GetPage(
-          name: Routes.DailyGratitude,
-          page: () => DailyGratitude(),
-        ),
-        GetPage(
           name: Routes.AboutMindRealmScreen,
           page: () => AboutMindRealmScreen(),
         ),
         GetPage(
-          name: Routes.WellBeingOverview,
-          page: () => WellBeingOverview(),
-        ),
+            name: Routes.WellBeingOverview,
+            page: () => WellBeingOverview(),
+            binding: WellBeingOverviewBinding()),
         GetPage(
           name: Routes.SoundHealing,
           page: () => SoundHealing(),
@@ -92,8 +92,8 @@ class AppPages {
           page: () => Affirmations(),
         ),
         GetPage(
-          name: Routes.Journal,
-          page: () => Journal(),
-        ),
+            name: Routes.Journal,
+            page: () => Journal(),
+            binding: JournalBinding()),
       ];
 }

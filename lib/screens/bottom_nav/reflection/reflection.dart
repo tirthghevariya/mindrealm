@@ -42,7 +42,7 @@ class ReflectionOptionsScreen extends StatelessWidget {
                   imagePath: AppImages.reflaction1,
                   label: AppText.dailyReflection,
                   onTap: () {
-                    Get.toNamed(Routes.ReflectionFlowScreen);
+                    Get.toNamed(Routes.dailyReflectionScreen);
                     // Navigate to Daily Reflection
                   },
                   color: AppColors.brown,
@@ -60,7 +60,7 @@ class ReflectionOptionsScreen extends StatelessWidget {
                 SizedBox(height: SizeConfig.getHeight(16)),
 
                 // Wellbeing Overview Button
-               _OptionCard(
+                _OptionCard(
                   imagePath: AppImages.reflaction3,
                   label: AppText.wellbeingOvervi,
                   onTap: () {

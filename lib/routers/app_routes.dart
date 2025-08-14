@@ -8,7 +8,6 @@ abstract class Routes {
   static const GoalsOverviewScreen = "/GoalsOverviewScreen";
   static const goalDetailScreen = "/goalDetailScreen";
   static const ProfileNotificationsScreen = "/ProfileNotificationsScreen";
-  static const ReflectionFlowScreen = "/ReflectionFlowScreen";
   static const AboutMindRealmScreen = "/AboutMindRealmScreen";
   static const WellBeingOverview = "/WellBeingOverview";
   static const SoundHealing = "/SoundHealing";
@@ -17,5 +16,6 @@ abstract class Routes {
   static const Affirmations = "/Affirmations";
   static const Journal = "/Journal";
   static const WeeklyReflection = "/WeeklyReflection";
-  static const DailyGratitude = "/DailyGratitude";
+  static const dailyGratitude = "/dailyGratitude";
+  static const dailyReflectionScreen = "/dailyReflectionScreen";
 }

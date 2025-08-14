@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mindrealm/screens/bottom_nav/heals/sound_healing/widgets/audiowave.dart';
+import 'package:mindrealm/screens/bottom_nav/reflection/daily_reflection/daily_reflection_flow_screen.dart';
 import 'package:mindrealm/utils/app_sounds.dart';
 import 'package:mindrealm/utils/app_style.dart';
 
@@ -86,7 +87,11 @@ Widget affirmationBodyData() {
                   SizedBox(
                     height: SizeConfig.getHeight(108),
                   ),
-                  SizedBox(height: 200, child: AudioPlayerWaveUI(assetSong: AppSounds.affirmationsSound,)),
+                  SizedBox(
+                      height: 200,
+                      child: AudioPlayerWaveUI(
+                        assetSong: AppSounds.affirmationsSound,
+                      )),
                   SizedBox(
                     height: SizeConfig.getHeight(60),
                   ),
