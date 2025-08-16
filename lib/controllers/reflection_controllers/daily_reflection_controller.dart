@@ -11,7 +11,7 @@ import 'package:mindrealm/widgets/common_tost.dart';
 
 class DailyReflectionController extends GetxController {
   Rx<String?> selectedValue = Rx<String?>(null);
-  Rx<TextEditingController> wordController = TextEditingController().obs;
+  Rx<TextEditingController> feelingWordController = TextEditingController().obs;
   Rx<TextEditingController> todayDescriptionController =
       TextEditingController().obs;
   Rx<DailyReflectionModel?> dailyReflectionModel =
@@ -91,7 +91,7 @@ class DailyReflectionController extends GetxController {
           {
             'todayDescription': "",
             'scaleNumber': selectedValue.value!,
-            'feelingWord': wordController.value.text,
+            'feelingWord': feelingWordController.value.text,
             'datetime': Timestamp.now(), // store current client time
           }
         ])
@@ -106,11 +106,14 @@ class DailyReflectionController extends GetxController {
 
   Future<void> submitGratitude() async {
     try {
+      CommonLoader.showLoader();
       final docRef = dailyReflectionCollection.doc(firebaseUserId());
       final snapshot = await docRef.get();
 
       if (!snapshot.exists || snapshot.data() == null) {
         log("No reflection document found.");
+        CommonLoader.hideLoader();
+
         return;
       }
 
@@ -135,18 +138,21 @@ class DailyReflectionController extends GetxController {
           datetime: reflections[index].datetime,
           scaleNumber: reflections[index].scaleNumber,
           feelingWord: reflections[index].feelingWord,
-          todayDescription: wordController.value.text,
+          todayDescription: todayDescriptionController.value.text,
         );
 
         await docRef.update({
           'reflections': reflections.map((r) => r.toMap()).toList(),
         });
+        CommonLoader.hideLoader();
 
-        log("Today's reflection updated successfully.");
-        Get.toNamed(Routes.dailyGratitude);
+        showToast("Today's reflection updated successfully.");
+        Get.close(2);
+        CommonLoader.hideLoader();
       } else {
         log("No reflection found for today.");
       }
+      CommonLoader.hideLoader();
     } catch (e) {
       log('Error saving daily reflection: $e');
       showToast('Failed to save reflection', err: true);

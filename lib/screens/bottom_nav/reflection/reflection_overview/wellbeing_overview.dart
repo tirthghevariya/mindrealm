@@ -417,11 +417,13 @@ class WellBeingOverview extends GetView<WellBeingOverviewController> {
                                                 const NeverScrollableScrollPhysics(),
                                             gridDelegate:
                                                 const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 2,
-                                              childAspectRatio: 4,
-                                              crossAxisSpacing: 60,
-                                              mainAxisSpacing: 16,
-                                            ),
+                                                    crossAxisCount: 2,
+                                                    childAspectRatio: 3,
+                                                    // crossAxisCount: 2,
+
+                                                    // crossAxisSpacing: 10,
+                                                    mainAxisSpacing: 8,
+                                                    crossAxisSpacing: 8),
                                             itemBuilder: (context, index) {
                                               final entry = controller
                                                       .last30DaysdailyReflectionData[

@@ -113,7 +113,10 @@ class QuoteScreen extends GetView<HomeController> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await controller.shareQuote();
+                    // await controller.shareQuote();
+                  },
                   icon: SvgPicture.asset(
                     AppImages
                         .instagramIcon, // e.g., 'assets/icons/instagram.svg'
@@ -123,7 +126,9 @@ class QuoteScreen extends GetView<HomeController> {
                 ),
                 SizedBox(width: 16),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await controller.shareQuote();
+                  },
                   icon: SvgPicture.asset(
                     AppImages.tiktokIcon,
                     width: 32,
@@ -132,7 +137,9 @@ class QuoteScreen extends GetView<HomeController> {
                 ),
                 SizedBox(width: 16),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await controller.shareQuote();
+                  },
                   icon: SvgPicture.asset(
                     AppImages.facebookIcon,
                     width: 32,

@@ -68,7 +68,7 @@ class DailyGratitude extends GetView<DailyReflectionController> {
                 SizedBox(
                   height: 40,
                   child: TextField(
-                    controller: controller.wordController.value,
+                    controller: controller.todayDescriptionController.value,
                     decoration: InputDecoration(
                       hintText: AppText.fillHere,
                       filled: true,
@@ -95,7 +95,8 @@ class DailyGratitude extends GetView<DailyReflectionController> {
                       ),
                     ),
                     onPressed: () async {
-                      if (controller.wordController.value.text.isEmpty) {
+                      if (controller
+                          .todayDescriptionController.value.text.isEmpty) {
                         showToast(AppText.pleaseEnterGratitude);
                       }
                       await controller.submitGratitude();

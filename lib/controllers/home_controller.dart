@@ -1,18 +1,23 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:mindrealm/models/daily_reflection_model.dart';
 import 'package:mindrealm/models/quote_model.dart';
 import 'package:mindrealm/utils/collection.dart';
 import 'package:share_plus/share_plus.dart';
 
 class HomeController extends GetxController {
+  Rx<QuoteModel?> todayQuote = Rx<QuoteModel?>(null);
+
+  RxList<DailyReflectionEntry> dailyReflectionData =
+      <DailyReflectionEntry>[].obs;
+
   @override
   Future<void> onInit() async {
     super.onInit();
     await getQuotesWithTodayDay();
+    await getUserDailyReflection();
   }
-
-  Rx<QuoteModel?> todayQuote = Rx<QuoteModel?>(null);
 
   Future getQuotesWithTodayDay() async {
     final todayDay = DateTime.now().day;
@@ -50,6 +55,24 @@ class HomeController extends GetxController {
       log('Thank you for sharing my quote!');
     } else if (result.status == ShareResultStatus.dismissed) {
       log('Share cancelled.');
+    }
+  }
+
+  Future getUserDailyReflection() async {
+    try {
+      final doc = await dailyReflectionCollection
+          .doc(firebaseUserId()) // current user UID
+          .get();
+
+      if (doc.exists && doc.data() != null) {
+        var data = DailyReflectionModel.fromFirestore(doc);
+        dailyReflectionData.value = data.reflections
+          ..sort((a, b) => b.datetime.compareTo(a.datetime));
+      } else {
+        log("No reflection document found for user.");
+      }
+    } catch (e) {
+      log('Error fetching daily reflection: $e');
     }
   }
 }

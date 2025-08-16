@@ -172,9 +172,11 @@ class DailyReflectionFlowScreen extends GetView<DailyReflectionController> {
                                 height: SizeConfig.getWidth(40),
                                 child: Obx(
                                   () => TextField(
-                                    controller: controller.wordController.value,
+                                    controller:
+                                        controller.feelingWordController.value,
                                     onChanged: (value) {
-                                      controller.wordController.refresh();
+                                      controller.feelingWordController
+                                          .refresh();
                                     },
                                     decoration: InputDecoration(
                                       hintText: AppText.fillHere,
@@ -203,8 +205,8 @@ class DailyReflectionFlowScreen extends GetView<DailyReflectionController> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:
                                       controller.selectedValue.value != null &&
-                                              controller.wordController.value
-                                                  .text.isNotEmpty
+                                              controller.feelingWordController
+                                                  .value.text.isNotEmpty
                                           ? AppColors.brown
                                           : AppColors.brown
                                               .withValues(alpha: 0.4),
@@ -214,8 +216,8 @@ class DailyReflectionFlowScreen extends GetView<DailyReflectionController> {
                                 ),
                                 onPressed:
                                     controller.selectedValue.value != null &&
-                                            controller.wordController.value.text
-                                                .isNotEmpty
+                                            controller.feelingWordController
+                                                .value.text.isNotEmpty
                                         ? controller.nextStep
                                         : null,
                                 child: Text(

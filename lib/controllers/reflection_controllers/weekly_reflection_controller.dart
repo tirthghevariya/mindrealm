@@ -160,6 +160,7 @@ class WeeklyReflectionController extends GetxController {
           hasCompletedThisWeek.value = true;
           statusMessage.value =
               "You've completed this week's reflection. Come back next week for a new one!";
+          Get.back();
         } else {
           // Move to next category
           _moveToNextCategory();
