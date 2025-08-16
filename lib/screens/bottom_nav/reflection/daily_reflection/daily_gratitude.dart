@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mindrealm/controllers/reflection_controllers/daily_reflection_controller.dart';
 
-import 'package:mindrealm/screens/bottom_nav/reflection/widgets/gratitude.dart';
 import 'package:mindrealm/utils/app_size_config.dart';
 import 'package:mindrealm/widgets/common_tost.dart';
 
@@ -66,7 +65,7 @@ class DailyGratitude extends GetView<DailyReflectionController> {
                   ),
                 ),
                 SizedBox(height: SizeConfig.getHeight(33)),
-                Container(
+                SizedBox(
                   height: 40,
                   child: TextField(
                     controller: controller.wordController.value,

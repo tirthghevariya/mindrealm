@@ -21,3 +21,6 @@ CollectionReference dailyQuotesCollection =
 
 CollectionReference dailyReflectionCollection =
     FirebaseFirestore.instance.collection("dailyReflection");
+
+CollectionReference weeklyReflectionsCollection =
+    FirebaseFirestore.instance.collection("weekly_reflections");

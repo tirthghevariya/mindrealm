@@ -61,51 +61,49 @@ class _ScreenFiveState extends State<Screenfive> {
           ),
         ),
         SizedBox(height: SizeConfig.getHeight(40)),
-        Container(
-          child: GestureDetector(
-            onTap: () {
-              showCupertinoModalPopup(
-                context: context,
-                builder: (_) => Container(
-                  height: 250,
-                  color: Colors.white,
-                  child: CupertinoPicker(
-                    backgroundColor: Colors.white,
-                    itemExtent: 40,
-                    scrollController: FixedExtentScrollController(
-                      initialItem: _selectedValue != null
-                          ? _happinessScale.indexOf(_selectedValue!)
-                          : 0,
-                    ),
-                    onSelectedItemChanged: _handleSelection,
-                    children: _happinessScale
-                        .map((value) => Center(child: Text(value)))
-                        .toList(),
+        GestureDetector(
+          onTap: () {
+            showCupertinoModalPopup(
+              context: context,
+              builder: (_) => Container(
+                height: 250,
+                color: Colors.white,
+                child: CupertinoPicker(
+                  backgroundColor: Colors.white,
+                  itemExtent: 40,
+                  scrollController: FixedExtentScrollController(
+                    initialItem: _selectedValue != null
+                        ? _happinessScale.indexOf(_selectedValue!)
+                        : 0,
+                  ),
+                  onSelectedItemChanged: _handleSelection,
+                  children: _happinessScale
+                      .map((value) => Center(child: Text(value)))
+                      .toList(),
+                ),
+              ),
+            );
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            decoration: BoxDecoration(
+              color: AppColors.lightPrimary,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AppColors.brown),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  _selectedValue ?? AppText.selectScale,
+                  style: TextStyle(
+                    color: AppColors.brown,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              decoration: BoxDecoration(
-                color: AppColors.lightPrimary,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.brown),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    _selectedValue ?? AppText.selectScale,
-                    style: TextStyle(
-                      color: AppColors.brown,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Icon(Icons.arrow_drop_down, color: AppColors.brown),
-                ],
-              ),
+                Icon(Icons.arrow_drop_down, color: AppColors.brown),
+              ],
             ),
           ),
         ),
@@ -123,7 +121,7 @@ class _ScreenFiveState extends State<Screenfive> {
           ),
         ),
         SizedBox(height: SizeConfig.getHeight(33)),
-        Container(
+        SizedBox(
           height: 40,
           child: TextField(
             controller: _wordController,

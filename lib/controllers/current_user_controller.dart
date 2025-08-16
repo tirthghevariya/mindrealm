@@ -5,7 +5,6 @@ import 'package:mindrealm/routers/app_routes.dart';
 import 'package:mindrealm/utils/collection.dart';
 
 class CurrentUserController extends GetxController {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   // User data
   final userProfile = Rx<UserProfileModel?>(null);
 

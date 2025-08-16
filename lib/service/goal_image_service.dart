@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mindrealm/controllers/current_user_controller.dart';
 import 'package:mindrealm/controllers/goal_detail_controller.dart';
 import 'package:mindrealm/utils/collection.dart';
 import 'package:mindrealm/widgets/common_loader.dart';

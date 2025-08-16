@@ -11,11 +11,12 @@ import 'package:mindrealm/models/user_model.dart';
 import 'package:mindrealm/routers/app_routes.dart';
 import 'package:mindrealm/utils/app_colors.dart';
 import 'package:mindrealm/utils/collection.dart';
+import 'package:mindrealm/widgets/common_loader.dart';
+import 'package:mindrealm/widgets/common_tost.dart';
 
 class AuthController extends GetxController {
   // Firebase instances
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -34,7 +35,6 @@ class AuthController extends GetxController {
 
   // Observables
   RxBool passwordsMatch = true.obs;
-  RxBool isLoading = false.obs;
 
   // User data
   Rx<User?> firebaseUser = Rx<User?>(null);
@@ -122,7 +122,7 @@ class AuthController extends GetxController {
     if (!signInformKey.currentState!.validate()) return;
 
     try {
-      isLoading.value = true;
+      CommonLoader.showLoader();
 
       final UserCredential userCredential =
           await _auth.signInWithEmailAndPassword(
@@ -165,21 +165,11 @@ class AuthController extends GetxController {
         default:
           message = 'Login failed. Please try again';
       }
-      Get.snackbar(
-        'Login Error',
-        message,
-        backgroundColor: AppColors.error,
-        colorText: AppColors.white,
-      );
+      showToast(message, err: true);
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'An unexpected error occurred',
-        backgroundColor: AppColors.error,
-        colorText: AppColors.white,
-      );
+      showToast("An unexpected error occurred", err: true);
     } finally {
-      isLoading.value = false;
+      CommonLoader.hideLoader();
     }
   }
 
@@ -195,19 +185,16 @@ class AuthController extends GetxController {
     passwordsMatch.value = true;
 
     try {
-      isLoading.value = true;
+      CommonLoader.showLoader();
 
       // Check if email already exists
       final methods = await _auth
+          // ignore: deprecated_member_use
           .fetchSignInMethodsForEmail(signUpEmailController.text.trim());
 
       if (methods.isNotEmpty) {
-        Get.snackbar(
-          'Registration Error',
-          'An account already exists with this email',
-          backgroundColor: AppColors.error,
-          colorText: AppColors.white,
-        );
+        showToast("An account already exists with this email", err: true);
+
         return;
       }
 
@@ -261,34 +248,26 @@ class AuthController extends GetxController {
         default:
           message = 'Registration failed. Please try again';
       }
-      Get.snackbar(
-        'Registration Error',
-        message,
-        backgroundColor: AppColors.error,
-        colorText: AppColors.white,
-      );
+      showToast("Registration Error", err: true);
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'An unexpected error occurred',
-        backgroundColor: AppColors.error,
-        colorText: AppColors.white,
-      );
+      showToast("An unexpected error occurred", err: true);
     } finally {
-      isLoading.value = false;
+      CommonLoader.hideLoader();
     }
   }
 
   // Google Sign In
   Future<void> signInWithGoogle() async {
     try {
-      isLoading.value = true;
+      CommonLoader.showLoader();
+
       await signOut();
 
       // Start the Google Sign In flow
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
-        isLoading.value = false;
+        CommonLoader.hideLoader();
+
         return;
       }
 
@@ -340,28 +319,13 @@ class AuthController extends GetxController {
         Get.offAllNamed(Routes.bottomNavBar);
       }
     } on FirebaseAuthException catch (e) {
-      Get.snackbar(
-        'Google Sign-In Failed',
-        e.message ?? 'An error occurred',
-        backgroundColor: AppColors.error,
-        colorText: AppColors.white,
-      );
+      showToast(e.message ?? 'An error occurred', err: true);
     } on PlatformException catch (e) {
-      Get.snackbar(
-        'Platform Error',
-        e.message ?? 'An error occurred',
-        backgroundColor: AppColors.error,
-        colorText: AppColors.white,
-      );
+      showToast(e.message ?? 'An error occurred', err: true);
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Failed to sign in with Google',
-        backgroundColor: AppColors.error,
-        colorText: AppColors.white,
-      );
+      showToast('Failed to sign in with Google', err: true);
     } finally {
-      isLoading.value = false;
+      CommonLoader.hideLoader();
     }
   }
 
@@ -394,12 +358,8 @@ class AuthController extends GetxController {
   Future<void> resetPassword(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
-      Get.snackbar(
-        'Password Reset',
-        'Password reset email sent successfully',
-        backgroundColor: AppColors.primary,
-        colorText: AppColors.white,
-      );
+
+      showToast('Password reset email sent successfully');
     } on FirebaseAuthException catch (e) {
       String message;
       switch (e.code) {
@@ -409,12 +369,7 @@ class AuthController extends GetxController {
         default:
           message = 'Failed to send reset email';
       }
-      Get.snackbar(
-        'Error',
-        message,
-        backgroundColor: AppColors.error,
-        colorText: AppColors.white,
-      );
+      showToast(message, err: true);
     }
   }
 }

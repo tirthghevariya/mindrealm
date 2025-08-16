@@ -57,11 +57,15 @@ class _GuidedMeditationState extends State<GuidedMeditation> {
                       SizedBox(
                         height: SizeConfig.getHeight(108),
                       ),
-                      Container(height: 200, child: AudioPlayerWaveUI(assetSong: AppSounds.meditationSound,)),
+                      SizedBox(
+                          height: 200,
+                          child: AudioPlayerWaveUI(
+                            assetSong: AppSounds.meditationSound,
+                          )),
                       SizedBox(
                         height: SizeConfig.getHeight(60),
                       ),
-                      Container(
+                      SizedBox(
                         width: SizeConfig.getHeight(280),
                         child: Text(
                           AppText.meditationTrainsYourMind,

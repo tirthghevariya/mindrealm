@@ -162,7 +162,6 @@ We help you stay on top of your goals, desires, and overall happiness, so you ca
   static const String motivationalSpeechstr = 'Motivational Speech';
   static const String affirmations = 'Affir-mations';
   static const String journal = 'Journal';
-  static const String Community = 'Community';
   static const String soundHealingUsesVibration =
       'Sound healing uses soothing vibrations to calm your nervous system, release tension, and restore inner balance.';
   static const String meditationTrainsYourMind =

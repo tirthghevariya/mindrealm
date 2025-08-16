@@ -40,7 +40,7 @@ class Community extends GetView<CommunityController> {
                 children: [
                   const SizedBox(height: 60),
                   Text(
-                    AppText.Community,
+                    AppText.community,
                     style: GoogleFonts.dmSerifDisplay(
                       fontSize: 36,
                       fontStyle: FontStyle.italic,

@@ -206,9 +206,7 @@ class SignUpScreen extends GetView<AuthController> {
                         width: double.infinity,
                         height: SizeConfig.getHeight(48),
                         child: OutlinedButton.icon(
-                          onPressed: () {
-                            // TODO: Implement Apple Sign In
-                          },
+                          onPressed: () {},
                           style: OutlinedButton.styleFrom(
                             backgroundColor: AppColors.white,
                             side: BorderSide(
@@ -255,10 +253,7 @@ class SignUpScreen extends GetView<AuthController> {
                         fontWeight: FontWeight.w400,
                         color: AppColors.black,
                       ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          // TODO: Navigate to Terms of Service
-                        },
+                      recognizer: TapGestureRecognizer()..onTap = () {},
                     ),
                     TextSpan(
                       text: AppText.and,
@@ -275,10 +270,7 @@ class SignUpScreen extends GetView<AuthController> {
                         fontWeight: FontWeight.w400,
                         color: AppColors.black,
                       ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          // TODO: Navigate to Privacy Policy
-                        },
+                      recognizer: TapGestureRecognizer()..onTap = () {},
                     ),
                   ],
                 ),

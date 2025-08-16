@@ -88,7 +88,7 @@ class _ProfileNotificationsScreenState
                     Navigator.pop(context);
                   },
                 );
-              }).toList(),
+              }),
             ],
           ),
         );
@@ -316,7 +316,7 @@ class _ProfileNotificationsScreenState
                                       fontWeight: FontWeight.w600,
                                       fontSize: SizeConfig.getWidth(14),
                                     ),
-                                  ),  
+                                  ),
                                 ),
                               ),
                             ),

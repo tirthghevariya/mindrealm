@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../routers/app_routes.dart';
 import '../../../utils/app_assets.dart';
@@ -38,7 +37,7 @@ class ReflectionOptionsScreen extends StatelessWidget {
                 SizedBox(height: SizeConfig.getHeight(24)),
 
                 // Daily Reflection Button
-                _OptionCard(
+                OptionCard(
                   imagePath: AppImages.reflaction1,
                   label: AppText.dailyReflection,
                   onTap: () {
@@ -50,21 +49,21 @@ class ReflectionOptionsScreen extends StatelessWidget {
                 SizedBox(height: SizeConfig.getHeight(16)),
 
                 // Weekly Reflection Button
-                _OptionCard(
+                OptionCard(
                   imagePath: AppImages.reflaction2,
                   label: AppText.weeklyReflection,
                   onTap: () {
-                    Get.toNamed(Routes.WeeklyReflection);
+                    Get.toNamed(Routes.weeklyReflection);
                   },
                 ),
                 SizedBox(height: SizeConfig.getHeight(16)),
 
                 // Wellbeing Overview Button
-                _OptionCard(
+                OptionCard(
                   imagePath: AppImages.reflaction3,
                   label: AppText.wellbeingOvervi,
                   onTap: () {
-                    Get.toNamed(Routes.WellBeingOverview);
+                    Get.toNamed(Routes.wellBeingOverview);
                   },
                 ),
                 SizedBox(height: SizeConfig.getHeight(16)),
@@ -77,13 +76,14 @@ class ReflectionOptionsScreen extends StatelessWidget {
   }
 }
 
-class _OptionCard extends StatelessWidget {
+class OptionCard extends StatelessWidget {
   final String imagePath;
   final String label;
   final VoidCallback onTap;
   final Color color;
 
-  _OptionCard({
+  const OptionCard({
+    super.key,
     required this.imagePath,
     required this.label,
     required this.onTap,
@@ -105,7 +105,7 @@ class _OptionCard extends StatelessWidget {
               width: double.infinity,
               fit: BoxFit.cover,
             ),
-            Container(
+            SizedBox(
               height: SizeConfig.getWidth(160),
               width: double.infinity,
             ),

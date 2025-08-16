@@ -16,7 +16,7 @@ import '../screens/bottom_nav/heals/sound_healing/sound_healing.dart';
 import '../screens/bottom_nav/home/home_description.dart';
 import '../screens/bottom_nav/profile/profile_notification.dart';
 import '../screens/bottom_nav/reflection/daily_reflection/daily_reflection_flow_screen.dart';
-import '../screens/bottom_nav/reflection/weeklyRefecation.dart';
+import '../screens/bottom_nav/reflection/weekly_reflection/weekly_refecation.dart';
 import '../screens/bottom_nav/reflection/reflection_overview/wellbeing_overview.dart';
 import '../screens/splash/quote_screen.dart';
 import 'app_routes.dart';
@@ -36,7 +36,7 @@ class AppPages {
             page: () => SignUpScreen(),
             binding: AuthBinding()),
         GetPage(
-          name: Routes.QuoteScreen,
+          name: Routes.quoteScreen,
           page: () => QuoteScreen(),
         ),
         GetPage(
@@ -44,7 +44,7 @@ class AppPages {
             page: () => BottomNavBar(),
             binding: BottomBarBunding()),
         GetPage(
-          name: Routes.GoalsOverviewScreen,
+          name: Routes.goalsOverviewScreen,
           page: () => GoalsOverviewScreen(),
         ),
         GetPage(
@@ -52,7 +52,7 @@ class AppPages {
             page: () => GoalDetailScreen(),
             binding: GoalDetailBunding()),
         GetPage(
-          name: Routes.ProfileNotificationsScreen,
+          name: Routes.profileNotificationsScreen,
           page: () => ProfileNotificationsScreen(),
         ),
         GetPage(
@@ -64,35 +64,36 @@ class AppPages {
           page: () => DailyGratitude(),
         ),
         GetPage(
-          name: Routes.WeeklyReflection,
+          name: Routes.weeklyReflection,
           page: () => WeeklyReflection(),
+          binding: WeeklyReflectionBinding(),
         ),
         GetPage(
-          name: Routes.AboutMindRealmScreen,
+          name: Routes.aboutMindRealmScreen,
           page: () => AboutMindRealmScreen(),
         ),
         GetPage(
-            name: Routes.WellBeingOverview,
+            name: Routes.wellBeingOverview,
             page: () => WellBeingOverview(),
             binding: WellBeingOverviewBinding()),
         GetPage(
-          name: Routes.SoundHealing,
+          name: Routes.soundHealing,
           page: () => SoundHealing(),
         ),
         GetPage(
-          name: Routes.GuidedMeditation,
+          name: Routes.guidedMeditation,
           page: () => GuidedMeditation(),
         ),
         GetPage(
-          name: Routes.MotivationalSpeech,
+          name: Routes.motivationalSpeech,
           page: () => MotivationalSpeech(),
         ),
         GetPage(
-          name: Routes.Affirmations,
+          name: Routes.affirmations,
           page: () => Affirmations(),
         ),
         GetPage(
-            name: Routes.Journal,
+            name: Routes.journal,
             page: () => Journal(),
             binding: JournalBinding()),
       ];

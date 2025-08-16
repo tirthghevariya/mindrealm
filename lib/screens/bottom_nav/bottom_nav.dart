@@ -3,14 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mindrealm/controllers/bottom_nev_controller.dart';
 
-import 'package:mindrealm/screens/bottom_nav/reflection/reflection.dart';
-
-import 'package:mindrealm/screens/bottom_nav/widgets/CustomBottomNavBar.dart';
-
-import 'community/community.dart';
-import 'goals_screen/goals_screen.dart';
-import 'heals/heal_menu/heal_menu.dart';
-import 'home/home_screen.dart';
+import 'package:mindrealm/screens/bottom_nav/widgets/custom_bottom_nav_bar.dart';
 
 // class BottomNavBar extends StatefulWidget {
 //   const BottomNavBar({super.key});

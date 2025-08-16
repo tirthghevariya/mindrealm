@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mindrealm/utils/app_assets.dart';
 import '../../../../routers/app_routes.dart';
@@ -11,13 +10,13 @@ import '../../../../utils/app_text.dart';
 class HealMenuScreen extends StatelessWidget {
   HealMenuScreen({super.key});
 
-  final List<_HealMenuItem> items = [
-    _HealMenuItem(title: AppText.soundHealing, image: AppImages.sound),
-    _HealMenuItem(title: AppText.guidedMeditation, image: AppImages.meditation),
-    _HealMenuItem(title: AppText.journaling, image: AppImages.journaling),
-    _HealMenuItem(
+  final List<HealMenuItem> items = [
+    HealMenuItem(title: AppText.soundHealing, image: AppImages.sound),
+    HealMenuItem(title: AppText.guidedMeditation, image: AppImages.meditation),
+    HealMenuItem(title: AppText.journaling, image: AppImages.journaling),
+    HealMenuItem(
         title: AppText.motivationalSpeech, image: AppImages.motivational),
-    _HealMenuItem(title: AppText.affirmations, image: AppImages.affirmoti),
+    HealMenuItem(title: AppText.affirmations, image: AppImages.affirmoti),
   ];
 
   @override
@@ -49,12 +48,12 @@ class HealMenuScreen extends StatelessWidget {
                   children: [
                     InkWell(
                         onTap: () {
-                          Get.toNamed(Routes.SoundHealing);
+                          Get.toNamed(Routes.soundHealing);
                         },
                         child: _buildCard(items[0])),
                     InkWell(
                         onTap: () {
-                          Get.toNamed(Routes.GuidedMeditation);
+                          Get.toNamed(Routes.guidedMeditation);
                         },
                         child: _buildCard(items[1])),
                   ],
@@ -64,9 +63,9 @@ class HealMenuScreen extends StatelessWidget {
                 ),
                 InkWell(
                     onTap: () {
-                      Get.toNamed(Routes.Journal);
+                      Get.toNamed(Routes.journal);
                     },
-                    child: _HorizontalbuildCard(items[2])),
+                    child: horizontalbuildCard(items[2])),
                 SizedBox(
                   height: SizeConfig.getHeight(10),
                 ),
@@ -75,12 +74,12 @@ class HealMenuScreen extends StatelessWidget {
                   children: [
                     InkWell(
                         onTap: () {
-                          Get.toNamed(Routes.MotivationalSpeech);
+                          Get.toNamed(Routes.motivationalSpeech);
                         },
                         child: _buildCard(items[3])),
                     InkWell(
                       onTap: () {
-                        Get.toNamed(Routes.Affirmations);
+                        Get.toNamed(Routes.affirmations);
                       },
                       child: _buildCard(items[4]),
                     ),
@@ -94,7 +93,7 @@ class HealMenuScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCard(_HealMenuItem item) {
+  Widget _buildCard(HealMenuItem item) {
     return Container(
       height: SizeConfig.getWidth(191),
       width: SizeConfig.getWidth(173),
@@ -129,7 +128,7 @@ class HealMenuScreen extends StatelessWidget {
     );
   }
 
-  Widget _HorizontalbuildCard(_HealMenuItem item) {
+  Widget horizontalbuildCard(HealMenuItem item) {
     return Container(
       height: SizeConfig.getWidth(191),
       width: SizeConfig.screenWidth,
@@ -162,11 +161,11 @@ class HealMenuScreen extends StatelessWidget {
   }
 }
 
-class _HealMenuItem {
+class HealMenuItem {
   final String title;
   final String image;
 
-  const _HealMenuItem({
+  const HealMenuItem({
     required this.title,
     required this.image,
   });

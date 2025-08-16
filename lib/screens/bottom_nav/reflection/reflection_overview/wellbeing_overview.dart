@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:mindrealm/controllers/reflection_controllers/reflection_overview_controller.dart';
+import 'package:mindrealm/models/weekly_reflection_model.dart';
 import '../../../../utils/app_assets.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_size_config.dart';
@@ -390,45 +391,50 @@ class WellBeingOverview extends GetView<WellBeingOverviewController> {
 
                         Center(
                           child: Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.whiteAccent2,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: SizeConfig.screenWidth * .6,
-                                        height: SizeConfig.screenHeight * .65,
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 35,
-                                              top: 35), // Reduced left padding
-                                          child: GridView.builder(
-                                            itemCount: 30,
+                            decoration: BoxDecoration(
+                              color: AppColors.whiteAccent2,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: SizeConfig.screenWidth * .6,
+                                      height: SizeConfig.screenHeight * .65,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16, right: 16, top: 0),
+                                        child: Obx(() {
+                                          return GridView.builder(
+                                            itemCount: controller
+                                                .last30DaysdailyReflectionData
+                                                .length,
                                             shrinkWrap: true,
                                             physics:
-                                                NeverScrollableScrollPhysics(),
+                                                const NeverScrollableScrollPhysics(),
                                             gridDelegate:
-                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
                                               crossAxisCount: 2,
                                               childAspectRatio: 4,
-                                              crossAxisSpacing:
-                                                  60, // More spacing between columns
-                                              mainAxisSpacing:
-                                                  16, // More spacing between rows
+                                              crossAxisSpacing: 60,
+                                              mainAxisSpacing: 16,
                                             ),
                                             itemBuilder: (context, index) {
+                                              final entry = controller
+                                                      .last30DaysdailyReflectionData[
+                                                  index];
                                               return InkWell(
                                                 onTap: () {
-                                                  // Get.toNamed(
-                                                  //     Routes.DailyGratitude);
+                                                  // Navigate to daily gratitude details
+                                                  // Get.toNamed(Routes.DailyGratitude, arguments: entry);
                                                 },
                                                 child: Text(
-                                                  "Gratitude",
+                                                  entry?.feelingWord ?? '',
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: GoogleFonts.openSans(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w700,
@@ -437,44 +443,49 @@ class WellBeingOverview extends GetView<WellBeingOverviewController> {
                                                 ),
                                               );
                                             },
+                                          );
+                                        }),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          right: SizeConfig.getWidth(10)),
+                                      child: RotatedBox(
+                                        quarterTurns: -45,
+                                        child: Center(
+                                          child: Text(
+                                            AppText.share,
+                                            style: GoogleFonts.openSans(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColors.brown,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            right: SizeConfig.getWidth(10)),
-                                        child: RotatedBox(
-                                            quarterTurns: -45,
-                                            child: Center(
-                                              child: Text(AppText.share,
-                                                  style: GoogleFonts.openSans(
-                                                      fontSize: 10,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color: AppColors.brown)),
-                                            )),
-                                      )
-                                    ],
+                                    )
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 27, bottom: 27),
+                                  child: Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Obx(() => Text(
+                                          "${controller.last30DaysdailyReflectionData.length} ${AppText.allCounts}",
+                                          textAlign: TextAlign.right,
+                                          style: GoogleFonts.dmSerifDisplay(
+                                            fontSize: 20,
+                                            fontStyle: FontStyle.italic,
+                                            color: AppColors.brown,
+                                            height: 1,
+                                          ),
+                                        )),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 27, bottom: 27),
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: Text(
-                                        AppText.allCounts,
-                                        textAlign: TextAlign.right,
-                                        style: GoogleFonts.dmSerifDisplay(
-                                          fontSize: 20,
-                                          fontStyle: FontStyle.italic,
-                                          color: AppColors.brown,
-                                          height: 1, // reduced line height
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         Center(
                           child: Image.asset(
@@ -496,7 +507,128 @@ class WellBeingOverview extends GetView<WellBeingOverviewController> {
   }
 }
 
-class CategoryLineChart extends StatelessWidget {
+class LifeScoreBarChart extends GetView<WellBeingOverviewController> {
+  const LifeScoreBarChart({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 380,
+      height: 356,
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 24, bottom: 16),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.95),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Obx(() {
+        if (controller.isLoadingWeeklyData.value) {
+          return const Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(AppColors.brown),
+            ),
+          );
+        }
+
+        if (controller.weeklyReflectionData.isEmpty) {
+          return const Center(
+            child: Text(
+              "No weekly reflection data available",
+              style: TextStyle(
+                fontSize: 14,
+                color: AppColors.brown,
+              ),
+            ),
+          );
+        }
+
+        // Get current month's data or latest available data
+        final currentMonthData = controller.getCurrentMonthWeeklyData();
+        final averageScores =
+            controller.getAverageScoresByCategory(currentMonthData);
+
+        return BarChart(
+          BarChartData(
+            maxY: 10,
+            minY: 0,
+            groupsSpace: 20,
+            barTouchData: BarTouchData(enabled: false),
+            titlesData: FlTitlesData(
+              leftTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  interval: 2,
+                  reservedSize: 30,
+                  getTitlesWidget: (value, _) => Text(
+                    value.toInt().toString(),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.black,
+                    ),
+                  ),
+                ),
+              ),
+              rightTitles: AxisTitles(
+                sideTitles: SideTitles(showTitles: false),
+              ),
+              topTitles: AxisTitles(
+                sideTitles: SideTitles(showTitles: false),
+              ),
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  getTitlesWidget: (value, _) {
+                    const labels = [
+                      'Health',
+                      'Love',
+                      'Family',
+                      'Career',
+                      'Friends',
+                      'Self'
+                    ];
+                    if (value.toInt() < labels.length) {
+                      return Text(
+                        labels[value.toInt()],
+                        style: const TextStyle(
+                            fontSize: 12, color: AppColors.black),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ),
+            ),
+            gridData: FlGridData(show: false),
+            borderData: FlBorderData(show: false),
+            barGroups: [
+              _makeBar(0, averageScores['health'] ?? 0),
+              _makeBar(1, averageScores['love'] ?? 0),
+              _makeBar(2, averageScores['family'] ?? 0),
+              _makeBar(3, averageScores['career'] ?? 0),
+              _makeBar(4, averageScores['friendships'] ?? 0),
+              _makeBar(5, averageScores['yourself'] ?? 0),
+            ],
+          ),
+        );
+      }),
+    );
+  }
+
+  BarChartGroupData _makeBar(int x, double y) {
+    return BarChartGroupData(
+      x: x,
+      barRods: [
+        BarChartRodData(
+          toY: y,
+          width: 20,
+          borderRadius: BorderRadius.circular(4),
+          color: AppColors.brown,
+        ),
+      ],
+    );
+  }
+}
+
+class CategoryLineChart extends GetView<WellBeingOverviewController> {
   const CategoryLineChart({super.key});
 
   @override
@@ -509,113 +641,128 @@ class CategoryLineChart extends StatelessWidget {
         color: Colors.white.withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildLegend(),
-          const SizedBox(height: 16),
-          Expanded(
-            child: LineChart(
-              LineChartData(
-                minY: 0,
-                maxY: 10,
-                gridData: FlGridData(
-                  show: true,
-                  drawVerticalLine: false,
-                  horizontalInterval: 1,
-                  getDrawingHorizontalLine: (value) => FlLine(
-                    color: Colors.grey.withValues(alpha: 0.2),
-                    strokeWidth: 1,
+      child: Obx(() {
+        if (controller.isLoadingWeeklyData.value) {
+          return const Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(AppColors.brown),
+            ),
+          );
+        }
+
+        if (controller.weeklyReflectionData.isEmpty) {
+          return const Center(
+            child: Text(
+              "No weekly reflection data available",
+              style: TextStyle(
+                fontSize: 14,
+                color: AppColors.brown,
+              ),
+            ),
+          );
+        }
+
+        // Get trend data for last 4-8 weeks
+        Map<String, List<double>> trendData =
+            controller.getCategoryTrendData(6);
+        List<WeeklyReflectionDocument> recentWeeks =
+            controller.getLastNWeeksData(6);
+        recentWeeks = recentWeeks.reversed.toList(); // Oldest first
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildLegend(),
+            const SizedBox(height: 16),
+            Expanded(
+              child: LineChart(
+                LineChartData(
+                  minY: 0,
+                  maxY: 10,
+                  gridData: FlGridData(
+                    show: true,
+                    drawVerticalLine: false,
+                    horizontalInterval: 1,
+                    getDrawingHorizontalLine: (value) => FlLine(
+                      color: Colors.grey.withValues(alpha: 0.2),
+                      strokeWidth: 1,
+                    ),
                   ),
-                ),
-                titlesData: FlTitlesData(
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      interval: 2,
-                      reservedSize: 30,
-                      getTitlesWidget: (value, _) => Text(
-                        value.toInt().toString(),
-                        style: const TextStyle(
-                            fontSize: 12, color: AppColors.brown),
+                  titlesData: FlTitlesData(
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        interval: 2,
+                        reservedSize: 30,
+                        getTitlesWidget: (value, _) => Text(
+                          value.toInt().toString(),
+                          style: const TextStyle(
+                              fontSize: 12, color: AppColors.brown),
+                        ),
+                      ),
+                    ),
+                    rightTitles:
+                        AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    topTitles:
+                        AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        interval: 1,
+                        getTitlesWidget: (value, _) {
+                          final index = value.toInt();
+                          if (index >= 0 && index < recentWeeks.length) {
+                            // Extract week number from yearWeek (e.g., "2025_33" -> "W33")
+                            List<String> parts =
+                                recentWeeks[index].yearWeek.split('_');
+                            if (parts.length >= 2) {
+                              return Text(
+                                'W${parts[1]}',
+                                style: const TextStyle(
+                                    fontSize: 10, color: Colors.grey),
+                              );
+                            }
+                          }
+                          return const SizedBox.shrink();
+                        },
                       ),
                     ),
                   ),
-                  rightTitles:
-                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  topTitles:
-                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  // bottomTitles: AxisTitles(
-                  //   sideTitles: SideTitles(
-                  //     showTitles: true,
-                  //     getTitlesWidget: (value, _) => const Text(
-                  //       "Month",
-                  //       style: TextStyle(fontSize: 12, color: Colors.grey),
-                  //     ),
-                  //   ),
-                  // ),
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      interval: 1,
-                      getTitlesWidget: (value, _) {
-                        // Define month labels based on the index
-                        const months = ['Jun', 'Jul', 'Aug', 'Sept'];
-
-                        // Round the value to index
-                        final index = value.toInt();
-
-                        if (index >= 0 && index < months.length) {
-                          return Text(
-                            months[index],
-                            style: const TextStyle(
-                                fontSize: 12, color: Colors.grey),
-                          );
-                        } else {
-                          return const SizedBox
-                              .shrink(); // empty for invalid indexes
-                        }
-                      },
-                    ),
-                  ),
+                  lineBarsData: [
+                    _makeLine(trendData['love'] ?? [], AppColors.brown, "Love"),
+                    _makeLine(
+                        trendData['family'] ?? [], AppColors.primary, "Family"),
+                    _makeLine(trendData['career'] ?? [], AppColors.textYellow,
+                        "Career"),
+                    _makeLine(trendData['friendships'] ?? [], AppColors.grey,
+                        "Friends"),
+                    _makeLine(
+                        trendData['yourself'] ?? [], AppColors.green, "Self"),
+                    _makeLine(trendData['health'] ?? [], AppColors.textPurple,
+                        "Health"),
+                  ],
                 ),
-                lineBarsData: [
-                  _makeLine([
-                    2,
-                    3,
-                    3,
-                    6,
-                  ], AppColors.brown, "Love"),
-                  _makeLine([
-                    4,
-                    4,
-                    5,
-                    5,
-                  ], AppColors.primary, "Family"),
-                  _makeLine([
-                    4,
-                    5,
-                    6,
-                    7,
-                  ], AppColors.textYellow, "Career"),
-                  _makeLine([10, 8, 8, 9], AppColors.grey, "Friends"),
-                  _makeLine([
-                    5,
-                    6,
-                    6,
-                    7,
-                  ], AppColors.green, "Self"),
-                  _makeLine([4, 8, 6, 8], AppColors.textPurple, "Health"),
-                ],
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      }),
     );
   }
 
   LineChartBarData _makeLine(List<double> values, Color color, String label) {
+    if (values.isEmpty) {
+      return LineChartBarData(
+        spots: [],
+        isCurved: true,
+        color: color,
+        barWidth: 3,
+        isStrokeCapRound: true,
+        belowBarData: BarAreaData(show: false),
+        dotData: FlDotData(show: false),
+      );
+    }
+
     return LineChartBarData(
       spots:
           List.generate(values.length, (i) => FlSpot(i.toDouble(), values[i])),
@@ -624,7 +771,16 @@ class CategoryLineChart extends StatelessWidget {
       barWidth: 3,
       isStrokeCapRound: true,
       belowBarData: BarAreaData(show: false),
-      dotData: FlDotData(show: true),
+      dotData: FlDotData(
+        show: true,
+        checkToShowDot: (spot, _) => true,
+        getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
+          radius: 3,
+          color: color,
+          strokeWidth: 1,
+          strokeColor: Colors.white,
+        ),
+      ),
     );
   }
 
@@ -633,12 +789,12 @@ class CategoryLineChart extends StatelessWidget {
       spacing: 16,
       runSpacing: 8,
       children: [
-        _legendItem(Colors.brown, 'Love'),
-        _legendItem(Colors.orange, 'Family'),
-        _legendItem(Colors.blue, 'Friends'),
-        _legendItem(Colors.yellow, 'Career'),
-        _legendItem(Colors.green, 'Self'),
-        _legendItem(Colors.purple, 'Health'),
+        _legendItem(AppColors.brown, 'Love'),
+        _legendItem(AppColors.primary, 'Family'),
+        _legendItem(AppColors.grey, 'Friends'),
+        _legendItem(AppColors.textYellow, 'Career'),
+        _legendItem(AppColors.green, 'Self'),
+        _legendItem(AppColors.textPurple, 'Health'),
       ],
     );
   }
@@ -655,96 +811,6 @@ class CategoryLineChart extends StatelessWidget {
         Text(
           text,
           style: const TextStyle(fontSize: 12, color: Colors.black),
-        ),
-      ],
-    );
-  }
-}
-
-class LifeScoreBarChart extends StatelessWidget {
-  const LifeScoreBarChart({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 380,
-      height: 356,
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 24, bottom: 16),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.95),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: BarChart(
-        BarChartData(
-          maxY: 10,
-          minY: 0,
-          groupsSpace: 20,
-          barTouchData: BarTouchData(enabled: false),
-          titlesData: FlTitlesData(
-            leftTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                interval: 2,
-                reservedSize: 30,
-                getTitlesWidget: (value, _) => Text(
-                  value.toInt().toString(),
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.black,
-                  ),
-                ),
-              ),
-            ),
-            rightTitles: AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-            topTitles: AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                getTitlesWidget: (value, _) {
-                  const labels = [
-                    'Health',
-                    'Love',
-                    'Family',
-                    'Career',
-                    'Friends',
-                    'Self'
-                  ];
-                  return Text(
-                    labels[value.toInt()],
-                    style: TextStyle(fontSize: 12, color: AppColors.black),
-                  );
-                },
-              ),
-            ),
-          ),
-          gridData: FlGridData(show: false),
-          borderData: FlBorderData(show: false),
-          barGroups: [
-            _makeBar(0, 8),
-            _makeBar(1, 6),
-            _makeBar(2, 10),
-            _makeBar(3, 8),
-            _makeBar(4, 5),
-            _makeBar(5, 7),
-          ],
-        ),
-      ),
-    );
-  }
-
-  BarChartGroupData _makeBar(int x, double y) {
-    return BarChartGroupData(
-      x: x,
-      barRods: [
-        BarChartRodData(
-          toY: y,
-          width: 20,
-          borderRadius: BorderRadius.circular(4),
-          color: AppColors.brown,
         ),
       ],
     );

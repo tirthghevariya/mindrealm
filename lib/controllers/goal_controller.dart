@@ -2,13 +2,11 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:carousel_slider/carousel_options.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mindrealm/controllers/current_user_controller.dart';
 import 'package:mindrealm/models/gole_model.dart';
 import 'package:mindrealm/utils/app_assets.dart';
 import 'package:mindrealm/utils/collection.dart';
-import 'package:mindrealm/widgets/common_loader.dart';
 
 class GoalController extends GetxController {
   CurrentUserController currentUserController =

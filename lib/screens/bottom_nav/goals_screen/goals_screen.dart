@@ -62,7 +62,7 @@ class GoalsMenuScreen extends GetView<GoalController> {
                           /// Slideshow Container
                           InkWell(
                             onTap: () {
-                              Get.toNamed(Routes.GoalsOverviewScreen);
+                              Get.toNamed(Routes.goalsOverviewScreen);
                             },
                             child: Container(
                               height: SizeConfig.getHeight(290),

@@ -6,8 +6,7 @@ import 'package:mindrealm/screens/bottom_nav/community/community.dart';
 import 'package:mindrealm/screens/bottom_nav/goals_screen/goals_screen.dart';
 import 'package:mindrealm/screens/bottom_nav/heals/heal_menu/heal_menu.dart';
 import 'package:mindrealm/screens/bottom_nav/home/home_screen.dart';
-import 'package:mindrealm/screens/bottom_nav/reflection/daily_reflection/daily_reflection_flow_screen.dart';
-import 'package:mindrealm/screens/bottom_nav/reflection/reflection.dart';
+import 'package:mindrealm/screens/bottom_nav/reflection/reflection_screen.dart';
 
 class BottomNevController extends GetxController {
   RxInt selectedIndex = 0.obs;

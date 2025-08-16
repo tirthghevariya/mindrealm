@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mindrealm/controllers/home_controller.dart';
-import 'package:share_plus/share_plus.dart';
 import '../../../routers/app_routes.dart';
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
@@ -42,7 +40,7 @@ class HomeScreen extends GetView<HomeController> {
                         children: [
                           InkWell(
                               onTap: () {
-                                Get.toNamed(Routes.ProfileNotificationsScreen);
+                                Get.toNamed(Routes.profileNotificationsScreen);
                               },
                               child: Image.asset(
                                 AppImages.person,
@@ -84,7 +82,7 @@ class HomeScreen extends GetView<HomeController> {
                     Center(
                       child: InkWell(
                         onTap: () {
-                          Get.toNamed(Routes.QuoteScreen);
+                          Get.toNamed(Routes.quoteScreen);
                         },
                         child: Container(
                           height: SizeConfig.getHeight(286),
@@ -152,7 +150,7 @@ class HomeScreen extends GetView<HomeController> {
                     Center(
                         child: InkWell(
                       onTap: () {
-                        Get.toNamed(Routes.AboutMindRealmScreen);
+                        Get.toNamed(Routes.aboutMindRealmScreen);
                       },
                       child: Image.asset(
                         AppImages.circleChart,
@@ -165,7 +163,7 @@ class HomeScreen extends GetView<HomeController> {
 
                     // Learn more
                     Center(
-                      child: Container(
+                      child: SizedBox(
                         width: SizeConfig.getWidth(209),
                         child: Column(
                           children: [
@@ -182,7 +180,7 @@ class HomeScreen extends GetView<HomeController> {
                             ),
                             TextButton(
                               onPressed: () {
-                                Get.toNamed(Routes.AboutMindRealmScreen);
+                                Get.toNamed(Routes.aboutMindRealmScreen);
                               },
                               child: Text(
                                 AppText.learnMore2,
@@ -206,7 +204,7 @@ class HomeScreen extends GetView<HomeController> {
                     SizedBox(height: SizeConfig.getHeight(30)),
 
                     // Overview Title
-                    Container(
+                    SizedBox(
                       width: SizeConfig.getWidth(250),
                       child: Text(
                         AppText.generalOverviewTitle,
@@ -348,7 +346,7 @@ class HomeScreen extends GetView<HomeController> {
                     Center(
                       child: TextButton(
                         onPressed: () {
-                          Get.toNamed(Routes.WellBeingOverview);
+                          Get.toNamed(Routes.wellBeingOverview);
                         },
                         child: Text(
                           AppText.wellbeingOverview,

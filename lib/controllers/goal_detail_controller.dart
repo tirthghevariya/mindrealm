@@ -7,6 +7,7 @@ import 'package:mindrealm/models/gole_model.dart';
 import 'package:mindrealm/models/user_model.dart';
 import 'package:mindrealm/utils/app_assets.dart';
 import 'package:mindrealm/utils/collection.dart';
+import 'package:mindrealm/widgets/common_tost.dart';
 import '../../../utils/app_colors.dart';
 
 class GoalDetailController extends GetxController
@@ -74,16 +75,13 @@ class GoalDetailController extends GetxController
         goalsData.value = GoalsModel.fromFirestore(doc);
         fillControllersForCurrentTab();
       } else {
-        controllers.forEach((c) => c.clear());
+        for (var c in controllers) {
+          c.clear();
+        }
       }
     } catch (e) {
       log("Error loading goal data: $e");
-      Get.snackbar(
-        'Error',
-        'Failed to load goal data',
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
-      );
+      showToast('Failed to load goal data', err: true);
     } finally {}
   }
 
@@ -165,21 +163,10 @@ class GoalDetailController extends GetxController
           category.improveOn = fieldValue;
           break;
       }
-
-      Get.snackbar(
-        'Success',
-        'Field updated successfully',
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      showToast('Field updated successfully');
     } catch (e) {
       log("Error saving field data: $e");
-      Get.snackbar(
-        'Error',
-        'Failed to save field data',
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
-      );
+      showToast('Failed to save field data', err: true);
     }
   }
 }

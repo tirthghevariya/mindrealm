@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mindrealm/screens/bottom_nav/heals/sound_healing/widgets/audiowave.dart';
-import 'package:mindrealm/screens/bottom_nav/reflection/daily_reflection/daily_reflection_flow_screen.dart';
 import 'package:mindrealm/utils/app_sounds.dart';
 import 'package:mindrealm/utils/app_style.dart';
 
@@ -12,8 +11,8 @@ import '../../../../utils/app_text.dart';
 import '../../community/community.dart';
 import '../../goals_screen/goals_screen.dart';
 import '../../home/home_screen.dart';
-import '../../reflection/reflection.dart';
-import '../../widgets/CustomBottomNavBar.dart';
+import '../../reflection/reflection_screen.dart';
+import '../../widgets/custom_bottom_nav_bar.dart';
 
 class Affirmations extends StatefulWidget {
   const Affirmations({super.key});

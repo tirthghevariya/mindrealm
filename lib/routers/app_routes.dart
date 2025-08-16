@@ -3,19 +3,19 @@ abstract class Routes {
   static const loginScreen = "/loginScreen";
   static const signUpScreen = "/signUpScreen";
 
-  static const QuoteScreen = "/QuoteScreen";
+  static const quoteScreen = "/quoteScreen";
   static const bottomNavBar = "/bottomNavBar";
-  static const GoalsOverviewScreen = "/GoalsOverviewScreen";
+  static const goalsOverviewScreen = "/goalsOverviewScreen";
   static const goalDetailScreen = "/goalDetailScreen";
-  static const ProfileNotificationsScreen = "/ProfileNotificationsScreen";
-  static const AboutMindRealmScreen = "/AboutMindRealmScreen";
-  static const WellBeingOverview = "/WellBeingOverview";
-  static const SoundHealing = "/SoundHealing";
-  static const GuidedMeditation = "/GuidedMeditation";
-  static const MotivationalSpeech = "/MotivationalSpeech";
-  static const Affirmations = "/Affirmations";
-  static const Journal = "/Journal";
-  static const WeeklyReflection = "/WeeklyReflection";
+  static const profileNotificationsScreen = "/profileNotificationsScreen";
+  static const aboutMindRealmScreen = "/aboutMindRealmScreen";
+  static const wellBeingOverview = "/wellBeingOverview";
+  static const soundHealing = "/soundHealing";
+  static const guidedMeditation = "/guidedMeditation";
+  static const motivationalSpeech = "/motivationalSpeech";
+  static const affirmations = "/affirmations";
+  static const journal = "/journal";
+  static const weeklyReflection = "/weeklyReflection";
   static const dailyGratitude = "/dailyGratitude";
   static const dailyReflectionScreen = "/dailyReflectionScreen";
 }

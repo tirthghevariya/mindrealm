@@ -7,7 +7,6 @@ import 'package:mindrealm/controllers/home_controller.dart';
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_size_config.dart';
-import '../../../utils/app_text.dart';
 
 class QuoteScreen extends GetView<HomeController> {
   const QuoteScreen({super.key});
@@ -94,7 +93,7 @@ class QuoteScreen extends GetView<HomeController> {
 
                   // Author
                   Text(
-                    "- ${controller.todayQuote.value?.by}" ?? "",
+                    "- ${controller.todayQuote.value?.by ?? ""}",
                     style: GoogleFonts.openSans(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
@@ -114,9 +113,7 @@ class QuoteScreen extends GetView<HomeController> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  onPressed: () {
-                    // TODO: Add Instagram share logic
-                  },
+                  onPressed: () {},
                   icon: SvgPicture.asset(
                     AppImages
                         .instagramIcon, // e.g., 'assets/icons/instagram.svg'
@@ -126,9 +123,7 @@ class QuoteScreen extends GetView<HomeController> {
                 ),
                 SizedBox(width: 16),
                 IconButton(
-                  onPressed: () {
-                    // TODO: Add TikTok share logic
-                  },
+                  onPressed: () {},
                   icon: SvgPicture.asset(
                     AppImages.tiktokIcon,
                     width: 32,
@@ -137,9 +132,7 @@ class QuoteScreen extends GetView<HomeController> {
                 ),
                 SizedBox(width: 16),
                 IconButton(
-                  onPressed: () {
-                    // TODO: Add Facebook share logic
-                  },
+                  onPressed: () {},
                   icon: SvgPicture.asset(
                     AppImages.facebookIcon,
                     width: 32,
