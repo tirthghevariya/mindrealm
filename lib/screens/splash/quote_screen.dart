@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mindrealm/controllers/home_controller.dart';
+import 'package:mindrealm/widgets/common_tost.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
@@ -114,8 +118,13 @@ class QuoteScreen extends GetView<HomeController> {
               children: [
                 IconButton(
                   onPressed: () async {
-                    await controller.shareQuote();
-                    // await controller.shareQuote();
+                    const message = "Hello from Flutter 🚀 #flutter";
+
+                    await Clipboard.setData(const ClipboardData(text: message));
+
+                    final Uri uri = Uri.parse(
+                        "https://www.instagram.com//send?text=gahjdgakshg");
+                    await launchUrl(uri, mode: LaunchMode.externalApplication);
                   },
                   icon: SvgPicture.asset(
                     AppImages
@@ -127,7 +136,21 @@ class QuoteScreen extends GetView<HomeController> {
                 SizedBox(width: 16),
                 IconButton(
                   onPressed: () async {
-                    await controller.shareQuote();
+                    // Copy message to clipboard
+                    await Clipboard.setData(ClipboardData(
+                        text:
+                            "${controller.todayQuote.value?.quote ?? ""} - ${controller.todayQuote.value?.by ?? ""}"));
+
+                    // Open TikTok app
+                    final Uri tiktok = Uri.parse("snssdk1233://");
+                    if (await canLaunchUrl(tiktok)) {
+                      await launchUrl(tiktok,
+                          mode: LaunchMode.externalApplication);
+                      debugPrint(
+                          "TikTok opened. Message copied, user can paste in DM.");
+                    } else {
+                      showToast("TikTok not installed!", err: true);
+                    }
                   },
                   icon: SvgPicture.asset(
                     AppImages.tiktokIcon,
@@ -138,7 +161,11 @@ class QuoteScreen extends GetView<HomeController> {
                 SizedBox(width: 16),
                 IconButton(
                   onPressed: () async {
-                    await controller.shareQuote();
+                    final Uri fbUri = Uri.parse(
+                        "https://www.facebook.com/sharer/sharer.php?u=${controller.todayQuote.value?.quote ?? ""} - ${controller.todayQuote.value?.by ?? ""}");
+
+                    await launchUrl(fbUri,
+                        mode: LaunchMode.externalApplication);
                   },
                   icon: SvgPicture.asset(
                     AppImages.facebookIcon,

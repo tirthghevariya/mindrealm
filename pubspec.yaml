@@ -52,8 +52,9 @@ dependencies:
   cached_network_image: ^3.4.1
   carousel_slider: ^5.1.1
   share_plus: ^11.1.0
-  appinio_social_share: ^0.3.2
-  path_provider: ^2.1.5
+  # appinio_social_share: ^0.3.2
+  # path_provider: ^2.1.5
+  url_launcher: ^6.3.2
 
 
 dev_dependencies:
