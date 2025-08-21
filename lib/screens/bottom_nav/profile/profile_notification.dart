@@ -108,228 +108,227 @@ class _ProfileNotificationsScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              AppImages.profilebg,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: SizeConfig.getWidth(20),
-              vertical: SizeConfig.getHeight(24),
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: SizeConfig.getHeight(12)),
-                  IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: Icon(Icons.arrow_back,
-                        color: AppColors.brown, size: 32),
-                  ),
-                  SizedBox(height: SizeConfig.getHeight(12)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+      body: Container(
+        height: double.infinity,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          image: AssetImage(AppImages.profilebg),
+          fit: BoxFit.fill,
+        )),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  top: statusBarSize + Get.width * 0.02,
+                  left: 8,
+                  right: 8,
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon:
+                      Icon(Icons.arrow_back, color: AppColors.brown, size: 32),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      AppText.profile,
+                      style: GoogleFonts.dmSerifDisplay(
+                        fontSize: SizeConfig.getWidth(24),
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.brown,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                    SizedBox(height: SizeConfig.getHeight(16)),
+                    _editableField(AppText.name, name, nameController),
+                    SizedBox(height: SizeConfig.getHeight(18)),
+                    _editableField(AppText.email, email, emailController),
+                    SizedBox(height: SizeConfig.getHeight(18)),
+                    _editableField(
+                        AppText.birthday, birthday, birthdayController),
+                    SizedBox(height: SizeConfig.getHeight(18)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          AppText.profile,
-                          style: GoogleFonts.dmSerifDisplay(
-                            fontSize: SizeConfig.getWidth(24),
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.brown,
-                            fontStyle: FontStyle.italic,
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              isEditing = true;
+                              nameController.text = name;
+                              emailController.text = email;
+                              birthdayController.text = birthday;
+                            });
+                          },
+                          child: Text(
+                            AppText.editInfo,
+                            style: GoogleFonts.openSans(
+                              fontSize: SizeConfig.getWidth(14),
+                              color: AppColors.brown,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
-                        SizedBox(height: SizeConfig.getHeight(16)),
-                        _editableField(AppText.name, name, nameController),
-                        SizedBox(height: SizeConfig.getHeight(18)),
-                        _editableField(AppText.email, email, emailController),
-                        SizedBox(height: SizeConfig.getHeight(18)),
-                        _editableField(
-                            AppText.birthday, birthday, birthdayController),
-                        SizedBox(height: SizeConfig.getHeight(18)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  isEditing = true;
-                                  nameController.text = name;
-                                  emailController.text = email;
-                                  birthdayController.text = birthday;
-                                });
-                              },
+                        if (isEditing) ...[
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                name = nameController.text;
+                                email = emailController.text;
+                                birthday = birthdayController.text;
+                                isEditing = false;
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 4),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: AppColors.brown,
+                              ),
                               child: Text(
-                                AppText.editInfo,
+                                "Save",
                                 style: GoogleFonts.openSans(
-                                  fontSize: SizeConfig.getWidth(14),
-                                  color: AppColors.brown,
-                                  decoration: TextDecoration.underline,
+                                  fontSize: SizeConfig.getWidth(12),
+                                  color: AppColors.white,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
-                            if (isEditing) ...[
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    name = nameController.text;
-                                    email = emailController.text;
-                                    birthday = birthdayController.text;
-                                    isEditing = false;
-                                  });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(100),
-                                    color: AppColors.brown,
-                                  ),
-                                  child: Text(
-                                    "Save",
-                                    style: GoogleFonts.openSans(
-                                      fontSize: SizeConfig.getWidth(12),
-                                      color: AppColors.white,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                        SizedBox(height: SizeConfig.getHeight(24)),
-                        Text(
-                          AppText.changePassword,
-                          style: GoogleFonts.openSans(
-                            fontSize: SizeConfig.getWidth(14),
-                            color: AppColors.brown,
-                            fontWeight: FontWeight.w700,
+                          ),
+                        ],
+                      ],
+                    ),
+                    SizedBox(height: SizeConfig.getHeight(24)),
+                    Text(
+                      AppText.changePassword,
+                      style: GoogleFonts.openSans(
+                        fontSize: SizeConfig.getWidth(14),
+                        color: AppColors.brown,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(height: SizeConfig.getHeight(60)),
+                    Text(
+                      AppText.notifications,
+                      style: GoogleFonts.playfairDisplay(
+                        fontSize: SizeConfig.getWidth(22),
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        color: AppColors.brown,
+                      ),
+                    ),
+                    SizedBox(height: SizeConfig.getHeight(26)),
+                    _toggleTile(AppText.dailyReminder),
+                    _toggleTile(AppText.weeklyReminder),
+                    _toggleTile(AppText.checkGoals),
+                    _toggleTile(AppText.healSession),
+                    SizedBox(height: SizeConfig.getHeight(20)),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Container(
+                    //       width: SizeConfig.getWidth(230),
+                    //       child: Text(
+                    //         AppText.chooseDay,
+                    //         style: GoogleFonts.openSans(
+                    //           fontSize: SizeConfig.getWidth(14),
+                    //           color: AppColors.brown,
+                    //           fontWeight: FontWeight.w700,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Text(
+                    //       AppText.choose,
+                    //       style: GoogleFonts.openSans(
+                    //         fontSize: SizeConfig.getWidth(14),
+                    //         color: AppColors.brown,
+                    //         decoration: TextDecoration.underline,
+                    //         fontWeight: FontWeight.w600,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: SizeConfig.getWidth(230),
+                          child: Text(
+                            AppText.chooseDay,
+                            style: GoogleFonts.openSans(
+                              fontSize: SizeConfig.getWidth(14),
+                              color: AppColors.brown,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
-                        SizedBox(height: SizeConfig.getHeight(60)),
-                        Text(
-                          AppText.notifications,
-                          style: GoogleFonts.playfairDisplay(
-                            fontSize: SizeConfig.getWidth(22),
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                            color: AppColors.brown,
+                        InkWell(
+                          onTap: _showWeekdayPicker,
+                          child: Text(
+                            selectedWeekday,
+                            style: GoogleFonts.openSans(
+                              fontSize: SizeConfig.getWidth(14),
+                              color: AppColors.brown,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: SizeConfig.getHeight(26)),
-                        _toggleTile(AppText.dailyReminder),
-                        _toggleTile(AppText.weeklyReminder),
-                        _toggleTile(AppText.checkGoals),
-                        _toggleTile(AppText.healSession),
-                        SizedBox(height: SizeConfig.getHeight(20)),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [
-                        //     Container(
-                        //       width: SizeConfig.getWidth(230),
-                        //       child: Text(
-                        //         AppText.chooseDay,
-                        //         style: GoogleFonts.openSans(
-                        //           fontSize: SizeConfig.getWidth(14),
-                        //           color: AppColors.brown,
-                        //           fontWeight: FontWeight.w700,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     Text(
-                        //       AppText.choose,
-                        //       style: GoogleFonts.openSans(
-                        //         fontSize: SizeConfig.getWidth(14),
-                        //         color: AppColors.brown,
-                        //         decoration: TextDecoration.underline,
-                        //         fontWeight: FontWeight.w600,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: SizeConfig.getWidth(230),
-                              child: Text(
-                                AppText.chooseDay,
-                                style: GoogleFonts.openSans(
-                                  fontSize: SizeConfig.getWidth(14),
-                                  color: AppColors.brown,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: _showWeekdayPicker,
-                              child: Text(
-                                selectedWeekday,
-                                style: GoogleFonts.openSans(
-                                  fontSize: SizeConfig.getWidth(14),
-                                  color: AppColors.brown,
-                                  decoration: TextDecoration.underline,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        SizedBox(height: SizeConfig.getHeight(32)),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Center(
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.brown,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: SizeConfig.getWidth(100),
-                                      vertical: SizeConfig.getHeight(12),
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          SizeConfig.getWidth(8)),
-                                    ),
-                                  ),
-                                  onPressed: () async {
-                                    await FirebaseAuth.instance.signOut();
-                                    await GoogleSignIn().signOut();
-                                    Get.offAllNamed(Routes.loginScreen);
-                                  },
-                                  child: Text(
-                                    AppText.logout,
-                                    style: GoogleFonts.openSans(
-                                      color: AppColors.white,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: SizeConfig.getWidth(14),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
-                  )
-                ],
-              ),
-            ),
+
+                    SizedBox(height: SizeConfig.getHeight(32)),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Center(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.brown,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: SizeConfig.getWidth(100),
+                                  vertical: SizeConfig.getHeight(12),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      SizeConfig.getWidth(8)),
+                                ),
+                              ),
+                              onPressed: () async {
+                                await FirebaseAuth.instance.signOut();
+                                await GoogleSignIn().signOut();
+                                Get.offAllNamed(Routes.loginScreen);
+                              },
+                              child: Text(
+                                AppText.logout,
+                                style: GoogleFonts.openSans(
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: SizeConfig.getWidth(14),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

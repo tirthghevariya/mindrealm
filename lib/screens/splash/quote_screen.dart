@@ -30,7 +30,7 @@ class QuoteScreen extends GetView<HomeController> {
 
           // Back button
           Positioned(
-            top: 32,
+            top: statusBarSize + Get.width * 0.02,
             left: 16,
             right: 16,
             child: Row(

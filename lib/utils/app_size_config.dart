@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+double statusBarSize = MediaQuery.of(Get.context!).padding.top;
+
 class SizeConfig {
   // static MediaQueryData get _mediaQuery => MediaQuery.of(Get.context!);
 

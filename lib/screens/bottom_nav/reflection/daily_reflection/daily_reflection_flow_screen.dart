@@ -20,7 +20,8 @@ class DailyReflectionFlowScreen extends GetView<DailyReflectionController> {
         () => Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 32, left: 24),
+              padding: EdgeInsets.only(
+                  top: statusBarSize + Get.width * 0.02, left: 24),
               child: Row(
                 children: [
                   IconButton(
@@ -38,21 +39,7 @@ class DailyReflectionFlowScreen extends GetView<DailyReflectionController> {
             ),
             SizedBox(height: SizeConfig.getHeight(50)),
             controller.todayReflectionEntry.value != null
-                ? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        AppText.alreadySubmitData,
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.dmSerifDisplay(
-                          fontSize: 30,
-                          color: AppColors.primary,
-                          fontStyle: FontStyle.italic,
-                          height: 1,
-                        ),
-                      ),
-                    ),
-                  )
+                ? Expanded(child: completedView())
                 : Expanded(
                     child: SingleChildScrollView(
                       padding: EdgeInsets.symmetric(
@@ -237,6 +224,42 @@ class DailyReflectionFlowScreen extends GetView<DailyReflectionController> {
                   ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget completedView() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: Get.width * 0.2),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.check_circle_rounded,
+            size: 80,
+            color: AppColors.brown,
+          ),
+          SizedBox(height: SizeConfig.getHeight(30)),
+          Text(
+            'Today Reflection Complete!',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.dmSerifDisplay(
+              fontSize: 28,
+              color: AppColors.primary,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          SizedBox(height: SizeConfig.getHeight(20)),
+          Text(
+            "You've completed this Today's reflection. Come back tomorrow for a new one!",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              color: AppColors.brown,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
       ),
     );
   }

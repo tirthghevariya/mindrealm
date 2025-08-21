@@ -21,65 +21,64 @@ class _MotivationalSpeechState extends State<MotivationalSpeech> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.lightPrimary,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(11),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: IconButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      icon: Icon(
-                        Icons.arrow_back,
-                        size: 32,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(
+            horizontal: 16, vertical: statusBarSize + Get.width * 0.02),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                size: 32,
+                color: AppColors.brown,
+              ),
+            ),
+            SizedBox(
+              height: SizeConfig.getHeight(58),
+            ),
+            Center(
+              child: Column(
+                children: [
+                  Text(
+                    AppText.motivationalSpeechstr,
+                    style: GoogleFonts.dmSerifDisplay(
+                      fontSize: 30,
+                      fontStyle: FontStyle.italic,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  SizedBox(
+                    height: SizeConfig.getHeight(108),
+                  ),
+                  SizedBox(
+                      height: 200,
+                      child: AudioPlayerWaveUI(
+                        assetSong: AppSounds.motivationalSpeechSound,
+                      )),
+                  SizedBox(
+                    height: SizeConfig.getHeight(60),
+                  ),
+                  // ignore: sized_box_for_whitespace
+                  Container(
+                    width: SizeConfig.getHeight(280),
+                    child: Text(
+                      AppText.motivationalSpeechesSpark,
+                      textAlign: TextAlign.center,
+                      style: AppStyle.textStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
                         color: AppColors.brown,
                       ),
-                    )),
-                SizedBox(
-                  height: SizeConfig.getHeight(58),
-                ),
-                Center(
-                  child: Column(
-                    children: [
-                      Text(
-                        AppText.motivationalSpeechstr,
-                        style: GoogleFonts.dmSerifDisplay(
-                          fontSize: 30,
-                          fontStyle: FontStyle.italic,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                      SizedBox(
-                        height: SizeConfig.getHeight(108),
-                      ),
-                      SizedBox(height: 200, child: AudioPlayerWaveUI(assetSong: AppSounds.motivationalSpeechSound,)),
-                      SizedBox(
-                        height: SizeConfig.getHeight(60),
-                      ),
-                      // ignore: sized_box_for_whitespace
-                      Container(
-                        width: SizeConfig.getHeight(280),
-                        child: Text(
-                          AppText.motivationalSpeechesSpark,
-                          textAlign: TextAlign.center,
-                          style: AppStyle.textStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.brown,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

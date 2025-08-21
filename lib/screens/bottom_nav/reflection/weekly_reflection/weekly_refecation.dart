@@ -104,7 +104,8 @@ class WeeklyReflection extends GetView<WeeklyReflectionController> {
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.only(top: 32, left: 24, right: 24),
+      padding: EdgeInsets.only(
+          top: statusBarSize + Get.width * 0.02, left: 8, right: 24),
       child: Row(
         children: [
           IconButton(

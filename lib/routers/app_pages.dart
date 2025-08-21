@@ -46,6 +46,7 @@ class AppPages {
         GetPage(
           name: Routes.goalsOverviewScreen,
           page: () => GoalsOverviewScreen(),
+          binding: GoalOverViewBunding(),
         ),
         GetPage(
             name: Routes.goalDetailScreen,

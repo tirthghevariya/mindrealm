@@ -23,7 +23,7 @@ class WellBeingOverview extends GetView<WellBeingOverviewController> {
           Positioned.fill(
             child: Image.asset(
               AppImages.wellbeingbg,
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             ),
           ),
           Positioned.fill(
@@ -32,7 +32,8 @@ class WellBeingOverview extends GetView<WellBeingOverviewController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 32, left: 16),
+                    padding: EdgeInsets.only(
+                        top: statusBarSize + Get.width * 0.02, left: 8),
                     child: IconButton(
                         onPressed: () {
                           Get.back();
@@ -49,7 +50,7 @@ class WellBeingOverview extends GetView<WellBeingOverviewController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: SizeConfig.getHeight(60)),
+                        SizedBox(height: SizeConfig.getHeight(24)),
 
                         // App Logo & Title
                         Stack(
@@ -324,7 +325,7 @@ class WellBeingOverview extends GetView<WellBeingOverviewController> {
                             ],
                           ),
                         ),
-                        SizedBox(height: SizeConfig.getHeight(60)),
+                        SizedBox(height: SizeConfig.getHeight(24)),
 
                         SizedBox(
                           width: SizeConfig.getWidth(247),
@@ -342,7 +343,7 @@ class WellBeingOverview extends GetView<WellBeingOverviewController> {
 
                         LifeScoreBarChart(),
 
-                        SizedBox(height: SizeConfig.getHeight(60)),
+                        SizedBox(height: SizeConfig.getHeight(24)),
                         SizedBox(
                           width: SizeConfig.getWidth(247),
                           child: Text(
@@ -357,7 +358,7 @@ class WellBeingOverview extends GetView<WellBeingOverviewController> {
                         ),
                         SizedBox(height: SizeConfig.getHeight(26)),
                         CategoryLineChart(),
-                        SizedBox(height: SizeConfig.getHeight(60)),
+                        SizedBox(height: SizeConfig.getHeight(24)),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

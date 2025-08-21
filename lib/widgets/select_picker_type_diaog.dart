@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mindrealm/controllers/goal_detail_controller.dart';
+import 'package:mindrealm/controllers/goal_controllers/goal_detail_controller.dart';
 import 'package:mindrealm/service/goal_image_service.dart';
 import 'package:mindrealm/utils/app_colors.dart';
 import 'package:mindrealm/utils/app_text.dart';

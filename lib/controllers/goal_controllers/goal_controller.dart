@@ -20,16 +20,6 @@ class GoalController extends GetxController {
     currentImageIndex.value = index;
   } // Inside your controller
 
-  // Default fallback images
-  final List<String> defaultImages = [
-    AppImages.yourself,
-    AppImages.health,
-    AppImages.love,
-    AppImages.career,
-    AppImages.family,
-    AppImages.friend,
-  ];
-
   @override
   Future<void> onInit() async {
     super.onInit();

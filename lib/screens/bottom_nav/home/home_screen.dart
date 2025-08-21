@@ -107,7 +107,7 @@ class HomeScreen extends GetView<HomeController> {
                                 controller.todayQuote.value?.quote ?? "",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.dmSerifDisplay(
-                                    fontSize: 30,
+                                    fontSize: 24,
                                     fontStyle: FontStyle.italic,
                                     color: AppColors.brown,
                                     height: 1),

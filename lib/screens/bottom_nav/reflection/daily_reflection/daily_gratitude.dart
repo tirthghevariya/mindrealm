@@ -19,7 +19,8 @@ class DailyGratitude extends GetView<DailyReflectionController> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 32, left: 16),
+            padding: EdgeInsets.only(
+                top: statusBarSize + Get.width * 0.02, left: 16),
             child: Row(
               children: [
                 IconButton(

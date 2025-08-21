@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mindrealm/controllers/goal_detail_controller.dart';
+import 'package:mindrealm/controllers/goal_controllers/goal_detail_controller.dart';
 import 'package:mindrealm/service/goal_image_service.dart';
 import 'package:mindrealm/utils/app_assets.dart';
 import 'package:mindrealm/widgets/select_picker_type_diaog.dart';
@@ -20,80 +20,79 @@ class GoalDetailScreen extends GetView<GoalDetailController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.lightPrimary,
-      body: Obx(() => SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: SizeConfig.getHeight(24)),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: IconButton(
-                    onPressed: () => Get.back(),
-                    icon: Icon(
-                      Icons.arrow_back,
-                      size: 32,
-                      color: AppColors.brown,
-                    ),
+      body: Obx(() => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    top: statusBarSize + Get.width * 0.02, left: 16),
+                child: IconButton(
+                  onPressed: () => Get.back(),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    size: 32,
+                    color: AppColors.brown,
                   ),
                 ),
-                Padding(
+              ),
+              Expanded(
+                child: Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.getHeight(30),
-                    vertical: SizeConfig.getHeight(24),
+                    horizontal: 24,
+                    vertical: 8,
                   ),
-                  child: SizedBox(
-                    height: SizeConfig.screenHeight,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          controller.getCategoryName().capitalizeFirst!,
-                          style: GoogleFonts.dmSerifDisplay(
-                            fontSize: 30,
-                            fontStyle: FontStyle.italic,
-                            color: AppColors.brown,
-                            height: 1,
-                            fontWeight: FontWeight.w500,
-                          ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        controller.getCategoryName().capitalizeFirst!,
+                        style: GoogleFonts.dmSerifDisplay(
+                          fontSize: 30,
+                          fontStyle: FontStyle.italic,
+                          color: AppColors.brown,
+                          height: 1,
+                          fontWeight: FontWeight.w500,
                         ),
-                        SizedBox(height: SizeConfig.getHeight(16)),
-                        TabBar(
-                          controller: controller.tabController,
-                          dividerColor: AppColors.lightPrimary,
-                          indicatorColor: Colors.transparent,
-                          dividerHeight: 0,
-                          padding: EdgeInsets.zero,
-                          labelPadding:
-                              const EdgeInsets.symmetric(horizontal: 4),
-                          onTap: (index) async {
-                            controller.tabController.index = index;
-                            await controller.loadGoalData();
-                          },
-                          tabs: List.generate(controller.icons.length, (index) {
-                            final isSelected =
-                                controller.tabController.index == index;
-                            return AnimatedContainer(
-                              duration: const Duration(milliseconds: 200),
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 2, vertical: 10),
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: isSelected
-                                    ? AppColors.primary.withValues(alpha: 0.8)
-                                    : AppColors.white.withValues(alpha: 0.6),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Image.asset(
-                                controller.icons[index],
-                                width: 24,
-                                height: 24,
-                              ),
-                            );
-                          }),
-                        ),
-                        SizedBox(height: SizeConfig.getHeight(20)),
-                        Expanded(
-                          child: ListView(
+                      ),
+                      SizedBox(height: SizeConfig.getHeight(16)),
+                      TabBar(
+                        controller: controller.tabController,
+                        dividerColor: AppColors.lightPrimary,
+                        indicatorColor: Colors.transparent,
+                        dividerHeight: 0,
+                        padding: EdgeInsets.zero,
+                        labelPadding: const EdgeInsets.symmetric(horizontal: 4),
+                        onTap: (index) async {
+                          controller.tabController.index = index;
+                          await controller.loadGoalData();
+                        },
+                        tabs: List.generate(controller.icons.length, (index) {
+                          final isSelected =
+                              controller.tabController.index == index;
+                          return AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 2, vertical: 10),
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? AppColors.primary.withValues(alpha: 0.8)
+                                  : AppColors.white.withValues(alpha: 0.6),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Image.asset(
+                              controller.icons[index],
+                              width: 24,
+                              height: 24,
+                            ),
+                          );
+                        }),
+                      ),
+                      SizedBox(height: SizeConfig.getHeight(20)),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               editableField(
                                 0,
@@ -153,7 +152,6 @@ class GoalDetailScreen extends GetView<GoalDetailController> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: SizeConfig.getHeight(16)),
                               GridView.count(
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 10,
@@ -166,7 +164,7 @@ class GoalDetailScreen extends GetView<GoalDetailController> {
                                         controller.selectedTabImages.length,
                                         (index) {
                                       return Container(
-                                        height: SizeConfig.getHeight(160),
+                                        height: 160,
                                         decoration: BoxDecoration(
                                           color: Colors.white
                                               .withValues(alpha: 0.4),
@@ -268,7 +266,7 @@ class GoalDetailScreen extends GetView<GoalDetailController> {
                                         ),
                                       )
                                   ]),
-                              SizedBox(height: SizeConfig.getHeight(40)),
+                              SizedBox(height: 16),
                               Image.asset(
                                 AppImages.logo,
                                 width: SizeConfig.getWidth(216),
@@ -278,12 +276,12 @@ class GoalDetailScreen extends GetView<GoalDetailController> {
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           )),
     );
   }
