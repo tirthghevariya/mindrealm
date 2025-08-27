@@ -1,10 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:mindrealm/utils/app_colors.dart';
-
-import '../../../../utils/app_size_config.dart';
-import '../../../../utils/app_text.dart';
 
 class Screenfour extends StatefulWidget {
   final VoidCallback onValid;

@@ -191,9 +191,7 @@ class DailyReflectionFlowScreen extends GetView<DailyReflectionController> {
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:
-                                      controller.selectedValue.value != null &&
-                                              controller.feelingWordController
-                                                  .value.text.isNotEmpty
+                                      controller.selectedValue.value != null
                                           ? AppColors.brown
                                           : AppColors.brown
                                               .withValues(alpha: 0.4),
@@ -202,9 +200,7 @@ class DailyReflectionFlowScreen extends GetView<DailyReflectionController> {
                                   ),
                                 ),
                                 onPressed:
-                                    controller.selectedValue.value != null &&
-                                            controller.feelingWordController
-                                                .value.text.isNotEmpty
+                                    controller.selectedValue.value != null
                                         ? controller.nextStep
                                         : null,
                                 child: Text(

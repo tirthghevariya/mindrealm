@@ -122,7 +122,7 @@ class _ScreenThreeState extends State<ScreenThree> {
           ),
         ),
         SizedBox(height: SizeConfig.getHeight(33)),
-        Container(
+        SizedBox(
           height: 40,
           child: TextField(
             controller: _wordController,

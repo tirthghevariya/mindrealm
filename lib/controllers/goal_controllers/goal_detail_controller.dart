@@ -8,7 +8,6 @@ import 'package:mindrealm/models/user_model.dart';
 import 'package:mindrealm/utils/app_assets.dart';
 import 'package:mindrealm/utils/collection.dart';
 import 'package:mindrealm/widgets/common_tost.dart';
-import '../../../../utils/app_colors.dart';
 
 class GoalDetailController extends GetxController
     with GetTickerProviderStateMixin {

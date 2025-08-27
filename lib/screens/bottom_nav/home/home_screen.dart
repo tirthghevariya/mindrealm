@@ -251,7 +251,7 @@ class HomeScreen extends GetView<HomeController> {
                               // Sort by date ascending
                               final sortedData = controller.dailyReflectionData
                                   .where((e) => e != null)
-                                  .map((e) => e!)
+                                  .map((e) => e)
                                   .toList()
                                 ..sort(
                                     (a, b) => a.datetime.compareTo(b.datetime));

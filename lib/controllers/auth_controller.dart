@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mindrealm/models/user_model.dart';
 import 'package:mindrealm/routers/app_routes.dart';
-import 'package:mindrealm/utils/app_colors.dart';
 import 'package:mindrealm/utils/collection.dart';
 import 'package:mindrealm/widgets/common_loader.dart';
 import 'package:mindrealm/widgets/common_tost.dart';

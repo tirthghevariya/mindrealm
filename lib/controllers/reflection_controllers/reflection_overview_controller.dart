@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:mindrealm/controllers/reflection_controllers/weekly_reflection_controller.dart';
 import 'package:mindrealm/models/daily_reflection_model.dart';
@@ -43,8 +42,9 @@ class WellBeingOverviewController extends GetxController {
           ..sort((a, b) => b.datetime.compareTo(a.datetime));
 
         last30DaysdailyReflectionData.value = dailyReflectionData
-            .where((e) => e!.datetime
-                .isAfter(DateTime.now().subtract(Duration(days: 30))))
+            .where((e) =>
+                e!.feelingWord.isNotEmpty &&
+                e.datetime.isAfter(DateTime.now().subtract(Duration(days: 30))))
             .toList()
             .reversed
             .toList();

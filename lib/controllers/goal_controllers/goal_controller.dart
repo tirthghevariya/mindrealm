@@ -5,7 +5,6 @@ import 'package:carousel_slider/carousel_options.dart';
 import 'package:get/get.dart';
 import 'package:mindrealm/controllers/current_user_controller.dart';
 import 'package:mindrealm/models/gole_model.dart';
-import 'package:mindrealm/utils/app_assets.dart';
 import 'package:mindrealm/utils/collection.dart';
 
 class GoalController extends GetxController {

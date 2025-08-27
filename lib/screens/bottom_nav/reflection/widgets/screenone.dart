@@ -124,7 +124,7 @@ class _ScreenOneState extends State<ScreenOne> {
           ),
         ),
         SizedBox(height: SizeConfig.getHeight(33)),
-        Container(
+        SizedBox(
           height: SizeConfig.getWidth(40),
           child: TextField(
             controller: _wordController,

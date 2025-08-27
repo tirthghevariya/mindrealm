@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mindrealm/controllers/home_controller.dart';
 import 'package:mindrealm/widgets/common_tost.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../utils/app_assets.dart';

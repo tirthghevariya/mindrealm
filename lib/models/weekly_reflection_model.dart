@@ -175,8 +175,7 @@ class WeeklyReflectionDocument {
   // Check if all reflections are complete
   bool get isComplete {
     return reflections.length == ReflectionCategories.categories.length &&
-        reflections.values
-            .every((entry) => entry.rating != null && entry.note.isNotEmpty);
+        reflections.values.every((entry) => entry.note.isNotEmpty);
   }
 
   // Get completion percentage

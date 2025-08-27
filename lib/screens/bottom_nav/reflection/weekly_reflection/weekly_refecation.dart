@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mindrealm/controllers/reflection_controllers/weekly_reflection_controller.dart';
 import 'package:mindrealm/utils/app_colors.dart';
 import 'package:mindrealm/utils/app_size_config.dart';
-import 'package:mindrealm/utils/app_text.dart';
 
 class WeeklyReflection extends GetView<WeeklyReflectionController> {
   const WeeklyReflection({super.key});
