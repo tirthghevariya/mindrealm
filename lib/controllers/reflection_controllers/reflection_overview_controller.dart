@@ -43,10 +43,11 @@ class WellBeingOverviewController extends GetxController {
 
         last30DaysdailyReflectionData.value = dailyReflectionData
             .where((e) =>
-                e!.feelingWord.isNotEmpty &&
-                e.datetime.isAfter(DateTime.now().subtract(Duration(days: 30))))
+                /*   e!.feelingWord.isNotEmpty && */
+                e!.datetime
+                    .isAfter(DateTime.now().subtract(Duration(days: 30))))
             .toList()
-            .reversed
+            // .reversed
             .toList();
       } else {
         log("No reflection document found for user.");
@@ -112,6 +113,8 @@ class WellBeingOverviewController extends GetxController {
 
     // Collect all scores for each category
     for (WeeklyReflectionDocument week in weeklyData) {
+      log("0-=0=-0-=0=-0-=${week.yearWeek} ${week.isComplete}");
+      log("0-=0=-0-=0=-0-=${week.yearWeek} ${week.completionPercentage}");
       if (week.isComplete) {
         week.reflections.forEach((category, entry) {
           if (categoryScores.containsKey(category)) {

@@ -429,22 +429,33 @@ class WellBeingOverview extends GetView<WellBeingOverviewController> {
                                               final entry = controller
                                                       .last30DaysdailyReflectionData[
                                                   index];
-                                              return InkWell(
-                                                onTap: () {
-                                                  // Navigate to daily gratitude details
-                                                  // Get.toNamed(Routes.DailyGratitude, arguments: entry);
-                                                },
-                                                child: Text(
-                                                  entry?.feelingWord ?? '',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: GoogleFonts.openSans(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: AppColors.primary,
-                                                  ),
-                                                ),
-                                              );
+                                              return entry?.feelingWord ==
+                                                          null ||
+                                                      entry!.feelingWord.isEmpty
+                                                  ? SizedBox(
+                                                      // color: AppColors.black,
+                                                      width: 150,
+                                                      height: 8,
+                                                    )
+                                                  : InkWell(
+                                                      onTap: () {
+                                                        // Navigate to daily gratitude details
+                                                        // Get.toNamed(Routes.DailyGratitude, arguments: entry);
+                                                      },
+                                                      child: Text(
+                                                        entry.feelingWord,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: GoogleFonts
+                                                            .openSans(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          color:
+                                                              AppColors.primary,
+                                                        ),
+                                                      ),
+                                                    );
                                             },
                                           );
                                         }),
@@ -677,6 +688,120 @@ class CategoryLineChart extends GetView<WellBeingOverviewController> {
           children: [
             _buildLegend(),
             const SizedBox(height: 16),
+            // Expanded(
+            //   child: Row(
+            //     children: [
+            //       // Y-axis fixed rahega
+            //       SizedBox(
+            //         width: 30,
+            //         child: Column(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: List.generate(6, (i) {
+            //             final val = (10 - i * 2).toString();
+            //             return Text(val,
+            //                 style: const TextStyle(
+            //                     fontSize: 12, color: AppColors.brown));
+            //           }),
+            //         ),
+            //       ),
+            //       const SizedBox(width: 8),
+
+            //       // Scrollable Chart
+            //       Expanded(
+            //         child: SingleChildScrollView(
+            //           scrollDirection: Axis.horizontal,
+            //           child: SizedBox(
+            //             width: recentWeeks.length * 60, // adjust spacing
+            //             child: LineChart(
+            //               LineChartData(
+            //                 // minX: 0,
+            //                 // maxX: (recentWeeks.length - 1).toDouble(),
+            //                 minY: 0,
+            //                 maxY: 10,
+            //                 gridData: FlGridData(
+            //                   show: true,
+            //                   drawVerticalLine: false,
+            //                   horizontalInterval: 1,
+            //                   getDrawingHorizontalLine: (value) => FlLine(
+            //                     color: Colors.grey.withValues(alpha: 0.2),
+            //                     strokeWidth: 1,
+            //                   ),
+            //                 ),
+            //                 showingTooltipIndicators: [
+            //                   ShowingTooltipIndicators([
+            //                     LineBarSpot(
+            //                         LineChartBarData(
+            //                             spots: [FlSpot.zero],
+            //                             color: Colors.transparent),
+            //                         2,
+            //                         FlSpot.nullSpot)
+            //                   ])
+            //                 ],
+            //                 // lineTouchData: LineTouchData(enabled: true),
+            //                 titlesData: FlTitlesData(
+            //                   leftTitles: AxisTitles(
+            //                     sideTitles: SideTitles(
+            //                       showTitles: true,
+            //                       interval: 2,
+            //                       reservedSize: 30,
+            //                       getTitlesWidget: (value, _) => Text(
+            //                         value.toInt().toString(),
+            //                         style: const TextStyle(
+            //                             fontSize: 12, color: AppColors.brown),
+            //                       ),
+            //                     ),
+            //                   ),
+            //                   rightTitles: AxisTitles(
+            //                       sideTitles: SideTitles(showTitles: false)),
+            //                   topTitles: AxisTitles(
+            //                       sideTitles: SideTitles(showTitles: false)),
+            //                   bottomTitles: AxisTitles(
+            //                     sideTitles: SideTitles(
+            //                       showTitles: true,
+            //                       interval: 1,
+            //                       getTitlesWidget: (value, _) {
+            //                         final index = value.toInt();
+            //                         if (index >= 0 &&
+            //                             index < recentWeeks.length) {
+            //                           // Extract week number from yearWeek (e.g., "2025_33" -> "W33")
+            //                           List<String> parts = recentWeeks[index]
+            //                               .yearWeek
+            //                               .split('_');
+            //                           if (parts.length >= 2) {
+            //                             return Text(
+            //                               'W${parts[1]}',
+            //                               style: const TextStyle(
+            //                                   fontSize: 10, color: Colors.grey),
+            //                             );
+            //                           }
+            //                         }
+            //                         return const SizedBox.shrink();
+            //                       },
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 lineBarsData: [
+            //                   _makeLine(trendData['love'] ?? [],
+            //                       AppColors.brown, "Love"),
+            //                   _makeLine(trendData['family'] ?? [],
+            //                       AppColors.primary, "Family"),
+            //                   _makeLine(trendData['career'] ?? [],
+            //                       AppColors.textYellow, "Career"),
+            //                   _makeLine(trendData['friendships'] ?? [],
+            //                       AppColors.grey, "Friends"),
+            //                   _makeLine(trendData['yourself'] ?? [],
+            //                       AppColors.green, "Self"),
+            //                   _makeLine(trendData['health'] ?? [],
+            //                       AppColors.textPurple, "Health"),
+            //                 ],
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             Expanded(
               child: LineChart(
                 LineChartData(
@@ -691,6 +816,8 @@ class CategoryLineChart extends GetView<WellBeingOverviewController> {
                       strokeWidth: 1,
                     ),
                   ),
+
+                  // lineTouchData: LineTouchData(enabled: true),
                   titlesData: FlTitlesData(
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(
@@ -769,7 +896,7 @@ class CategoryLineChart extends GetView<WellBeingOverviewController> {
     return LineChartBarData(
       spots:
           List.generate(values.length, (i) => FlSpot(i.toDouble(), values[i])),
-      isCurved: true,
+      isCurved: false,
       color: color,
       barWidth: 3,
       isStrokeCapRound: true,

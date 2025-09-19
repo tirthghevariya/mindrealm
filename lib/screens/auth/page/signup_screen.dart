@@ -232,9 +232,7 @@ class SignUpScreen extends GetView<AuthController> {
                   ],
                 ),
               ),
-
               SizedBox(height: SizeConfig.getHeight(24)),
-
               // Terms and Privacy
               RichText(
                 textAlign: TextAlign.center,

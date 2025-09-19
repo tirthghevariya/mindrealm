@@ -247,7 +247,7 @@ class AuthController extends GetxController {
         default:
           message = 'Registration failed. Please try again';
       }
-      showToast("Registration Error", err: true);
+      showToast(message, err: true);
     } catch (e) {
       showToast("An unexpected error occurred", err: true);
     } finally {

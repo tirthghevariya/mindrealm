@@ -156,7 +156,7 @@ class DailyReflectionFlowScreen extends GetView<DailyReflectionController> {
                               ),
                               SizedBox(height: SizeConfig.getHeight(33)),
                               SizedBox(
-                                height: SizeConfig.getWidth(40),
+                                // height: SizeConfig.getWidth(40),
                                 child: Obx(
                                   () => TextField(
                                     controller:
@@ -165,6 +165,12 @@ class DailyReflectionFlowScreen extends GetView<DailyReflectionController> {
                                       controller.feelingWordController
                                           .refresh();
                                     },
+                                    maxLength: 25,
+                                    // buildCounter: (context,
+                                    //         {required currentLength,
+                                    //         required isFocused,
+                                    //         required maxLength}) =>
+                                    //     null,
                                     decoration: InputDecoration(
                                       hintText: AppText.fillHere,
                                       filled: true,

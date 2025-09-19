@@ -26,6 +26,7 @@ class DailyReflectionController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     Future.delayed(Duration.zero, () async {
+      // await addStaticReflections();
       await getUserDailyReflection();
     });
   }
@@ -162,4 +163,66 @@ class DailyReflectionController extends GetxController {
   void handleSelection(int index) {
     selectedValue.value = happinessScale[index];
   }
+
+//  static data for testing
+
+  /*  final List<Map<String, dynamic>> staticReflections = [
+    {
+      'datetime': DateTime(2025, 9, 10, 9, 0),
+      'feelingWord': "happy",
+      'scaleNumber': "8",
+      'todayDescription': "Had a productive morning."
+    },
+    {
+      'datetime': DateTime(2025, 9, 11, 10, 30),
+      'feelingWord': "tired",
+      'scaleNumber': "4",
+      'todayDescription': "Worked late, need rest."
+    },
+    {
+      'datetime': DateTime(2025, 9, 12, 7, 45),
+      'feelingWord': "excited",
+      'scaleNumber': "9",
+      'todayDescription': "Looking forward to the weekend."
+    },
+    {
+      'datetime': DateTime(2025, 9, 13, 20, 15),
+      'feelingWord': "calm",
+      'scaleNumber': "7",
+      'todayDescription': "Relaxed day with family."
+    },
+    {
+      'datetime': DateTime(2025, 9, 14, 13, 0),
+      'feelingWord': "stressed",
+      'scaleNumber': "3",
+      'todayDescription': "Deadlines piling up."
+    },
+  ];
+
+  Future<void> addStaticReflections() async {
+    try {
+      final docRef = dailyReflectionCollection.doc(firebaseUserId());
+
+      // Convert DateTime to Firestore Timestamp
+      final reflectionsWithTimestamps = staticReflections.map((e) {
+        return {
+          'datetime': Timestamp.fromDate(e['datetime'] as DateTime),
+          'feelingWord': e['feelingWord'],
+          'scaleNumber': e['scaleNumber'],
+          'todayDescription': e['todayDescription'],
+        };
+      }).toList();
+
+      await docRef.set({
+        'createdAt': FieldValue.serverTimestamp(),
+        'reflections': FieldValue.arrayUnion(reflectionsWithTimestamps),
+      }, SetOptions(merge: true));
+
+      log("✅ Static reflections added successfully");
+      showToast("Static reflections added successfully.");
+    } catch (e) {
+      log("❌ Error adding static reflections: $e");
+      showToast("Failed to add static reflections", err: true);
+    }
+  } */
 }

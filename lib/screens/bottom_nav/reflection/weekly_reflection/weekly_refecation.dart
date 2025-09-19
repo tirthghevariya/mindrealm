@@ -15,9 +15,9 @@ class WeeklyReflection extends GetView<WeeklyReflectionController> {
     return Scaffold(
       backgroundColor: AppColors.lightPrimary,
       body: Obx(() {
-        if (controller.hasCompletedThisWeek.value) {
-          return _buildCompletedView();
-        }
+        // if (controller.hasCompletedThisWeek.value) {
+        //   return _buildCompletedView();
+        // }
 
         return _buildCategoryView();
       }),
@@ -253,6 +253,7 @@ class WeeklyReflection extends GetView<WeeklyReflectionController> {
           onChanged: (e) {
             controller.wordController.refresh();
           },
+          maxLength: 25,
           decoration: InputDecoration(
             hintText: 'Type your note here...',
             filled: true,

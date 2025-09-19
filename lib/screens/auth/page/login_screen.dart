@@ -191,43 +191,46 @@ class LoginScreen extends GetView<AuthController> {
               SizedBox(height: SizeConfig.getHeight(24)),
 
               // Terms Text
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  text: AppText.byClickContinue,
-                  style: AppStyle.textStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.grey,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    text: AppText.byClickContinue,
+                    style: AppStyle.textStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.grey,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: AppText.termsOfService,
+                        style: AppStyle.textStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black,
+                        ),
+                        recognizer: TapGestureRecognizer()..onTap = () {},
+                      ),
+                      TextSpan(
+                        text: AppText.and,
+                        style: AppStyle.textStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.grey,
+                        ),
+                      ),
+                      TextSpan(
+                        text: AppText.privacyPolicy,
+                        style: AppStyle.textStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black,
+                        ),
+                        recognizer: TapGestureRecognizer()..onTap = () {},
+                      ),
+                    ],
                   ),
-                  children: [
-                    TextSpan(
-                      text: AppText.termsOfService,
-                      style: AppStyle.textStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.black,
-                      ),
-                      recognizer: TapGestureRecognizer()..onTap = () {},
-                    ),
-                    TextSpan(
-                      text: AppText.and,
-                      style: AppStyle.textStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.grey,
-                      ),
-                    ),
-                    TextSpan(
-                      text: AppText.privacyPolicy,
-                      style: AppStyle.textStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.black,
-                      ),
-                      recognizer: TapGestureRecognizer()..onTap = () {},
-                    ),
-                  ],
                 ),
               ),
 

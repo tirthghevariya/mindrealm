@@ -15,6 +15,7 @@ class DailyGratitude extends GetView<DailyReflectionController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.lightPrimary,
       body: Column(
         children: [
@@ -67,9 +68,15 @@ class DailyGratitude extends GetView<DailyReflectionController> {
                 ),
                 SizedBox(height: SizeConfig.getHeight(33)),
                 SizedBox(
-                  height: 40,
+                  // height: 40,
                   child: TextField(
                     controller: controller.todayDescriptionController.value,
+                    maxLength: 25,
+                    // buildCounter: (context,
+                    //         {required currentLength,
+                    //         required isFocused,
+                    //         required maxLength}) =>
+                    //     null,
                     decoration: InputDecoration(
                       hintText: AppText.fillHere,
                       filled: true,
