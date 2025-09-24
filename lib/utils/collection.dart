@@ -24,3 +24,6 @@ CollectionReference dailyReflectionCollection =
 
 CollectionReference weeklyReflectionsCollection =
     FirebaseFirestore.instance.collection("weekly_reflections");
+
+CollectionReference aboutMindrealmStaticCollection =
+    FirebaseFirestore.instance.collection("about_mindrealm_static");

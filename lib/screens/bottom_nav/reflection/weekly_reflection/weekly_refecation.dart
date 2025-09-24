@@ -15,9 +15,9 @@ class WeeklyReflection extends GetView<WeeklyReflectionController> {
     return Scaffold(
       backgroundColor: AppColors.lightPrimary,
       body: Obx(() {
-        // if (controller.hasCompletedThisWeek.value) {
-        //   return _buildCompletedView();
-        // }
+        if (controller.hasCompletedThisWeek.value) {
+          return _buildCompletedView();
+        }
 
         return _buildCategoryView();
       }),
@@ -136,7 +136,7 @@ class WeeklyReflection extends GetView<WeeklyReflectionController> {
           SizedBox(height: SizeConfig.getHeight(10)),
           LinearProgressIndicator(
             value: controller.progressPercentage,
-            backgroundColor: AppColors.brown.withOpacity(0.2),
+            backgroundColor: AppColors.brown.withValues(alpha: 0.2),
             valueColor: AlwaysStoppedAnimation<Color>(AppColors.brown),
             minHeight: 4,
           ),
@@ -207,7 +207,7 @@ class WeeklyReflection extends GetView<WeeklyReflectionController> {
               border: Border.all(
                   color: controller.selectedValue.value != null
                       ? AppColors.brown
-                      : AppColors.brown.withOpacity(0.5)),
+                      : AppColors.brown.withValues(alpha: 0.5)),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -217,7 +217,7 @@ class WeeklyReflection extends GetView<WeeklyReflectionController> {
                   style: TextStyle(
                     color: controller.selectedValue.value != null
                         ? AppColors.brown
-                        : AppColors.brown.withOpacity(0.7),
+                        : AppColors.brown.withValues(alpha: 0.7),
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
@@ -289,7 +289,7 @@ class WeeklyReflection extends GetView<WeeklyReflectionController> {
                   backgroundColor: controller.isCurrentQuestionValid &&
                           !controller.isSubmitting.value
                       ? AppColors.brown
-                      : AppColors.brown.withOpacity(0.3),
+                      : AppColors.brown.withValues(alpha: 0.3),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),

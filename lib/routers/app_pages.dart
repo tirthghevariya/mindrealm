@@ -53,9 +53,9 @@ class AppPages {
             page: () => GoalDetailScreen(),
             binding: GoalDetailBunding()),
         GetPage(
-          name: Routes.profileNotificationsScreen,
-          page: () => ProfileNotificationsScreen(),
-        ),
+            name: Routes.profileNotificationsScreen,
+            page: () => ProfileNotificationsScreen(),
+            binding: ProfileScreenBunding()),
         GetPage(
             name: Routes.dailyReflectionScreen,
             page: () => DailyReflectionFlowScreen(),

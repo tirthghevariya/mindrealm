@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mindrealm/controllers/home_controller.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_size_config.dart';
 import '../../../utils/app_assets.dart'; // Make sure to define `aboutBgImage` here
-import '../../../utils/app_text.dart'; // Add your text constants here
 
-class AboutMindRealmScreen extends StatelessWidget {
+class AboutMindRealmScreen extends GetView<HomeController> {
   const AboutMindRealmScreen({super.key});
 
   @override
@@ -65,33 +65,33 @@ class AboutMindRealmScreen extends StatelessWidget {
 
                       // Paragraphs
                       Text(
-                        AppText.aboutPara1,
+                        '''${controller.aboutMindRealm['about']}''',
                         style: GoogleFonts.openSans(
                             fontSize: 15,
                             height: 1.5,
                             color: AppColors.primary,
                             fontWeight: FontWeight.w700),
                       ),
-                      SizedBox(height: SizeConfig.getHeight(16)),
+                      // SizedBox(height: SizeConfig.getHeight(16)),
 
-                      Text(
-                        AppText.aboutPara2,
-                        style: GoogleFonts.openSans(
-                            fontSize: 14,
-                            height: 1.5,
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      SizedBox(height: SizeConfig.getHeight(16)),
+                      // Text(
+                      //   AppText.aboutPara2,
+                      //   style: GoogleFonts.openSans(
+                      //       fontSize: 14,
+                      //       height: 1.5,
+                      //       color: AppColors.primary,
+                      //       fontWeight: FontWeight.w700),
+                      // ),
+                      // SizedBox(height: SizeConfig.getHeight(16)),
 
-                      Text(
-                        AppText.aboutPara3,
-                        style: GoogleFonts.openSans(
-                            fontSize: 14,
-                            height: 1.5,
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w700),
-                      ),
+                      // Text(
+                      //   AppText.aboutPara3,
+                      //   style: GoogleFonts.openSans(
+                      //       fontSize: 14,
+                      //       height: 1.5,
+                      //       color: AppColors.primary,
+                      //       fontWeight: FontWeight.w700),
+                      // ),
                     ],
                   ),
                 ),

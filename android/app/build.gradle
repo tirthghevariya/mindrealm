@@ -13,6 +13,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
@@ -33,7 +34,13 @@ android {
         }
     }
 }
+dependencies {
+    // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // implementation "androidx.core:core-ktx:1.10.1"
 
+    // Add this line 👇
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"
+}
 flutter {
     source = "../.."
 }

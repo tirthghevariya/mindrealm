@@ -485,16 +485,16 @@ class WellBeingOverview extends GetView<WellBeingOverviewController> {
                                       right: 27, bottom: 27),
                                   child: Align(
                                     alignment: Alignment.bottomRight,
-                                    child: Obx(() => Text(
-                                          "${controller.last30DaysdailyReflectionData.length} ${AppText.allCounts}",
-                                          textAlign: TextAlign.right,
-                                          style: GoogleFonts.dmSerifDisplay(
-                                            fontSize: 20,
-                                            fontStyle: FontStyle.italic,
-                                            color: AppColors.brown,
-                                            height: 1,
-                                          ),
-                                        )),
+                                    child: Text(
+                                      AppText.allCounts,
+                                      textAlign: TextAlign.right,
+                                      style: GoogleFonts.dmSerifDisplay(
+                                        fontSize: 20,
+                                        fontStyle: FontStyle.italic,
+                                        color: AppColors.brown,
+                                        height: 1,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],

@@ -12,11 +12,14 @@ class HomeController extends GetxController {
   RxList<DailyReflectionEntry> dailyReflectionData =
       <DailyReflectionEntry>[].obs;
 
+  final aboutMindRealm = {}.obs;
+
   @override
   Future<void> onInit() async {
     super.onInit();
     await getQuotesWithTodayDay();
     await getUserDailyReflection();
+    await aboutMindRealmScreen();
   }
 
   Future getQuotesWithTodayDay() async {
@@ -70,6 +73,25 @@ class HomeController extends GetxController {
           ..sort((a, b) => b.datetime.compareTo(a.datetime));
       } else {
         log("No reflection document found for user.");
+      }
+    } catch (e) {
+      log('Error fetching daily reflection: $e');
+    }
+  }
+
+  Future aboutMindRealmScreen() async {
+    try {
+      final snapshot = await aboutMindrealmStaticCollection
+          .doc('VkSOdmbWo1P4P76oI4U5')
+          .get();
+
+      if (snapshot.exists) {
+        final data = snapshot.data() as Map<String, dynamic>?;
+
+        if (data != null) {
+          aboutMindRealm.value = data;
+          // communityModel.value = CommunityModel.fromMap(data);
+        }
       }
     } catch (e) {
       log('Error fetching daily reflection: $e');

@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:mindrealm/controllers/bottom_nev_controller.dart';
 import 'package:mindrealm/controllers/community_controller.dart';
 import 'package:mindrealm/controllers/goal_controllers/goals_overview_controller.dart';
+import 'package:mindrealm/controllers/profile_controller.dart';
 import 'package:mindrealm/controllers/reflection_controllers/daily_reflection_controller.dart';
 import 'package:mindrealm/controllers/goal_controllers/goal_controller.dart';
 import 'package:mindrealm/controllers/goal_controllers/goal_detail_controller.dart';
@@ -43,6 +44,13 @@ class GoalDetailBunding extends Bindings {
   void dependencies() {
     Get.put(GoalDetailController());
     Get.put(UserGoalService());
+  }
+}
+
+class ProfileScreenBunding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(ProfileController());
   }
 }
 

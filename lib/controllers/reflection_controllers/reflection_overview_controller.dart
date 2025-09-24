@@ -67,7 +67,7 @@ class WellBeingOverviewController extends GetxController {
               firebaseUserId());
       weeklyReflectionData.value = data;
     } catch (e) {
-      print('Error loading weekly reflection data: $e');
+      log('Error loading weekly reflection data: $e');
 
       showToast("Failed to load weekly reflection data", err: true);
     } finally {

@@ -4,10 +4,13 @@ import 'package:get/get.dart';
 import 'package:mindrealm/controllers/current_user_controller.dart';
 import 'package:mindrealm/routers/app_pages.dart';
 import 'package:mindrealm/routers/app_routes.dart';
+import 'package:mindrealm/service/notofication_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await NotificationService.initialize();
+
   Get.put(CurrentUserController());
   runApp(const MyApp());
 }
