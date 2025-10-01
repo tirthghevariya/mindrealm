@@ -568,10 +568,10 @@ class ProfileNotificationsScreen extends GetView<ProfileController> {
                       SizedBox(height: SizeConfig.getHeight(26)),
 
                       // Updated Toggle Tiles with Notification Logic
-                      _toggleTile(AppText.dailyReminder),
-                      _toggleTile(AppText.weeklyReminder),
-                      _toggleTile(AppText.checkGoals),
-                      _toggleTile(AppText.healSession),
+                      _toggleTile(context, AppText.dailyReminder),
+                      _toggleTile(context, AppText.weeklyReminder),
+                      _toggleTile(context, AppText.checkGoals),
+                      _toggleTile(context, AppText.healSession),
 
                       SizedBox(height: SizeConfig.getHeight(20)),
 
@@ -694,7 +694,7 @@ class ProfileNotificationsScreen extends GetView<ProfileController> {
   }
 
   // Updated Toggle Tile with Notification Logic
-  Widget _toggleTile(String title) {
+  Widget _toggleTile(context, String title) {
     return Padding(
       padding: EdgeInsets.only(bottom: SizeConfig.getHeight(12)),
       child: Obx(() => Row(
@@ -715,7 +715,7 @@ class ProfileNotificationsScreen extends GetView<ProfileController> {
                 activeColor: AppColors.brown,
                 inactiveThumbColor: AppColors.brown.withValues(alpha: 0.5),
                 onChanged: (value) async {
-                  await controller.onToggleChanged(title, value);
+                  await controller.onToggleChanged(context, title, value);
                 },
               ),
             ],
@@ -754,7 +754,7 @@ class ProfileNotificationsScreen extends GetView<ProfileController> {
                   ),
                 ),
                 onTap: () async {
-                  await controller.onWeekdayChanged("Choose");
+                  // await controller.onWeekdayChanged("Choose");
                   Get.back();
                 },
               ),
@@ -763,7 +763,8 @@ class ProfileNotificationsScreen extends GetView<ProfileController> {
                 return ListTile(
                   title: Text(day),
                   onTap: () async {
-                    await controller.onWeekdayChanged(day);
+                    controller.selectedWeekday.value = day;
+                    // await controller.onWeekdayChanged(day);
                     Get.back();
                   },
                 );

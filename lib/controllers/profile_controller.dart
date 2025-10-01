@@ -1,74 +1,19 @@
-// import 'dart:developer';
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import 'package:mindrealm/controllers/current_user_controller.dart';
-// import 'package:mindrealm/models/user_model.dart';
-// import 'package:mindrealm/routers/app_routes.dart';
-// import 'package:mindrealm/utils/app_text.dart';
-// import 'package:mindrealm/utils/collection.dart';
-// import 'package:mindrealm/widgets/common_loader.dart';
-
-// class ProfileController extends GetxController {
-//   CurrentUserController currentUserController =
-//       Get.find<CurrentUserController>();
-//   Rx<UserProfileModel?> get userProfile => currentUserController.userProfile;
-
-//   final Map<String, bool> toggles = {
-//     AppText.dailyReminder: true,
-//     AppText.weeklyReminder: true,
-//     AppText.checkGoals: true,
-//     AppText.healSession: true,
-//   };
-
-//   final isEditing = false.obs;
-//   // String name = "John Doe";
-//   // String email = "johndoe@example.com";
-//   // String birthday = "01/01/2000";
-
-//   final nameController = TextEditingController().obs;
-//   // final emailController = TextEditingController().obs;
-//   // final birthdayController = TextEditingController().obs;
-
-//   final selectedWeekday = "Monday".obs;
-
-//   @override
-//   void onInit() {
-//     super.onInit();
-//     nameController.value.text = userProfile.value?.name ?? '';
-//     // emailController.value.text = userProfile.value?.email ?? '';
-//     // birthdayController.value.text = userProfile.value?. ?? '';
-//   }
-
-//   updateProfile() async {
-//     try {
-//       // DocumentSnapshot doc =
-//       CommonLoader.showLoader();
-//       await usersCollection
-//           .doc(firebaseUserId())
-//           .update({"name": nameController.value.text});
-//       await currentUserController.getUserProfile();
-//       isEditing.value = false;
-//       CommonLoader.hideLoader();
-//     } catch (e) {
-//       CommonLoader.hideLoader();
-//       log("0-=0-=-=0-= error profileUpdate.  ${e}");
-//     }
-//   }
-// }
+import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mindrealm/controllers/current_user_controller.dart';
 import 'package:mindrealm/models/user_model.dart';
 import 'package:mindrealm/routers/app_routes.dart';
-import 'package:mindrealm/service/notofication_service.dart';
+import 'package:mindrealm/service/local_notification_service.dart';
 import 'package:mindrealm/utils/app_text.dart';
 import 'package:mindrealm/utils/collection.dart';
+import 'package:mindrealm/utils/common_show_date_picker.dart';
+import 'package:mindrealm/utils/setting.dart';
 import 'package:mindrealm/widgets/common_loader.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mindrealm/widgets/common_tost.dart';
 
 class ProfileController extends GetxController {
   CurrentUserController currentUserController =
@@ -85,38 +30,43 @@ class ProfileController extends GetxController {
   final isEditing = false.obs;
   final nameController = TextEditingController().obs;
   final selectedWeekday = "Monday".obs;
+  final List allDays = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ];
+  final weekdayStorage = Rx<Map<String, dynamic>?>(null);
 
+  // List daysSelected = [];
   @override
   void onInit() {
     super.onInit();
     nameController.value.text = userProfile.value?.name ?? '';
-    _loadNotificationPreferences();
-  }
+    toggles[AppText.dailyReminder] = Storage.dailyRemider != null;
+    toggles[AppText.weeklyReminder] = Storage.weeklyRemider != null;
 
-  // Load saved notification preferences
-  Future<void> _loadNotificationPreferences() async {
-    toggles[AppText.dailyReminder] =
-        await NotificationService.getPreference('daily_reminder_enabled');
-    toggles[AppText.weeklyReminder] =
-        await NotificationService.getPreference('weekly_reminder_enabled');
-    toggles[AppText.checkGoals] =
-        await NotificationService.getPreference('check_goals_enabled');
-    toggles[AppText.healSession] =
-        await NotificationService.getPreference('heal_session_enabled');
+    weekdayStorage.value = getWeeklyReminderFromStorage();
+
+    selectedWeekday.value = weekdayStorage.value?['weekday'] ?? "Monday";
+    // _loadNotificationPreferences();
   }
 
   // *** UPDATED TOGGLE METHOD WITH PERMISSION HANDLING ***
-  Future<void> onToggleChanged(String title, bool value) async {
+  Future<void> onToggleChanged(
+      BuildContext context, String title, bool value) async {
     try {
       bool success = false;
 
       switch (title) {
         case AppText.dailyReminder:
-          success = await NotificationService.scheduleDailyReminder(value);
+          success = await updateDailyReminder(context, value) ?? false;
           break;
         case AppText.weeklyReminder:
-          success = await NotificationService.scheduleWeeklyReminder(
-              value, selectedWeekday.value);
+          success = await updateWeeklyReminder(context, value) ?? false;
           break;
         default:
           return;
@@ -133,75 +83,156 @@ class ProfileController extends GetxController {
         toggles[title] = value;
 
         if (value) {
-          Get.snackbar(
-            "✅ Success",
-            "Notification scheduled successfully!",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-            duration: Duration(seconds: 2),
-          );
+          showToast("$title Notification scheduled successfully!");
         } else {
-          Get.snackbar(
-            "ℹ️ Info",
-            "Notification cancelled",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.blue,
-            colorText: Colors.white,
-            duration: Duration(seconds: 2),
-          );
+          showToast("$title Notification cancelled");
         }
       } else {
-        // Keep toggle in original state if failed
-        // Don't change toggles[title] value
-
-        Get.snackbar(
-          "❌ Permission Required",
-          "Please allow notification permissions to schedule reminders",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          duration: Duration(seconds: 3),
-          mainButton: TextButton(
-            onPressed: () {
-              // Try again
-              onToggleChanged(title, value);
-            },
-            child: Text("Try Again", style: TextStyle(color: Colors.white)),
-          ),
-        );
+        // showToast("Failed to schedule notification. Please try again.");
       }
     } catch (e) {
+      //  showToast("Failed to schedule notification. Please try again.");
       // Keep toggle in original state if error
-      Get.snackbar(
-        "❌ Error",
-        "Failed to schedule notification. Please try again.",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: Duration(seconds: 3),
-      );
+      // Get.snackbar(
+      //   "❌ Error",
+      //   "Failed to schedule notification. Please try again.",
+      //   snackPosition: SnackPosition.BOTTOM,
+      //   backgroundColor: Colors.red,
+      //   colorText: Colors.white,
+      //   duration: Duration(seconds: 3),
+      // );
 
       log("Error in onToggleChanged: $e");
     }
   }
 
-  // Handle weekday selection change
-  Future<void> onWeekdayChanged(String newDay) async {
-    selectedWeekday.value = newDay;
-    if (toggles[AppText.weeklyReminder] == true) {
-      bool success =
-          await NotificationService.scheduleWeeklyReminder(true, newDay);
-      if (success) {
-        Get.snackbar(
-          "✅ Updated",
-          "Weekly reminder updated for $newDay",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          duration: Duration(seconds: 2),
-        );
+  Future<bool?> updateDailyReminder(BuildContext context, bool value) async {
+    if (value == false) {
+      await NotificationApi.notifications.cancel(1);
+      return true;
+    }
+
+    // 🔹 Get previously stored time or default to 8:00 AM
+    TimeOfDay initialTime = _timeOfDayFromJson(Storage.dailyRemider);
+
+    // 🔹 Show picker with saved/default time
+    TimeOfDay? selectedTime = await commonShowTimePicker(
+      context,
+      selectedTime: initialTime,
+    );
+
+    if (selectedTime == null) return false;
+
+    bool isdone = await NotificationApi.checkAndRequestPermissions();
+    if (!isdone) {
+      showToast("Please allow notification permissions to schedule reminders",
+          err: true);
+      return null;
+    }
+
+    // 🔹 Schedule notification
+    await NotificationApi.showDailyScheduleNotification(
+      title: "How are you feeling today?",
+      body: "Take a moment for your daily reflection.",
+      time: [
+        selectedTime.hour,
+        ((selectedTime.minute) % 60),
+        0,
+      ],
+    );
+
+    // 🔹 Save selected time
+    Storage.dailyRemider = jsonEncode({
+      "hour": selectedTime.hour,
+      "minute": selectedTime.minute,
+    });
+
+    return true;
+  }
+
+  TimeOfDay _timeOfDayFromJson(String? jsonString) {
+    if (jsonString == null) return const TimeOfDay(hour: 8, minute: 0);
+    final Map<String, dynamic> data = jsonDecode(jsonString);
+    return TimeOfDay(hour: data["hour"], minute: data["minute"]);
+  }
+
+  Future<bool?> updateWeeklyReminder(context, bool value) async {
+    try {
+      if (value == false) {
+        await NotificationApi.notifications.cancel(2);
+        return true;
       }
+
+      bool isdone = await NotificationApi.checkAndRequestPermissions();
+      if (isdone == false) {
+        showToast("Please allow notification permissions to schedule reminders",
+            err: true);
+        return null;
+      } else {
+        // if (selectedWeekday.isEmpty) {
+        //   return false;
+        // } else {
+        // 🔹 Get previously stored time or default to 8:00 AM
+        Map<String, dynamic>? weeklyData = getWeeklyReminderFromStorage();
+        TimeOfDay initialTime = TimeOfDay(
+            hour: weeklyData?['hour'] ?? 8, minute: weeklyData?['minute'] ?? 0);
+
+        // 🔹 Show picker with saved/default time
+        TimeOfDay? selectedTime = await commonShowTimePicker(
+          context,
+          selectedTime: initialTime,
+        );
+        // int h = int.parse(DateTime.now().hour.toString().padLeft(2, '0')),
+        //     m = int.parse(
+        //         ((DateTime.now().minute + 2) % 60).toString().padLeft(2, '0'));
+        int h = selectedTime!.hour;
+        int m = (selectedTime.minute) % 60;
+
+        await NotificationApi.notifications.cancel(02);
+        await NotificationApi.showWeeklyScheduleNotification(
+          title: "How was your week?",
+          body: "Take a moment to reflect on the past 7 days.",
+          time: [h, m, 0],
+          weekDays: [getWeekdayDateTime(selectedWeekday.value)],
+        );
+        // ✅ Save to storage
+        Storage.weeklyRemider = jsonEncode({
+          "weekday": selectedWeekday.value,
+          "hour": h,
+          "minute": m,
+        });
+        return true;
+        // }
+      }
+    } catch (e) {
+      log("0-=0-=0=-0=-0=-0-= weekly error ${e}");
+      return false;
+    }
+  }
+
+  Map<String, dynamic>? getWeeklyReminderFromStorage() {
+    if (Storage.weeklyRemider == null) return null;
+    return jsonDecode(Storage.weeklyRemider!);
+  }
+
+  int getWeekdayDateTime(String weekday) {
+    switch (weekday) {
+      case 'Sunday':
+        return DateTime.sunday;
+      case 'Monday':
+        return DateTime.monday;
+      case 'Tuesday':
+        return DateTime.tuesday;
+      case 'Wednesday':
+        return DateTime.wednesday;
+      case 'Thursday':
+        return DateTime.thursday;
+      case 'Friday':
+        return DateTime.friday;
+      case 'Saturday':
+        return DateTime.saturday;
+      default:
+        throw Exception('Sunday');
     }
   }
 
@@ -209,22 +240,15 @@ class ProfileController extends GetxController {
   Future<void> logout() async {
     try {
       CommonLoader.showLoader();
-
-      // Cancel all notifications and clear preferences
-      await NotificationService.cancelAllNotificationsOnLogout();
-
-      // Reset local toggles
       toggles[AppText.dailyReminder] = false;
       toggles[AppText.weeklyReminder] = false;
       toggles[AppText.checkGoals] = false;
       toggles[AppText.healSession] = false;
-
+      await NotificationApi.cancelAllNotifications();
       // Firebase और Google logout
       await FirebaseAuth.instance.signOut();
       await GoogleSignIn().signOut();
-
       CommonLoader.hideLoader();
-
       // Login screen पर redirect
       Get.offAllNamed(Routes.loginScreen);
     } catch (e) {

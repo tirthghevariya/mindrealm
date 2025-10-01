@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mindrealm/service/local_notification_service.dart';
 import 'package:mindrealm/utils/app_text.dart';
 
 import '../../routers/app_routes.dart';
@@ -32,7 +33,8 @@ class _SplashscreenState extends State<Splashscreen> {
     // });
 
     // After delay, check if user is logged in
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () async {
+      await NotificationApi.init(initScheduled: true);
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         Get.offAllNamed(Routes.bottomNavBar);
