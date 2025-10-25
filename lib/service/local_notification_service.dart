@@ -174,6 +174,40 @@ class NotificationApi {
         : scheduleDate;
   }
 
+// For Heal Notification (Monday)
+  static Future<void> showHealNotification({
+    int hour = 8,
+    int minute = 0,
+  }) async {
+    await notifications.cancel(3);
+    await notifications.zonedSchedule(
+      3, // Unique ID for Heal
+      'Heal Reminder',
+      'It\'s Monday! Take a moment to engage with MindRealm and check in on your wellbeing.',
+      _scheduleWeekly([hour, minute, 0], days: [DateTime.monday]),
+      await weeklyNotificationDetails(),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+    );
+  }
+
+// For Goals Notification (Thursday 8AM)
+  static Future<void> showGoalsNotification({
+    int hour = 8,
+    int minute = 0,
+  }) async {
+    await notifications.cancel(4);
+    await notifications.zonedSchedule(
+      4, // Unique ID for Goals
+      'Goals Reminder',
+      'Remember to check and update your goals for this week!',
+      _scheduleWeekly([hour, minute, 0], days: [DateTime.thursday]),
+      await weeklyNotificationDetails(),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+    );
+  }
+
   static Future<bool> checkAndRequestPermissions() async {
     // 1. Request basic notification permission
     final notificationStatus = await Permission.notification.status;

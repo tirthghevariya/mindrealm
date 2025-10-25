@@ -429,9 +429,10 @@ class WellBeingOverview extends GetView<WellBeingOverviewController> {
                                               final entry = controller
                                                       .last30DaysdailyReflectionData[
                                                   index];
-                                              return entry?.feelingWord ==
+                                              return entry?.todayDescription ==
                                                           null ||
-                                                      entry!.feelingWord.isEmpty
+                                                      entry!.todayDescription
+                                                          .isEmpty
                                                   ? SizedBox(
                                                       // color: AppColors.black,
                                                       width: 150,
@@ -443,7 +444,7 @@ class WellBeingOverview extends GetView<WellBeingOverviewController> {
                                                         // Get.toNamed(Routes.DailyGratitude, arguments: entry);
                                                       },
                                                       child: Text(
-                                                        entry.feelingWord,
+                                                        entry.todayDescription,
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style: GoogleFonts

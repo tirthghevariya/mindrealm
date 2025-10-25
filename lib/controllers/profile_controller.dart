@@ -48,6 +48,8 @@ class ProfileController extends GetxController {
     nameController.value.text = userProfile.value?.name ?? '';
     toggles[AppText.dailyReminder] = Storage.dailyRemider != null;
     toggles[AppText.weeklyReminder] = Storage.weeklyRemider != null;
+    toggles[AppText.checkGoals] = Storage.goalRemider != null;
+    toggles[AppText.healSession] = Storage.healRemider != null;
 
     weekdayStorage.value = getWeeklyReminderFromStorage();
 
@@ -68,16 +70,15 @@ class ProfileController extends GetxController {
         case AppText.weeklyReminder:
           success = await updateWeeklyReminder(context, value) ?? false;
           break;
+        case AppText.checkGoals:
+          success = await updateGoalSessin(context, value) ?? false;
+          break;
+        case AppText.healSession:
+          success = await updateHealSessin(context, value) ?? false;
+          break;
         default:
           return;
-        // case AppText.checkGoals:
-        //   success = await NotificationService.scheduleCheckGoals(value);
-        //   break;
-        // case AppText.healSession:
-        //   success = await NotificationService.scheduleHealSession(value);
-        //   break;
       }
-
       if (success) {
         // Update toggle state only if successful
         toggles[title] = value;
@@ -88,7 +89,7 @@ class ProfileController extends GetxController {
           showToast("$title Notification cancelled");
         }
       } else {
-        // showToast("Failed to schedule notification. Please try again.");
+        showToast("Failed to schedule notification. Please try again.");
       }
     } catch (e) {
       //  showToast("Failed to schedule notification. Please try again.");
@@ -101,7 +102,6 @@ class ProfileController extends GetxController {
       //   colorText: Colors.white,
       //   duration: Duration(seconds: 3),
       // );
-
       log("Error in onToggleChanged: $e");
     }
   }
@@ -188,7 +188,7 @@ class ProfileController extends GetxController {
         int h = selectedTime!.hour;
         int m = (selectedTime.minute) % 60;
 
-        await NotificationApi.notifications.cancel(02);
+        await NotificationApi.notifications.cancel(2);
         await NotificationApi.showWeeklyScheduleNotification(
           title: "How was your week?",
           body: "Take a moment to reflect on the past 7 days.",
@@ -210,9 +210,99 @@ class ProfileController extends GetxController {
     }
   }
 
+  Future<bool?> updateHealSessin(context, bool value) async {
+    try {
+      if (value == false) {
+        await NotificationApi.notifications.cancel(3);
+        return true;
+      }
+
+      bool isdone = await NotificationApi.checkAndRequestPermissions();
+      if (isdone == false) {
+        showToast("Please allow notification permissions to schedule reminders",
+            err: true);
+        return null;
+      } else {
+        Map<String, dynamic>? weeklyData = getHealReminderFromStorage();
+        TimeOfDay initialTime = TimeOfDay(
+            hour: weeklyData?['hour'] ?? 8, minute: weeklyData?['minute'] ?? 0);
+
+        TimeOfDay? selectedTime = await commonShowTimePicker(
+          context,
+          selectedTime: initialTime,
+        );
+
+        int h = selectedTime!.hour;
+        int m = (selectedTime.minute) % 60;
+
+        await NotificationApi.showHealNotification(hour: h, minute: m);
+        // ✅ Save to storage
+        Storage.healRemider = jsonEncode({
+          "hour": h,
+          "minute": m,
+        });
+        return true;
+        // }
+      }
+    } catch (e) {
+      log("0-=0-=0=-0=-0=-0-= weekly error ${e}");
+      return false;
+    }
+  }
+
+  Future<bool?> updateGoalSessin(context, bool value) async {
+    try {
+      if (value == false) {
+        await NotificationApi.notifications.cancel(4);
+        return true;
+      }
+
+      bool isdone = await NotificationApi.checkAndRequestPermissions();
+      if (isdone == false) {
+        showToast("Please allow notification permissions to schedule reminders",
+            err: true);
+        return null;
+      } else {
+        Map<String, dynamic>? weeklyData = getGoalReminderFromStorage();
+        TimeOfDay initialTime = TimeOfDay(
+            hour: weeklyData?['hour'] ?? 8, minute: weeklyData?['minute'] ?? 0);
+
+        TimeOfDay? selectedTime = await commonShowTimePicker(
+          context,
+          selectedTime: initialTime,
+        );
+
+        int h = selectedTime!.hour;
+        int m = (selectedTime.minute) % 60;
+
+        await NotificationApi.showGoalsNotification(hour: h, minute: m);
+        // ✅ Save to storage
+        Storage.goalRemider = jsonEncode({
+          "hour": h,
+          "minute": m,
+        });
+        return true;
+        // }
+      }
+    } catch (e) {
+      log("0-=0-=0=-0=-0=-0-= weekly error ${e}");
+      return false;
+    }
+  }
+
   Map<String, dynamic>? getWeeklyReminderFromStorage() {
     if (Storage.weeklyRemider == null) return null;
     return jsonDecode(Storage.weeklyRemider!);
+  }
+
+  Map<String, dynamic>? getHealReminderFromStorage() {
+    if (Storage.healRemider == null) return null;
+    return jsonDecode(Storage.healRemider!);
+  }
+
+  Map<String, dynamic>? getGoalReminderFromStorage() {
+    if (Storage.goalRemider == null) return null;
+    return jsonDecode(Storage.goalRemider!);
   }
 
   int getWeekdayDateTime(String weekday) {

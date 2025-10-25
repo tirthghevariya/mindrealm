@@ -18,6 +18,14 @@ class Storage {
   static set weeklyRemider(String? value) =>
       _prefsInstance?.setString("weeklyRemider", value!);
 
+  static String? get healRemider => _prefsInstance?.getString("healRemider");
+  static set healRemider(String? value) =>
+      _prefsInstance?.setString("healRemider", value!);
+
+  static String? get goalRemider => _prefsInstance?.getString("goalRemider");
+  static set goalRemider(String? value) =>
+      _prefsInstance?.setString("goalRemider", value!);
+
   static Future<void> clearStorage() async {
     await Storage._prefsInstance?.clear();
   }
